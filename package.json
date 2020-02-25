@@ -1,0 +1,19 @@
+{
+  "name": "@teplovs/frontend-ui",
+  "version": "0.1.0-alpha",
+  "description": "A new JavaScript framework for developing powerful web applications",
+  "author": "Teplovs",
+  "license": "Apache-2.0",
+  "private": false,
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build specified'",
+    "test": "mocha 'Tests/*.js' --require esm"
+  },
+  "devDependencies": {
+    "browser-env": "^3.3.0",
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "mocha": "^7.0.0"
+  }
+}

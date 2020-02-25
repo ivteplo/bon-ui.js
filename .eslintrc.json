@@ -1,0 +1,13 @@
+{
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "rules": {
+        "semi": "error",
+        "comma-spacing": "error",
+        "indent": "error",
+        "no-undef": "error",
+        "no-unused-vars": "error"
+    }
+}
