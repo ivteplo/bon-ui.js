@@ -8,37 +8,34 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Color, Enum, HStack, VStack, colors, normalizeDocumentStyles, fonts, Text } from "../../Sources/FrontendUI"
-
-function objMap (obj, fn) {
-    let result = []
-
-    for (let i in obj) {
-        result.push(fn(obj[i], i))
-    }
-
-    return result
-}
+import { View, Color, Enum, Button, HStack, VStack, ZStack, colors, normalizeDocumentStyles, fonts, Text } from "../../Sources/FrontendUI"
 
 normalizeDocumentStyles({ flexBody: true })
 
 class App extends View {
     getInitialState () {
-        return {}
+        return {
+            text: "Hello world!"
+        }
     }
 
     getBody () {
         return (
-            new HStack([
-                new Text("Hello world!")
+            new VStack([
+                new Text("Click me pls!")
                     .setOffset({ bottom: 20 }),
-                new VStack([
-                    new Text("Hi!")
-                        .setOffset({ left: 20 }),
-                    new Text("Hi!")
-                        .setOffset({ left: 20 })
-                ])
+                new Button(
+                    new Text(this.state.get("text"))
+                )
+                    .setHandlerFor({
+                        event: "click", 
+                        handler: () => {
+                            console.log("Click!")
+                            this.state.set("text", "Thanks!")
+                        }
+                    })
             ])
+                .setAlignment({ horizontal: "center" })
         )
     }
 }

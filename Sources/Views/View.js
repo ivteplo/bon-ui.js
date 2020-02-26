@@ -38,9 +38,7 @@ export class View {
             get: () => {
                 return this.lastVNode instanceof VNode && this.lastVNode.dom instanceof Node
             },
-            set: () => {
-                
-            }
+            set: () => {}
         })
     }
 
@@ -276,10 +274,11 @@ export class View {
      *  bottom: number|Length,
      *  all: number|Length,
      *  color: Color,
-     *  style: Symbol
+     *  style: Symbol,
+     *  radius: number|Length
      * }} param0
      */
-    setOutline ({ left, top, right, bottom, all, color, style }) {
+    setOutline ({ left, top, right, bottom, all, color, style, radius }) {
         if (all instanceof Length || all instanceof Number || typeof all === "number") {
             this.styles.borderWidth = all instanceof Length ? all : new Length(all, Measure.pixels)
         }
@@ -298,6 +297,14 @@ export class View {
 
         if (bottom instanceof Length || bottom instanceof Number || typeof bottom === "number") {
             this.styles.borderBottomWidth = bottom instanceof Length ? bottom : new Length(bottom, Measure.pixels)
+        }
+
+        if (radius instanceof Length || radius instanceof Number || typeof radius === "number") {
+            this.styles.borderRadius = radius instanceof Length ? radius : new Length(radius, Measure.pixels)
+        } else if (Array.isArray(radius)) {
+            this.styles.borderRadius = radius.map(item => {
+                return item ? item.toString() : "0"
+            }).join(" ")
         }
 
         if (color instanceof Color) {

@@ -36,7 +36,7 @@ export class Font {
      * }} param0 
      * @todo Add font-style support
      */
-    constructor ({ name = null, textStyle, size, weight  }) {
+    constructor ({ name = null, textStyle = null, size = null, weight = null  }) {
         this.name = typeof name === "string" || name instanceof String ? name.toString() : null
         this.textStyle = TextStyle.contains(textStyle) ? textStyle : TextStyle.default
         this.weight = Weight.contains(weight) ? weight : null
@@ -85,14 +85,20 @@ export class Font {
 
        if (Weight.contains(this.weight)) {
            result += weightToCssValue(this.weight) + " "
+       } else {
+           result += "inherit "
        }
 
        if (this.size instanceof Length) {
            result += this.size + " "
+       } else {
+           result += "inherit "
        }
 
        if (typeof this.name === "string") {
            result += this.name
+       } else {
+           result += "inherit"
        }
 
        return result
@@ -160,5 +166,10 @@ export function weightToCssValue (weight) {
 var defaultFont = new Font({ name: "sans-serif", size: new Length(18, Measure.pixels), style: TextStyle.default, weight: Weight.regular })
 var titleFont = defaultFont.with({ size: new Length(28, Measure.pixels), style: TextStyle.title, weight: Weight.medium })
 var largeTitleFont = titleFont.with({ size: new Length(36, Measure.pixels), style: TextStyle.largeTitle, weight: Weight.bold })
+var inheritFont = new Font({})
 
-export const fonts = { default: defaultFont, title: titleFont, largeTitle: largeTitleFont }
+inheritFont.toString = () => {
+    return "inherit"
+}
+
+export const fonts = { inherit: inheritFont, default: defaultFont, title: titleFont, largeTitle: largeTitleFont }
