@@ -31,7 +31,7 @@ export class View {
         this.styles = {}
         this.events = {}
         this.attributes = {}
-        this.state = null
+        this.state = new ViewState()
         this.restoreState()
         
         Object.defineProperty(this, "mounted", {
@@ -62,8 +62,7 @@ export class View {
      * @description A method to restore the initial state
      */
     restoreState () {
-        this.state = new ViewState()
-
+        this.state.restore()
         var initialState = this.getInitialState()
         if (typeof initialState === "object") {
             for (let key in initialState) {
@@ -75,7 +74,7 @@ export class View {
             }
         }
 
-        this.state.addChangeHandler(() => {
+        this.state.setChangeHandler(() => {
             this.invalidate()
         })
     }
@@ -122,6 +121,7 @@ export class View {
             Reconciler.addUnitOfWork(() => {
                 let vNode = renderToVNode(this)
                 updateComponentDOM(this.lastVNode, vNode)
+                this.lastVNode = vNode
             })
         }
     }
@@ -320,7 +320,6 @@ export class View {
 }
 
 /**
- * @param {Node} dom 
  * @param {VNode} lastVNode 
  * @param {VNode} vNode 
  * @returns {Symbol}
@@ -328,7 +327,6 @@ export class View {
 function updateComponentDOM (lastVNode, vNode) {
     if (lastVNode.tag !== vNode.tag || lastVNode.type === VNodeType.text || vNode.type === VNodeType.text) {
         lastVNode.dom.replaceWith(vNode.toHTMLNode({ save: true }))
-        vNode.dom = lastVNode.dom
         return
     }
 

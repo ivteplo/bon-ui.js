@@ -20,11 +20,16 @@ export class ViewState {
         this._changeHandler = () => {}
     }
 
+    restore () {
+        this._values = {}
+        this._changeHandler = () => {}
+    }
+
     /**
      * @description A method to add callback on state change, which was completed successfully
      * @param {function} callback 
      */
-    addChangeHandler (callback) {
+    setChangeHandler (callback) {
         if (typeof callback === "function") {
             this._changeHandler = callback
         }
@@ -38,7 +43,6 @@ export class ViewState {
     set (key, value) {
         if (typeof key === "string" || key instanceof String) {
             this._values[key.toString()] = value
-
             this._changeHandler()
 
             return new ViewStateResponse({

@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, OutlineStyle } from "../View"
+import { View } from "../View"
 import { colors } from "../../Values/Color"
 import { fonts } from "../../Values/Font"
 

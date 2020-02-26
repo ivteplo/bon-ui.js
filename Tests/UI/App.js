@@ -15,23 +15,22 @@ normalizeDocumentStyles({ flexBody: true })
 class App extends View {
     getInitialState () {
         return {
-            text: "Hello world!"
+            text: 1
         }
     }
 
     getBody () {
         return (
             new VStack([
-                new Text("Click me pls!")
+                new Text("Increment the counter!")
                     .setOffset({ bottom: 20 }),
                 new Button(
-                    new Text(this.state.get("text"))
+                    new Text("Counter: " + this.state.get("text").toString())
                 )
                     .setHandlerFor({
                         event: "click", 
-                        handler: () => {
-                            console.log("Click!")
-                            this.state.set("text", "Thanks!")
+                        handler: (event) => {
+                            this.state.set("text", this.state.get("text") + 1)
                         }
                     })
             ])
