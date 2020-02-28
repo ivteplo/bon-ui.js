@@ -24,7 +24,7 @@ export class Link extends View {
         this.label = label
         this.attributes.href = url
         this.styles.textDecoration = "none"
-        this.styles.display = "block"
+        this.styles.display = "inline-block"
     }
 
     getBody () {
