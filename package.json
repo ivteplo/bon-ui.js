@@ -15,5 +15,13 @@
     "chai": "^4.2.0",
     "esm": "^3.2.25",
     "mocha": "^7.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teplovs/frontend-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/teplovs/frontend-ui/issues"
+  },
+  "homepage": "https://github.com/teplovs/frontend-ui#readme"
 }

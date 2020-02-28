@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Color, Enum, Button, HStack, VStack, ZStack, colors, normalizeDocumentStyles, fonts, Text } from "../../Sources/FrontendUI"
+import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link } from "../../Sources/FrontendUI"
 
 normalizeDocumentStyles({ flexBody: true })
 
@@ -24,6 +24,7 @@ class App extends View {
             new VStack([
                 new Text("Increment the counter!")
                     .setOffset({ bottom: 20 }),
+
                 new Button(
                     new Text("Counter: " + this.state.get("text").toString())
                 )
@@ -32,7 +33,18 @@ class App extends View {
                         handler: (event) => {
                             this.state.set("text", this.state.get("text") + 1)
                         }
+                    }),
+
+                new List([
+                    new Text("Hello world!"),
+                    new Text("Hi!"),
+                    new Link({
+                        url: "https://google.com",
+                        label: 
+                            new Text("Google!")
+                                .setForeground({ color: colors.ultramarineBlue })
                     })
+                ])
             ])
                 .setAlignment({ horizontal: "center" })
         )

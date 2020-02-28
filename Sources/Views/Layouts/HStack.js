@@ -23,6 +23,14 @@ export class HStack extends View {
         this.children = children
     }
 
+    /**
+     * 
+     * @param {{
+     *  horizontal: string,
+     *  vertical: string
+     * }} param0 
+     * @todo create an enum for alignment types
+     */
     setAlignment ({ horizontal, vertical }) {
         if (horizontal instanceof String || typeof horizontal === "string") {
             this.styles.justifyContent = horizontal

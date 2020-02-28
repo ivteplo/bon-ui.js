@@ -20,6 +20,14 @@ export class VStack extends HStack {
         super(...args)
     }
 
+    /**
+     * 
+     * @param {{
+     *  horizontal: string,
+     *  vertical: string
+     * }} param0 
+     * @todo create an enum for alignment types
+     */
     setAlignment ({ horizontal, vertical }) {
         if (horizontal instanceof String || typeof horizontal === "string") {
             this.styles.alignItems = horizontal
