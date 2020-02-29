@@ -7,14 +7,16 @@
   "private": false,
   "main": "index.js",
   "scripts": {
-    "build": "echo 'No build specified'",
+    "build": "rollup -c rollup.config.js && minify ./Distribution/FrontendUI.esm.js --out-file ./Distribution/FrontendUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/FrontendUI.umd.js --out-file ./Distribution/FrontendUI.umd.min.js --mangle.keepClassName --sourceType module",
     "test": "mocha 'Tests/*.js' --require esm"
   },
   "devDependencies": {
+    "babel-minify": "^0.5.1",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
-    "mocha": "^7.0.0"
+    "mocha": "^7.0.0",
+    "rollup": "^1.32.0"
   },
   "repository": {
     "type": "git",
