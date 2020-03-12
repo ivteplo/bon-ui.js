@@ -12,18 +12,18 @@ const path = require("path")
 
 module.exports = [
     {
-        input: path.join(__dirname, "./Sources/FrontendUI.js"),
+        input: path.join(__dirname, "./Sources/BonUI.js"),
         output: {
             format: "esm",
-            file: path.join(__dirname, "./Distribution/FrontendUI.esm.js")
+            file: path.join(__dirname, "./Distribution/BonUI.esm.js")
         }
     },
     {
-        input: path.join(__dirname, "./Sources/FrontendUI.js"),
+        input: path.join(__dirname, "./Sources/BonUI.js"),
         output: {
             format: "umd",
-            name: "FrontendUI",
-            file: path.join(__dirname, "./Distribution/FrontendUI.umd.js")
+            name: "BonUI",
+            file: path.join(__dirname, "./Distribution/BonUI.umd.js")
         }
     }
 ]

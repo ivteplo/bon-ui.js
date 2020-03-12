@@ -13,7 +13,7 @@ import browserEnv from "browser-env"
 
 browserEnv()
 
-import { View, Text } from "../Sources/FrontendUI"
+import { View, Text } from "../Sources/BonUI"
 
 class ContentView extends View {
     getInitialState () {

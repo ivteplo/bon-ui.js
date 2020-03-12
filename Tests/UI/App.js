@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link, Canvas, OutlineStyle } from "../../Sources/FrontendUI"
+import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link, Canvas, OutlineStyle } from "../../Sources/BonUI"
 
 normalizeDocumentStyles({ flexBody: true })
 

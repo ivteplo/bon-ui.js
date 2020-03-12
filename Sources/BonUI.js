@@ -1,5 +1,5 @@
 //
-// FrontendUI.js
+// BonUI.js
 // Created on 06/01/2020
 //
 // Copyright (c) 2020 Teplovs
