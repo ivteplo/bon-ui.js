@@ -31,9 +31,10 @@ export * from "./VirtualDOM/VNode"
 
 // Values
 export * from "./Values/Enum"
-export * from "./Values/Color"
 export * from "./Values/Font"
+export * from "./Values/Color"
 export * from "./Values/Length"
+export * from "./Values/Alignment"
 
 // Styles
 export function normalizeDocumentStyles ({ applyFlexToBody = true }) {

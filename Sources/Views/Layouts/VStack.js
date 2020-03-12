@@ -8,8 +8,8 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View } from "../View"
 import { HStack } from "./HStack"
+import { Alignment, alignmentToCssValue } from "../../Values/Alignment"
 
 /**
  * @public @class
@@ -23,18 +23,17 @@ export class VStack extends HStack {
     /**
      * 
      * @param {{
-     *  horizontal: string,
-     *  vertical: string
+     *  horizontal: Symbol,
+     *  vertical: Symbol
      * }} param0 
-     * @todo create an enum for alignment types
      */
     setAlignment ({ horizontal, vertical }) {
-        if (horizontal instanceof String || typeof horizontal === "string") {
-            this.styles.alignItems = horizontal
+        if (Alignment.contains(horizontal)) {
+            this.styles.alignItems = alignmentToCssValue(horizontal)
         }
 
-        if (vertical instanceof String || typeof vertical === "string") {
-            this.styles.justifyContent = vertical
+        if (Alignment.contains(vertical)) {
+            this.styles.justifyContent = alignmentToCssValue(vertical)
         }
 
         return this

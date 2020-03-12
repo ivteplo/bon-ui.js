@@ -9,8 +9,8 @@
 // 
 
 import { View } from "../View"
-import { colors } from "../../Values/Color"
-import { fonts } from "../../Values/Font"
+import { Colors } from "../../Values/Color"
+import { Fonts } from "../../Values/Font"
 
 /**
  * @public @class
@@ -27,9 +27,9 @@ export class Button extends View {
         this.styles.cursor = "pointer"
         this.setOutline({ all: 0 })
             .setPadding({ all: 7 })
-            .setFont(fonts.inherit)
-            .setBackground({ color: colors.white })
-            .setForeground({ color: colors.ultramarineBlue })
+            .setFont(Fonts.inherit)
+            .setBackground({ color: Colors.white })
+            .setForeground({ color: Colors.ultramarineBlue })
     }
 
     getBody () {

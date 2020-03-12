@@ -9,6 +9,7 @@
 // 
 
 import { View } from "../View"
+import { Alignment, alignmentToCssValue } from "../../Values/Alignment"
 
 /**
  * @public @class
@@ -26,18 +27,17 @@ export class HStack extends View {
     /**
      * 
      * @param {{
-     *  horizontal: string,
-     *  vertical: string
+     *  horizontal: Symbol,
+     *  vertical: Symbol
      * }} param0 
-     * @todo create an enum for alignment types
      */
     setAlignment ({ horizontal, vertical }) {
-        if (horizontal instanceof String || typeof horizontal === "string") {
-            this.styles.justifyContent = horizontal
+        if (Alignment.contains(horizontal)) {
+            this.styles.justifyContent = alignmentToCssValue(horizontal)
         }
 
-        if (vertical instanceof String || typeof vertical === "string") {
-            this.styles.alignItems = vertical
+        if (Alignment.contains(vertical)) {
+            this.styles.alignItems = alignmentToCssValue(vertical)
         }
 
         return this

@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link, Canvas, OutlineStyle } from "../../Sources/BonUI"
+import { View, Color, Enum, Button, HStack, VStack, ZStack, List, Colors, normalizeDocumentStyles, Fonts, Text, Link, Canvas, OutlineStyle, Alignment } from "../../Sources/BonUI"
 
 normalizeDocumentStyles({ flexBody: true })
 
@@ -31,19 +31,23 @@ class App extends View {
 
                         context.beginPath()
                         context.arc(relativePosition.x, relativePosition.y, 35, 0, Math.PI * 2)
-                        context.fillColor = colors.princetonOrange.toString()
+                        context.fillStyle = Colors.vividOrangePeel.toString()
                         context.fill()
                         context.closePath()
 
                         requestAnimationFrame(() => view.forceInvalidate())
                     })
-                    .setOutline({ all: 2, color: colors.spaceCadet, style: OutlineStyle.solid })
+                    .setOutline({ all: 2, color: Colors.vividOrangePeel, style: OutlineStyle.solid })
                     .setHandlerFor({ event: "touchmove", handler: event => {
                         position.x = event.touches[0].clientX
                         position.y = event.touches[0].clientY
                     }})
+                    .setHandlerFor({ event: "mousemove", handler: event => {
+                        position.x = event.clientX
+                        position.y = event.clientY
+                    }})
             ])
-                .setAlignment({ horizontal: "center" })
+                .setAlignment({ horizontal: Alignment.center })
         )
     }
 }

@@ -16,20 +16,28 @@ import { View } from "../View"
  */
 export class Canvas extends View {
     /**
-     * @todo support different rendering contexts
+     * @param {string} renderingContext
      */
-    constructor () {
+    constructor (renderingContext = "2d") {
         super()
         this.paintHandler = () => {}
+        this.renderingContext = renderingContext
     }
 
     handleMount() {
-        this.paintHandler(this.lastVNode.dom.getContext("2d"), this.lastVNode.dom, this)
+        this.paintHandler(this.lastVNode.dom.getContext(this.renderingContext), this.lastVNode.dom, this)
     }
 
+    /**
+     * @todo invalidation for other contexts
+     */
     handleInvalidation() {
-        var context = this.lastVNode.dom.getContext("2d")
-        context.clearRect(0, 0, this.lastVNode.dom.width, this.lastVNode.dom.height)
+        var context = this.lastVNode.dom.getContext(this.renderingContext)
+        
+        if (context instanceof CanvasRenderingContext2D) {
+            context.clearRect(0, 0, this.lastVNode.dom.width, this.lastVNode.dom.height)
+        }
+
         this.paintHandler(context, this.lastVNode.dom, this)
     }
 

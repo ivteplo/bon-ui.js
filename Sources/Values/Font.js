@@ -22,6 +22,11 @@ export const TextStyle = new Enum("default", "largeTitle", "title", "headline", 
 export const Weight = new Enum("regular", "ultraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
 
 /**
+ * @public @enum
+ */
+export const FontStyle = new Enum("normal", "italic", "oblique")
+
+/**
  * @public @class
  * @description A class to describe which font to use for the component
  */
@@ -36,10 +41,11 @@ export class Font {
      * }} param0 
      * @todo Add font-style support
      */
-    constructor ({ name = null, textStyle = null, size = null, weight = null  }) {
+    constructor ({ name = null, textStyle = null, size = null, weight = null, fontStyle = null  }) {
         this.name = typeof name === "string" || name instanceof String ? name.toString() : null
         this.textStyle = TextStyle.contains(textStyle) ? textStyle : TextStyle.default
         this.weight = Weight.contains(weight) ? weight : null
+        this.fontStyle = FontStyle.contains(fontStyle) ? fontStyle : null
 
         if (size instanceof Length || typeof size === "number" || size instanceof Number) {
             this.size = !(size instanceof Length) ? new Length(size, Measure.points) : size
@@ -82,6 +88,12 @@ export class Font {
     toString () {
         // font-style font-variant font-weight font-size/line-height font-family
        var result = ""
+
+       if (FontStyle.contains(this.fontStyle)) {
+           result += fontStyleToCssValue(this.fontStyle) + " "
+       } else {
+           result += "inherit "
+       }
 
        if (Weight.contains(this.weight)) {
            result += weightToCssValue(this.weight) + " "
@@ -131,7 +143,7 @@ export function textStyleToTagName (style) {
 }
 
 /**
- * @description A function to convert the Weight iitem to the css font-weight value
+ * @description A function to convert the Weight item to the css font-weight value
  * @param {Symbol} weight 
  */
 export function weightToCssValue (weight) {
@@ -161,7 +173,24 @@ export function weightToCssValue (weight) {
     }
 }
 
-/** @todo more templates */
+/**
+ * @description A function to convert the FontStyle item to the css font-style value
+ * @param {Symbol} fontStyle 
+ */
+export function fontStyleToCssValue(fontStyle) {
+    if (!(FontStyle.contains(fontStyle))) {
+        return undefined
+    }
+
+    switch (fontStyle) {
+        case FontStyle.normal:
+            return "normal"
+        case FontStyle.italic:
+            return "italic"
+        case FontStyle.oblique:
+            return "oblique"
+    }
+}
 
 var defaultFont = new Font({ name: "sans-serif", size: new Length(18, Measure.pixels), style: TextStyle.default, weight: Weight.regular })
 var titleFont = defaultFont.with({ size: new Length(28, Measure.pixels), style: TextStyle.title, weight: Weight.medium })
@@ -172,4 +201,4 @@ inheritFont.toString = () => {
     return "inherit"
 }
 
-export const fonts = { inherit: inheritFont, default: defaultFont, title: titleFont, largeTitle: largeTitleFont }
+export const Fonts = { inherit: inheritFont, default: defaultFont, title: titleFont, largeTitle: largeTitleFont }

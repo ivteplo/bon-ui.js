@@ -48,7 +48,7 @@ export class Color {
     }
 }
 
-export const colors = {
+export const Colors = {
     // white and grey and blue colors
     white: new Color({ red: 0xFF, green: 0xFF, blue: 0xFF }),
     lightGray: new Color({ red: 0xAA, green: 0xAA, blue: 0xAA }),
