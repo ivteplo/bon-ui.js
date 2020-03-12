@@ -95,6 +95,16 @@ export class View {
     }
 
     /**
+     * @description A method called after mounting
+     */
+    handleMount() {}
+
+    /**
+     * @description A method called after invalidation
+     */
+    handleInvalidation() {}
+
+    /**
      * @description A method to mount the view
      * @param {Node} parent 
      */
@@ -110,6 +120,7 @@ export class View {
         Reconciler.addUnitOfWork(() => {
             this.lastVNode = renderToVNode(this)
             this.lastVNode.mountTo(parent)
+            this.handleMount()
         })
     }
 
@@ -122,7 +133,20 @@ export class View {
                 let vNode = renderToVNode(this)
                 updateComponentDOM(this.lastVNode, vNode)
                 this.lastVNode = vNode
+                this.handleInvalidation()
             })
+        }
+    }
+
+    /**
+     * @description A method to force reload the view without waiting
+     */
+    forceInvalidate () {
+        if (this.mounted) {
+            let vNode = renderToVNode(this)
+            updateComponentDOM(this.lastVNode, vNode)
+            this.lastVNode = vNode
+            this.handleInvalidation()
         }
     }
 
@@ -371,6 +395,10 @@ function updateComponentDOM (lastVNode, vNode) {
     } else {
         for (let i in vNode.body) {
             updateComponentDOM(lastVNode.body[i], vNode.body[i])
+            
+            if (lastVNode.body[i].component instanceof View) {
+                lastVNode.body[i].component.handleInvalidation()
+            }
         }
     }
 

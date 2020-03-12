@@ -18,6 +18,7 @@
     export * from "./Views/Generic/Text"
     export * from "./Views/Generic/Link"
     export * from "./Views/Generic/Button"
+    export * from "./Views/Generic/Canvas"
 
     // Layouts
     export * from "./Views/Layouts/HStack"

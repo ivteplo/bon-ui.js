@@ -13,8 +13,8 @@
 # this is script for the server (for UI tests without building the app)
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
-# for mime types:
 import mimetypes
+import sys
 
 mimetypes.init()
 
@@ -52,8 +52,26 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.wfile.write(bytes(contents, "utf8"))
         return
 
+port = 8080
 
-server = HTTPServer(("", 8080), HTTPHandler)
-print("Server has started at port 8080")
-print("If you want to open UI tests, go to localhost:8080/Tests/UI/index.html")
+if len(sys.argv) > 1:
+    prev_flag = None
+    for argc in range(1, len(sys.argv)):
+        if prev_flag != None:
+
+            if prev_flag == "-p" or prev_flag == "--port":
+                port = int(sys.argv[argc])
+            else:
+                print("Unexpected flag specified")
+                quit(1)
+
+        elif sys.argv[argc][0] == "-":
+            prev_flag = sys.argv[argc]
+        else:
+            print("Unexpected CLI arg passed")
+            quit(1)
+
+server = HTTPServer(("", port), HTTPHandler)
+print("Server has started at port {0}".format(str(port)))
+print("If you want to open UI tests, go to localhost:{0}/Tests/UI/index.html".format(str(port)))
 server.serve_forever()

@@ -29,8 +29,9 @@ export class VNode {
      *  events: object,
      *  attriutes: object
      * }} param0 
+     * @param {View|null} component
      */
-    constructor ({ text, tag, body, styles, events, attributes }) {
+    constructor ({ text, tag, body, styles, events, attributes }, component = null) {
         if (tag || body || styles || events || attributes) {
             this.type = VNodeType.tag
             this.tag = tag || "div"
@@ -38,6 +39,7 @@ export class VNode {
             this.styles = typeof styles === "object" ? styles : {}
             this.events = typeof events === "object" ? events : {}
             this.attributes = typeof attributes === "object" ? attributes : {}
+            this.component = component
         } else {
             this.type = VNodeType.text
             this.text = text || ""
@@ -104,14 +106,19 @@ export class VNode {
         }
 
         parent.appendChild(this.dom)
+
+        if (this.component instanceof View) {
+            this.component.handleMount()
+        }
     }
 }
 
 /**
  * @description A function to render view until body returns VNode
  * @param {View|VNode} view
+ * @param {Boolean} saveVNode
  */
-export function renderToVNode (view) {
+export function renderToVNode (view, saveVNode = false) {
     let node
 
     if (view instanceof VNode) {
@@ -126,11 +133,17 @@ export function renderToVNode (view) {
         if (!(node instanceof VNode)) {
             throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
         }
+
+        node.component = view
+
+        if (saveVNode) {
+            view.lastVNode = node
+        }
     }
 
     for (let i in node.body) {
         if (node.body[i] instanceof View || node.body[i] instanceof VNode) {
-            node.body[i] = renderToVNode(node.body[i])
+            node.body[i] = renderToVNode(node.body[i], true)
         } else {
             throw new Error("Unexpected child passed")
         }

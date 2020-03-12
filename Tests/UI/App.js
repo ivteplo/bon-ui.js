@@ -8,43 +8,40 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link } from "../../Sources/FrontendUI"
+import { View, Color, Enum, Button, HStack, VStack, ZStack, List, colors, normalizeDocumentStyles, fonts, Text, Link, Canvas, OutlineStyle } from "../../Sources/FrontendUI"
 
 normalizeDocumentStyles({ flexBody: true })
 
+var position = {x: 0, y: 0}
+
 class App extends View {
     getInitialState () {
-        return {
-            text: 1
-        }
+        return {}
     }
 
     getBody () {
         return (
             new VStack([
-                new Text("Increment the counter!")
-                    .setOffset({ bottom: 20 }),
+                new Canvas()
+                    .setPaintHandler((context, canvas, view) => {
+                        const relativePosition = Object.assign({}, position)
+                        const boundingClientRect = canvas.getBoundingClientRect()
+                        relativePosition.x -= boundingClientRect.left
+                        relativePosition.y -= boundingClientRect.top
 
-                new Button(
-                    new Text("Counter: " + this.state.get("text").toString())
-                )
-                    .setHandlerFor({
-                        event: "click", 
-                        handler: (event) => {
-                            this.state.set("text", this.state.get("text") + 1)
-                        }
-                    }),
+                        context.beginPath()
+                        context.arc(relativePosition.x, relativePosition.y, 35, 0, Math.PI * 2)
+                        context.fillColor = colors.princetonOrange.toString()
+                        context.fill()
+                        context.closePath()
 
-                new List([
-                    new Text("Hello world!"),
-                    new Text("Hi!"),
-                    new Link({
-                        url: "https://google.com",
-                        label: 
-                            new Text("Google!")
-                                .setForeground({ color: colors.ultramarineBlue })
+                        requestAnimationFrame(() => view.forceInvalidate())
                     })
-                ])
+                    .setOutline({ all: 2, color: colors.spaceCadet, style: OutlineStyle.solid })
+                    .setHandlerFor({ event: "touchmove", handler: event => {
+                        position.x = event.touches[0].clientX
+                        position.y = event.touches[0].clientY
+                    }})
             ])
                 .setAlignment({ horizontal: "center" })
         )
