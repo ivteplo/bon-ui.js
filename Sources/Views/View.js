@@ -341,6 +341,63 @@ export class View {
 
         return this
     }
+
+    /**
+     * @description A method to set the size of the view
+     * @param {{
+     *  width: Length|number,
+     *  height: Length|number
+     * }} param0 
+     */
+    setSize({ width, height }) {
+        if (width instanceof Length || width instanceof Number || typeof width === "number") {
+            this.styles.width = width instanceof Length ? width : new Length(width, Measure.pixels)
+        }
+
+        if (height instanceof Length || height instanceof Number || typeof height === "number") {
+            this.styles.height = height instanceof Length ? height : new Length(height, Measure.pixels)
+        }
+
+        return this
+    }
+
+    /**
+     * @description A method to set the minimal size of the view
+     * @param {{
+     *  width: Length|number,
+     *  height: Length|number
+     * }} param0 
+     */
+    setMinSize({ width, height }) {
+        if (width instanceof Length || width instanceof Number || typeof width === "number") {
+            this.styles.minWidth = width instanceof Length ? width : new Length(width, Measure.pixels)
+        }
+
+        if (height instanceof Length || height instanceof Number || typeof height === "number") {
+            this.styles.minHeight = height instanceof Length ? height : new Length(height, Measure.pixels)
+        }
+
+        return this
+    }
+
+    /**
+     * @description A method to set the maximal size of the view
+     * @param {{
+     *  width: Length|number,
+     *  height: Length|number
+     * }} param0 
+     */
+    setMaxSize({ width, height }) {
+        if (width instanceof Length || width instanceof Number || typeof width === "number") {
+            this.styles.maxWidth = width instanceof Length ? width : new Length(width, Measure.pixels)
+        }
+
+        if (height instanceof Length || height instanceof Number || typeof height === "number") {
+            this.styles.maxHeight = height instanceof Length ? height : new Length(height, Measure.pixels)
+        }
+
+        return this
+    }
 }
 
 /**

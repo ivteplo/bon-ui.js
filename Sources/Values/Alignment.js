@@ -1,3 +1,12 @@
+//
+// Alignment.js
+// Created on 13/03/2020
+//
+// Copyright (c) 2020 Teplovs
+// This file is under Apache License v2.0
+// 
+// See https://www.apache.org/licenses/LICENSE-2.0 for license information
+// 
 
 import { Enum } from "./Enum"
 

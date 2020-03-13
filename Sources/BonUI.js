@@ -17,6 +17,7 @@
     // Generic
     export * from "./Views/Generic/Text"
     export * from "./Views/Generic/Link"
+    export * from "./Views/Generic/Image"
     export * from "./Views/Generic/Button"
     export * from "./Views/Generic/Canvas"
 
@@ -34,6 +35,7 @@ export * from "./Values/Enum"
 export * from "./Values/Font"
 export * from "./Values/Color"
 export * from "./Values/Length"
+export * from "./Values/FitType"
 export * from "./Values/Alignment"
 
 // Styles

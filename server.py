@@ -26,12 +26,12 @@ class HTTPHandler(BaseHTTPRequestHandler):
         extension = "" if dot_pos == -1 else self.path[dot_pos:]
 
         try:
-            with open("." + self.path, 'r') as file:
+            with open("." + self.path, 'rb') as file:
                 contents = file.read()
                 file.close()
         except FileNotFoundError:
             try:
-                with open("." + self.path + ".js", 'r') as file:
+                with open("." + self.path + ".js", 'rb') as file:
                     contents = file.read()
                     extension = ".js"
                     file.close()
@@ -49,7 +49,7 @@ class HTTPHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", mime if not mime == None else "text/plain" if extension == "" else mimetypes.types_map[extension])
         self.end_headers()
 
-        self.wfile.write(bytes(contents, "utf8"))
+        self.wfile.write(contents)
         return
 
 port = 8080
