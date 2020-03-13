@@ -1,7 +1,7 @@
-## Bon UI
+# Bon UI
 A framework with declarative syntax for developing UI for web apps
 
-![Bon UI](bon-ui.png)
+<img width="200" alt="Bon UI Logo" align="right" src="bon-ui.png">
 
 ## :heavy_check_mark: Features
 - **Component-based**: you can build your own reusable components or use built-in.
