@@ -1,6 +1,8 @@
 ## Bon UI
 A framework with declarative syntax for developing UI for web apps
 
+![Bon UI](bon-ui.png)
+
 ## :heavy_check_mark: Features
 - **Component-based**: you can build your own reusable components or use built-in.
 - **Declarative syntax**: with Frontend UI it is very easy to create dynamic and interactive user interfaces. Declarative syntax helps you to navigate in code and to easily understand what it does.
