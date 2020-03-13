@@ -33,7 +33,7 @@ export class ZStack extends View {
 
         var vNode = super.getBody()
         vNode.tag = "div"
-        vNode.body = children
+        vNode.body = children.filter(value => value != null)
 
         for (let i = 0; i < children.length; ++i) {
             children[i].styles.zIndex = i

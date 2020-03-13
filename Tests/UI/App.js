@@ -8,8 +8,10 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Enum, Button, HStack, VStack, ZStack, List, normalizeDocumentStyles, Fonts, Text, Link, Canvas, Alignment, Image, FitType } from "../../Sources/BonUI"
+import { View, Enum, Button, HStack, VStack, ZStack, List, normalizeDocumentStyles, Fonts, Text, Link, Canvas, Alignment, Image, FitType, Length, Measure } from "../../Sources/BonUI"
 import { Colors } from "./Config"
+import { Header } from "./Header"
+import { Features } from "./Features"
 
 class App extends View {
     getInitialState () {
@@ -19,17 +21,11 @@ class App extends View {
     getBody () {
         return (
             new VStack([
-                new Image("/bon-ui.png", "Logo")
-                    .setSize({ width: 200, height: 200 })
-                    .setFitType(FitType.contain),
-                new Text("Bon UI")
-                    .setFont(Fonts.largeTitle)
-                    .setOffset({ top: 10, bottom: 10 })
-                    .setForeground({ color: Colors.orange }),
-                new Text("A new framework\nfor developing web applications")
-                    .setAlignment(Alignment.center)
+                new Header(),
+                new Features()
             ])
-                .setAlignment({ horizontal: Alignment.center })
+                .setFont(Fonts.default)
+                .setSize({ width: new Length(100, Measure.viewportWidth) })
         )
     }
 }

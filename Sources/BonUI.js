@@ -37,6 +37,7 @@ export * from "./Values/Color"
 export * from "./Values/Length"
 export * from "./Values/FitType"
 export * from "./Values/Alignment"
+export * from "./Values/WhiteSpaceStyle"
 
 // Styles
 export function normalizeDocumentStyles ({ applyFlexToBody = true }) {

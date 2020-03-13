@@ -52,7 +52,7 @@ export class HStack extends View {
 
         var vNode = super.getBody()
         vNode.tag = "div"
-        vNode.body = children
+        vNode.body = children.filter(value => value != null)
         vNode.styles.display = "flex"
         
         return vNode

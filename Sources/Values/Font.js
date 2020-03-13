@@ -14,7 +14,7 @@ import { Length, Measure } from "./Length"
 /**
  * @public @enum
  */
-export const TextStyle = new Enum("default", "largeTitle", "title", "headline", "subheadline", "callout", "footnote", "caption")
+export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "monospace")
 
 /**
  * @public @enum
@@ -131,10 +131,10 @@ export function textStyleToTagName (style) {
             return "h1"
         case TextStyle.title:
             return "h2"
-        case TextStyle.headline:
-            return "hl"
-        case TextStyle.subheadline:
-            return "sub"
+        case TextStyle.subheading:
+            return "h3"
+        case TextStyle.monospace:
+            return "code"
         default:
             return TextStyle.getIdentifier(style)
     }
@@ -198,7 +198,7 @@ var defaultFont = new Font({
 })
 
 var titleFont = defaultFont.with({ 
-    size: new Length(28, Measure.pixels), 
+    size: new Length(30, Measure.pixels), 
     textStyle: TextStyle.title, 
     weight: Weight.medium 
 })
@@ -209,9 +209,20 @@ var largeTitleFont = titleFont.with({
     weight: Weight.bold 
 })
 
+var subheadingFont = titleFont.with({
+    size: new Length(22, Measure.pixels),
+    textStyle: TextStyle.subheading
+})
+
+var monospaceFont = defaultFont.with({
+    name: "monospace",
+    textStyle: TextStyle.monospace,
+    size: new Length(16, Measure.pixels)
+})
+
 var inheritFont = new Font({})
 inheritFont.toString = () => {
     return "inherit"
 }
 
-export const Fonts = { inherit: inheritFont, default: defaultFont, title: titleFont, largeTitle: largeTitleFont }
+export const Fonts = { inherit: inheritFont, default: defaultFont, title: titleFont, largeTitle: largeTitleFont, subheading: subheadingFont, monospace: monospaceFont }

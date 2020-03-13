@@ -13,7 +13,7 @@ import { Enum } from "./Enum"
 /**
  * @public @enum
  */
-export const Measure = new Enum("pixels", "points", "percent", "fontSize", "parentFontSize")
+export const Measure = new Enum("pixels", "points", "percent", "fontSize", "parentFontSize", "viewportHeight", "viewportWidth")
 
 /**
  * @public @class
@@ -59,5 +59,9 @@ export function measureToCssUnit (measure) {
             return "rem"
         case Measure.parentFontSize:
             return "em"
+        case Measure.viewportHeight:
+            return "vh"
+        case Measure.viewportWidth:
+            return "vw"
     }
 }

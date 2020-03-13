@@ -9,9 +9,10 @@
 // 
 
 import { View } from "../View"
-import { Font, textStyleToTagName, TextStyle } from "../../Values/Font"
 import { VNode } from "../../VirtualDOM/VNode"
+import { Font, textStyleToTagName, TextStyle } from "../../Values/Font"
 import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment"
+import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle"
 
 /**
  * @public @class
@@ -41,12 +42,23 @@ export class Text extends View {
         return this
     }
 
+    /**
+     * @description A method to set the text white space showing style
+     * @param {Symbol} style 
+     */
+    setWhiteSpaceStyle(style) {
+        if (WhiteSpaceStyle.contains(style)) {
+            this.styles.whiteSpace = whiteSpaceStyleToCssValue(style)
+        }
+        
+        return this
+    }
+
     getBody () {
-        var { text, styles, events, attributes } = this
         var tag = "p"
 
-        if (styles.font instanceof Font && TextStyle.contains(styles.font.textStyle)) {
-            tag = textStyleToTagName(styles.font.textStyle)
+        if (this.styles.font instanceof Font && TextStyle.contains(this.styles.font.textStyle)) {
+            tag = textStyleToTagName(this.styles.font.textStyle)
         }
 
         var body = this.text.split("\n").map(val => {
