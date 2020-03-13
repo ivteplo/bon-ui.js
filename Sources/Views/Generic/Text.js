@@ -11,6 +11,7 @@
 import { View } from "../View"
 import { Font, textStyleToTagName, TextStyle } from "../../Values/Font"
 import { VNode } from "../../VirtualDOM/VNode"
+import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment"
 
 /**
  * @public @class
@@ -26,6 +27,18 @@ export class Text extends View {
         this.setSelectableTo(false)
         this.styles.margin = 0
         this.styles.padding = 0
+    }
+
+    /**
+     * @description A method to set the text alignment
+     * @param {Symbol} alignment 
+     */
+    setAlignment(alignment) {
+        if (Alignment.contains(alignment)) {
+            this.styles.textAlign = textAlignmentToCssValue(alignment)
+        }
+
+        return this
     }
 
     getBody () {

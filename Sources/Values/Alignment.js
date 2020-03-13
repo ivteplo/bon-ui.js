@@ -39,3 +39,26 @@ export function alignmentToCssValue(alignment) {
             return "shrink"
     }
 }
+
+/**
+ * @description A function to convert the Alignment enum item to css value
+ * @param {Symbol} alignment 
+ */
+export function textAlignmentToCssValue(alignment) {
+    if (!Alignment.contains(alignment)) {
+        return undefined
+    }
+
+    switch (alignment) {
+        case Alignment.start:
+            return "left"
+        case Alignment.end:
+            return "right"
+        case Alignment.center:
+            return "center"
+        case Alignment.shrink:
+        case Alignment.spaceAround:
+        case Alignment.spaceBetween:
+            return "justify"
+    }
+}

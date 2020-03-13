@@ -91,8 +91,6 @@ export class Font {
 
        if (FontStyle.contains(this.fontStyle)) {
            result += fontStyleToCssValue(this.fontStyle) + " "
-       } else {
-           result += "inherit "
        }
 
        if (Weight.contains(this.weight)) {
@@ -192,11 +190,26 @@ export function fontStyleToCssValue(fontStyle) {
     }
 }
 
-var defaultFont = new Font({ name: "sans-serif", size: new Length(18, Measure.pixels), style: TextStyle.default, weight: Weight.regular })
-var titleFont = defaultFont.with({ size: new Length(28, Measure.pixels), style: TextStyle.title, weight: Weight.medium })
-var largeTitleFont = titleFont.with({ size: new Length(36, Measure.pixels), style: TextStyle.largeTitle, weight: Weight.bold })
-var inheritFont = new Font({})
+var defaultFont = new Font({ 
+    name: "sans-serif", 
+    size: new Length(18, Measure.pixels), 
+    textStyle: TextStyle.default, 
+    weight: Weight.regular 
+})
 
+var titleFont = defaultFont.with({ 
+    size: new Length(28, Measure.pixels), 
+    textStyle: TextStyle.title, 
+    weight: Weight.medium 
+})
+
+var largeTitleFont = titleFont.with({ 
+    size: new Length(36, Measure.pixels), 
+    textStyle: TextStyle.largeTitle, 
+    weight: Weight.bold 
+})
+
+var inheritFont = new Font({})
 inheritFont.toString = () => {
     return "inherit"
 }
