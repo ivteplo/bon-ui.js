@@ -19,14 +19,7 @@ export class Features extends View {
 
     getBody () {
         return (
-            new VStack([
-                new Text("Features")
-                    .setAlignment(Alignment.center)
-                    .setSize({ width: new Length(100, Measure.percent) })
-                    .setFont(Fonts.title)
-                    .setForeground({ color: Colors.orange })
-                    .setOffset({ bottom: 10 }),
-                
+            new VStack([                
                 new Feature({
                     heading: new Text("Declarative syntax"),
                     description: new Text("With Bon UI it is very easy to create dynamic and interactive user interfaces. Declarative syntax helps you to navigate in code and to easily understand what it does.")

@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack } from "../../Sources/BonUI"
+import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight } from "../../Sources/BonUI"
 import { Colors } from "./Config"
 
 export class Feature extends View {
@@ -30,14 +30,13 @@ export class Feature extends View {
         return (
             new VStack([
                 heading
-                    .setFont(Fonts.subheading)
-                    .setOffset({ bottom: 20 })
-                    .setForeground({ color: Colors.brown }),
+                    .setFont(Fonts.title.with({ weight: Weight.bold }))
+                    .setOffset({ bottom: 20 }),
                 description
                     .setOffset({ bottom: 20 }),
                 code
             ])
-                .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })
+                .setAlignment({ horizontal: Alignment.start, vertical: Alignment.center })
                 .setPadding({ all: 10 })
         )
     }
