@@ -8,17 +8,28 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
+import { OutlineStyle, outlineStyleToCssValue } from "../Values/OutlineStyle"
+import { Positioning, positioningToCssValue } from "../Values/Positioning"
 import { VNode, VNodeType, renderToVNode } from "../VirtualDOM/VNode"
 import { Reconciler } from "../VirtualDOM/Reconciler"
+import { Length, Measure } from "../Values/Length"
 import { ViewState } from "./ViewState"
 import { Color } from "../Values/Color"
-import { Enum } from "../Values/Enum"
 import { Font } from "../Values/Font"
-import { Length, Measure } from "../Values/Length"
 
 // function updateComponentDOM is described after the class View
 
-export const OutlineStyle = new Enum("solid", "dashed", "dotted", "groove", "hidden", "ridge", "none", "inherit")
+function isValidLength(value) {
+    return value instanceof Length || value instanceof Number || typeof value === "number"
+}
+
+function toLength(value) {
+    return value instanceof Length ? value : new Length(value, Measure.pixels)
+}
+
+function isString(value) {
+    return value instanceof String || typeof value === "string"
+}
 
 /**
  * @public @class
@@ -202,7 +213,7 @@ export class View {
      * }} param0 
      */
     setHandlerFor ({ event, handler }) {
-        if ((typeof event === "string" || event instanceof String) && typeof handler === "function") {
+        if (isString(event) && typeof handler === "function") {
             this.events[event] = handler
         }
 
@@ -232,24 +243,24 @@ export class View {
      * }} param0 
      */
     setOffset ({ all, top, right, bottom, left }) {
-        if (all instanceof Length || all instanceof Number || typeof all === "number") {
-            this.styles.margin = all instanceof Length ? all : new Length(all, Measure.pixels)
+        if (isValidLength(all)) {
+            this.styles.margin = toLength(all)
         }
 
-        if (top instanceof Length || top instanceof Number || typeof top === "number") {
-            this.styles.marginTop = top instanceof Length ? top : new Length(top, Measure.pixels)
+        if (isValidLength(top)) {
+            this.styles.marginTop = toLength(top)
         }
 
-        if (right instanceof Length || right instanceof Number || typeof right === "number") {
-            this.styles.marginRight = right instanceof Length ? right : new Length(right, Measure.pixels)
+        if (isValidLength(right)) {
+            this.styles.marginRight = toLength(right)
         }
 
-        if (bottom instanceof Length || bottom instanceof Number || typeof bottom === "number") {
-            this.styles.marginBottom = bottom instanceof Length ? bottom : new Length(bottom, Measure.pixels)
+        if (isValidLength(bottom)) {
+            this.styles.marginBottom = toLength(bottom)
         }
 
-        if (left instanceof Length || left instanceof Number || typeof left === "number") {
-            this.styles.marginLeft = left instanceof Length ? left : new Length(left, Measure.pixels)
+        if (isValidLength(left)) {
+            this.styles.marginLeft = toLength(left)
         }
 
         return this
@@ -266,24 +277,24 @@ export class View {
      * }} param0 
      */
     setPadding ({ all, top, right, bottom, left }) {
-        if (all instanceof Length || all instanceof Number || typeof all === "number") {
-            this.styles.padding = all instanceof Length ? all : new Length(all, Measure.pixels)
+        if (isValidLength(all)) {
+            this.styles.padding = toLength(all)
         }
 
-        if (top instanceof Length || top instanceof Number || typeof top === "number") {
-            this.styles.paddingTop = top instanceof Length ? top : new Length(top, Measure.pixels)
+        if (isValidLength(top)) {
+            this.styles.paddingTop = toLength(top)
         }
 
-        if (right instanceof Length || right instanceof Number || typeof right === "number") {
-            this.styles.paddingRight = right instanceof Length ? right : new Length(right, Measure.pixels)
+        if (isValidLength(right)) {
+            this.styles.paddingRight = toLength(right)
         }
 
-        if (bottom instanceof Length || bottom instanceof Number || typeof bottom === "number") {
-            this.styles.paddingBottom = bottom instanceof Length ? bottom : new Length(bottom, Measure.pixels)
+        if (isValidLength(bottom)) {
+            this.styles.paddingBottom = toLength(bottom)
         }
 
-        if (left instanceof Length || left instanceof Number || typeof left === "number") {
-            this.styles.paddingLeft = left instanceof Length ? left : new Length(left, Measure.pixels)
+        if (isValidLength(left)) {
+            this.styles.paddingLeft = toLength(left)
         }
 
         return this
@@ -303,31 +314,31 @@ export class View {
      * }} param0
      */
     setOutline ({ left, top, right, bottom, all, color, style, radius }) {
-        if (all instanceof Length || all instanceof Number || typeof all === "number") {
-            this.styles.borderWidth = all instanceof Length ? all : new Length(all, Measure.pixels)
+        if (isValidLength(all)) {
+            this.styles.borderWidth = toLength(all)
         }
 
-        if (left instanceof Length || left instanceof Number || typeof left === "number") {
-            this.styles.borderLeftWidth = left instanceof Length ? left : new Length(left, Measure.pixels)
+        if (isValidLength(left)) {
+            this.styles.borderLeftWidth = toLength(left)
         }
 
-        if (right instanceof Length || right instanceof Number || typeof right === "number") {
-            this.styles.borderRightWidth = right instanceof Length ? right : new Length(right, Measure.pixels)
+        if (isValidLength(right)) {
+            this.styles.borderRightWidth = toLength(right)
         }
 
-        if (top instanceof Length || top instanceof Number || typeof top === "number") {
-            this.styles.borderTopWidth = top instanceof Length ? top : new Length(top, Measure.pixels)
+        if (isValidLength(top)) {
+            this.styles.borderTopWidth = toLength(top)
         }
 
-        if (bottom instanceof Length || bottom instanceof Number || typeof bottom === "number") {
-            this.styles.borderBottomWidth = bottom instanceof Length ? bottom : new Length(bottom, Measure.pixels)
+        if (isValidLength(bottom)) {
+            this.styles.borderBottomWidth = toLength(bottom)
         }
 
-        if (radius instanceof Length || radius instanceof Number || typeof radius === "number") {
-            this.styles.borderRadius = radius instanceof Length ? radius : new Length(radius, Measure.pixels)
+        if (isValidLength(radius)) {
+            this.styles.borderRadius = toLength(radius)
         } else if (Array.isArray(radius)) {
             this.styles.borderRadius = radius.map(item => {
-                return item ? item.toString() : "0"
+                return toLength(item)
             }).join(" ")
         }
 
@@ -336,7 +347,7 @@ export class View {
         }
 
         if (OutlineStyle.contains(style)) {
-            this.styles.borderStyle = OutlineStyle.getIdentifier(style)
+            this.styles.borderStyle = outlineStyleToCssValue(style)
         }
 
         return this
@@ -350,12 +361,12 @@ export class View {
      * }} param0 
      */
     setSize({ width, height }) {
-        if (width instanceof Length || width instanceof Number || typeof width === "number") {
-            this.styles.width = width instanceof Length ? width : new Length(width, Measure.pixels)
+        if (isValidLength(width)) {
+            this.styles.width = toLength(width)
         }
 
-        if (height instanceof Length || height instanceof Number || typeof height === "number") {
-            this.styles.height = height instanceof Length ? height : new Length(height, Measure.pixels)
+        if (isValidLength(height)) {
+            this.styles.height = toLength(height)
         }
 
         return this
@@ -369,12 +380,12 @@ export class View {
      * }} param0 
      */
     setMinSize({ width, height }) {
-        if (width instanceof Length || width instanceof Number || typeof width === "number") {
-            this.styles.minWidth = width instanceof Length ? width : new Length(width, Measure.pixels)
+        if (isValidLength(width)) {
+            this.styles.minWidth = toLength(width)
         }
 
-        if (height instanceof Length || height instanceof Number || typeof height === "number") {
-            this.styles.minHeight = height instanceof Length ? height : new Length(height, Measure.pixels)
+        if (isValidLength(height)) {
+            this.styles.minHeight = toLength(height)
         }
 
         return this
@@ -388,12 +399,76 @@ export class View {
      * }} param0 
      */
     setMaxSize({ width, height }) {
-        if (width instanceof Length || width instanceof Number || typeof width === "number") {
-            this.styles.maxWidth = width instanceof Length ? width : new Length(width, Measure.pixels)
+        if (isValidLength(width)) {
+            this.styles.maxWidth = toLength(width)
         }
 
-        if (height instanceof Length || height instanceof Number || typeof height === "number") {
-            this.styles.maxHeight = height instanceof Length ? height : new Length(height, Measure.pixels)
+        if (isValidLength(height)) {
+            this.styles.maxHeight = toLength(height)
+        }
+
+        return this
+    }
+
+    /**
+     * @description A method to set the positioning of the View 
+     * @param {{
+     *  type: Symbol,
+     *  top: Length|number,
+     *  left: Length|number,
+     *  right: Length|number,
+     *  bottom: Length|number
+     * }} param0 
+     */
+    setPositioning({ type, top, left, right, bottom }) {
+        if (Positioning.contains(type)) {
+            this.styles.position = positioningToCssValue(type)
+        }
+
+        if (isValidLength(left)) {
+            this.styles.left = toLength(left)
+        }
+
+        if (isValidLength(right)) {
+            this.styles.right = toLength(right)
+        }
+
+        if (isValidLength(top)) {
+            this.styles.top = toLength(top)
+        }
+
+        if (isValidLength(bottom)) {
+            this.styles.bottom = toLength(bottom)
+        }
+
+        return this
+    }
+
+    /**
+     * @description A method to set the value for the CSS property of the View
+     * @param {{
+     *  property: string,
+     *  value: string
+     * }} param0 
+     */
+    setCSSProperty({ property, value }) {
+        if (isString(property) && isString(value)) {
+            this.styles[property] = value
+        }
+
+        return this
+    }
+
+    /**
+     * @description A method to set the attribute for the View
+     * @param {{
+     *  name: string,
+     *  value: string
+     * }} param0 
+     */
+    setAttribute({ name, value }) {
+        if (isString(name) && isString(value)) {
+            this.attributes[name] = value
         }
 
         return this

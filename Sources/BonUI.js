@@ -37,6 +37,8 @@ export * from "./Values/Color"
 export * from "./Values/Length"
 export * from "./Values/FitType"
 export * from "./Values/Alignment"
+export * from "./Values/Positioning"
+export * from "./Values/OutlineStyle"
 export * from "./Values/WhiteSpaceStyle"
 
 // Styles

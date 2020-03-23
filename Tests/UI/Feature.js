@@ -20,10 +20,6 @@ export class Feature extends View {
         this.code = code
     }
 
-    getInitialState() {
-        return {}
-    }
-
     getBody() {
         var { code, heading, description } = this
 
@@ -33,8 +29,13 @@ export class Feature extends View {
                     .setFont(Fonts.title.with({ weight: Weight.bold }))
                     .setOffset({ bottom: 20 }),
                 description
-                    .setOffset({ bottom: 20 }),
+                    .setOffset({ bottom: 20 })
+                    .setMaxSize({ width: 900 }),
                 code
+                    .setCSSProperty({ property: "boxShadow", value: "0 7px 14px " + Colors.black.withAlpha(0.2).toString() })
+                    .setSize({ width: new Length(100, Measure.percent) })
+                    .setMinSize({ width: 270 })
+                    .setMaxSize({ width: 900 })
             ])
                 .setAlignment({ horizontal: Alignment.start, vertical: Alignment.center })
                 .setPadding({ all: 10 })

@@ -12,14 +12,10 @@ import { View, VStack, Image, Text, Alignment, Fonts, FitType, Measure, Length }
 import { Colors } from "./Config"
 
 export class Header extends View {
-    getInitialState () {
-        return {}
-    }
-
     getBody () {
         return (
             new VStack([
-                new Image("/bon-ui.png", "Logo")
+                new Image("./Images/bon-ui.png", "Logo")
                     .setSize({ width: 200, height: 200 })
                     .setFitType(FitType.contain),
                 new Text("Bon UI")

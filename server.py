@@ -73,5 +73,5 @@ if len(sys.argv) > 1:
 
 server = HTTPServer(("", port), HTTPHandler)
 print("Server has started at port {0}".format(str(port)))
-print("If you want to open UI tests, go to localhost:{0}/Tests/UI/index.html".format(str(port)))
+print("If you want to open UI tests, go to http://localhost:{0}/Tests/UI/index.html".format(str(port)))
 server.serve_forever()
