@@ -1,5 +1,6 @@
 Tests
 .eslintrc.json
 server.py
+rollup.config.js
 .vscode
 Sources
