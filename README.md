@@ -1,19 +1,19 @@
-<img width="150" alt="Bon UI Logo" align="center" src="Tests/UI/Images/bon-ui.png">
 # Bon UI
+<div><img width="150" alt="Bon UI Logo" align="center" src="Tests/UI/Images/bon-ui.png"></div>
 A framework with declarative syntax for developing UI for web apps
 
 ## :heavy_check_mark: Features
 ### Component-based
 You can build your own reusable components or use built-in.
-<img width="60%" alt="Example" align="center" src="Tests/UI/Images/components.png">
+<div><img width="60%" alt="Example" align="center" src="Tests/UI/Images/components.png"></div>
 
 ### Declarative syntax
 With Bon UI it is very easy to create dynamic and interactive user interfaces. Declarative syntax helps you to navigate in code and to easily understand what it does.
-<img width="60%" alt="Example" align="center" src="Tests/UI/Images/declarative.png">
+<div><img width="60%" alt="Example" align="center" src="Tests/UI/Images/declarative.png"></div>
 
 ### States system
 Each component has it's own state. When you update the state, the reconciler will automaticly update the DOM.
-<img width="60%" alt="Example" align="center" src="Tests/UI/Images/states.png">
+<div><img width="60%" alt="Example" align="center" src="Tests/UI/Images/states.png"></div>
 
 ## :exclamation:Important notes
 - Documentation will be written a bit later
