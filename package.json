@@ -5,9 +5,11 @@
   "author": "Teplovs",
   "license": "Apache-2.0",
   "private": false,
-  "main": "index.js",
+  "main": "Distribution/BonUI.umd.js",
+  "module": "Distribution/BonUI.esm.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js && minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
+    "build": "rollup -c rollup.config.js",
+    "minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
     "test": "mocha 'Tests/*.js' --require esm"
   },
   "devDependencies": {
