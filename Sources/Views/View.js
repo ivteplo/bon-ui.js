@@ -12,7 +12,7 @@ import { OutlineStyle, outlineStyleToCssValue } from "../Values/OutlineStyle"
 import { Positioning, positioningToCssValue } from "../Values/Positioning"
 import { VNode, VNodeType, renderToVNode } from "../VirtualDOM/VNode"
 import { Reconciler } from "../VirtualDOM/Reconciler"
-import { Length, Measure } from "../Values/Length"
+import { Length, pixels } from "../Values/Length"
 import { ViewState } from "./ViewState"
 import { Color } from "../Values/Color"
 import { Font } from "../Values/Font"
@@ -24,7 +24,7 @@ function isValidLength(value) {
 }
 
 function toLength(value) {
-    return value instanceof Length ? value : new Length(value, Measure.pixels)
+    return value instanceof Length ? value : pixels(value)
 }
 
 function isString(value) {

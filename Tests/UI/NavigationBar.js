@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight, Positioning, Link } from "../../Sources/BonUI"
+import { View, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight, Positioning, Link, percents } from "../../Sources/BonUI"
 import { Colors } from "./Config"
 
 export class NavigationBar extends View {
@@ -25,7 +25,7 @@ export class NavigationBar extends View {
                     ])
                 ])
                     .setAlignment({ horizontal: Alignment.spaceBetween, vertical: Alignment.center })
-                    .setSize({ width: new Length(100, Measure.percent) })
+                    .setSize({ width: percents(100) })
                     .setMaxSize({ width: 880 })
             ])
                 .setPositioning({ type: Positioning.fixed, top: 0, left: 0, right: 0 })

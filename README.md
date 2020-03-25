@@ -50,7 +50,7 @@ class Header extends View {
                     .setAlignment(Alignment.center)
             ])
                 .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })
-                .setMinSize({ height: new Length(100, Measure.viewportHeight) })
+                .setMinSize({ height: viewportHeight(100) })
         )
     }
 }

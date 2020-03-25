@@ -13,7 +13,7 @@ import { Enum } from "./Enum"
 /**
  * @public @enum
  */
-export const Measure = new Enum("pixels", "points", "percent", "fontSize", "parentFontSize", "viewportHeight", "viewportWidth")
+export const Measure = new Enum("pixels", "points", "percents", "fontSize", "parentFontSize", "viewportHeight", "viewportWidth")
 
 /**
  * @public @class
@@ -53,7 +53,7 @@ export function measureToCssUnit (measure) {
             return "px"
         case Measure.points:
             return "pt"
-        case Measure.percent:
+        case Measure.percents:
             return "%"
         case Measure.fontSize:
             return "rem"
@@ -64,4 +64,60 @@ export function measureToCssUnit (measure) {
         case Measure.viewportWidth:
             return "vw"
     }
+}
+
+/**
+ * @description A shorthand for length in pixels
+ * @param {number} value 
+ */
+export function pixels(value) {
+    return new Length(value, Measure.pixels)
+}
+
+/**
+ * @description A shorthand for length in points 
+ * @param {number} value 
+ */
+export function points(value) {
+    return new Length(value, Measure.points)
+}
+
+/**
+ * @description A shorthand for length in percents
+ * @param {number} value 
+ */
+export function percents(value) {
+    return new Length(value, Measure.percents)
+}
+
+/**
+ * @description A shorthand for length in font sizes (rem in CSS)
+ * @param {number} value 
+ */
+export function fontSize(value) {
+    return new Length(value, Measure.fontSize)
+}
+
+/**
+ * @description A shorthand for length in parent font sizes (em in CSS)
+ * @param {number} value 
+ */
+export function parentFontSize(value) {
+    return new Length(value, Measure.parentFontSize)
+}
+
+/**
+ * @description A shorthand for length in viewport widths
+ * @param {number} value 
+ */
+export function viewportWidth(value) {
+    return new Length(value, Measure.viewportWidth)
+}
+
+/**
+ * @description A shorthand for length in viewport heights
+ * @param {number} value 
+ */
+export function viewportHeight(value) {
+    return new Length(value, Measure.viewportHeight)
 }

@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { Length, Measure } from "../../Values/Length"
+import { Length, Measure, parentFontSize, percents } from "../../Values/Length"
 import { OutlineStyle } from "../../Values/OutlineStyle"
 import { Positioning } from "../../Values/Positioning"
 import { VNode } from "../../VirtualDOM/VNode"
@@ -47,7 +47,7 @@ export class TextBox extends Control {
             }})
         
         if (!multiline) {
-            this.setSize({ height: new Length(1, Measure.parentFontSize) })
+            this.setSize({ height: parentFontSize(1) })
                 .setCSSProperty({ property: "whiteSpace", value: "nowrap" })
         }
     }
@@ -71,11 +71,11 @@ export class TextBox extends Control {
                 new ZStack([
                     new Text(this.placeholder)
                         .setCSSProperty({ property: "overflow", value: "hidden" })
-                        .setMaxSize({ width: new Length(100, Measure.percent) })
+                        .setMaxSize({ width: percents(100) })
                         .setForeground({ color: Colors.lightGray })
                 ])
                     .setPositioning({ type: Positioning.absolute, top: 0, left: 0 })
-                    .setMaxSize({ width: new Length(100, Measure.percent) })
+                    .setMaxSize({ width: percents(100) })
                     .setPadding({ 
                         left: this.styles.paddingLeft || this.styles.padding, 
                         top: this.styles.paddingTop || this.styles.padding,

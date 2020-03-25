@@ -9,7 +9,7 @@
 // 
 
 import { Enum } from "./Enum"
-import { Length, Measure } from "./Length"
+import { Length, pixels, parentFontSize } from "./Length"
 
 /**
  * @public @enum
@@ -48,9 +48,9 @@ export class Font {
         this.fontStyle = FontStyle.contains(fontStyle) ? fontStyle : null
 
         if (size instanceof Length || typeof size === "number" || size instanceof Number) {
-            this.size = !(size instanceof Length) ? new Length(size, Measure.points) : size
+            this.size = !(size instanceof Length) ? pixels(size) : size
         } else {
-            this.size = new Length(1, Measure.parentFontSize)
+            this.size = parentFontSize(1)
         }
     }
 
@@ -192,32 +192,32 @@ export function fontStyleToCssValue(fontStyle) {
 
 var defaultFont = new Font({ 
     name: "sans-serif", 
-    size: new Length(18, Measure.pixels), 
+    size: pixels(18), 
     textStyle: TextStyle.default, 
     weight: Weight.regular 
 })
 
 var titleFont = defaultFont.with({ 
-    size: new Length(30, Measure.pixels), 
+    size: pixels(30), 
     textStyle: TextStyle.title, 
     weight: Weight.medium 
 })
 
 var largeTitleFont = titleFont.with({ 
-    size: new Length(36, Measure.pixels), 
+    size: pixels(36), 
     textStyle: TextStyle.largeTitle, 
     weight: Weight.bold 
 })
 
 var subheadingFont = titleFont.with({
-    size: new Length(22, Measure.pixels),
+    size: pixels(22),
     textStyle: TextStyle.subheading
 })
 
 var monospaceFont = defaultFont.with({
     name: "monospace",
     textStyle: TextStyle.monospace,
-    size: new Length(16, Measure.pixels)
+    size: pixels(16)
 })
 
 var inheritFont = new Font({})

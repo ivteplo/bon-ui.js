@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import {TextBox, View, VStack, normalizeDocumentStyles, Fonts, Length, Measure, Alignment } from "../../Sources/BonUI"
+import {TextBox, View, VStack, normalizeDocumentStyles, Fonts, Length, Measure, Alignment, viewportWidth } from "../../Sources/BonUI"
 import { NavigationBar } from "./NavigationBar"
 import { Features } from "./Features"
 import { Header } from "./Header"
@@ -22,7 +22,7 @@ class App extends View {
                 new Features()
             ])
                 .setFont(Fonts.default)
-                .setSize({ width: new Length(100, Measure.viewportWidth) })
+                .setSize({ width: viewportWidth(100) })
                 .setAlignment({ horizontal: Alignment.center })
         )
     }

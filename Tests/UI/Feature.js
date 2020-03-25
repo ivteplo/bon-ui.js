@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight } from "../../Sources/BonUI"
+import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight, percents } from "../../Sources/BonUI"
 import { Colors } from "./Config"
 
 export class Feature extends View {
@@ -33,7 +33,7 @@ export class Feature extends View {
                     .setMaxSize({ width: 900 }),
                 code
                     .setCSSProperty({ property: "boxShadow", value: "0 7px 14px " + Colors.black.withAlpha(0.2).toString() })
-                    .setSize({ width: new Length(100, Measure.percent) })
+                    .setSize({ width: percents(100) })
                     .setMinSize({ width: 270 })
                     .setMaxSize({ width: 900 })
             ])

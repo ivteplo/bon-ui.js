@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, Image, Text, Alignment, Fonts, FitType, Measure, Length } from "../../Sources/BonUI"
+import { View, VStack, Image, Text, Alignment, Fonts, FitType, Measure, Length, viewportHeight } from "../../Sources/BonUI"
 import { Colors } from "./Config"
 
 export class Header extends View {
@@ -26,7 +26,7 @@ export class Header extends View {
                     .setAlignment(Alignment.center)
             ])
                 .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })
-                .setMinSize({ height: new Length(100, Measure.viewportHeight) })
+                .setMinSize({ height: viewportHeight(100) })
         )
     }
 }

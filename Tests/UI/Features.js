@@ -8,7 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, WhiteSpaceStyle } from "../../Sources/BonUI"
+import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, WhiteSpaceStyle, viewportHeight, percents } from "../../Sources/BonUI"
 import { Feature } from "./Feature"
 import { Colors } from "./Config"
 
@@ -35,9 +35,8 @@ export class Features extends View {
                 })
             ])
                 .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })
-                .setMinSize({ height: new Length(100, Measure.viewportHeight) })
                 .setMaxSize({ width: 900 })
-                .setSize({ width: new Length(100, Measure.percent) })
+                .setSize({ width: percents(100) })
         )
     }
 }
