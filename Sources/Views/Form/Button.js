@@ -8,15 +8,15 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View } from "../View"
+import { Control } from "../Generic/Control"
 import { Colors } from "../../Values/Color"
 import { Fonts } from "../../Values/Font"
 
 /**
  * @public @class
- * @extends View
+ * @extends Control
  */
-export class Button extends View {
+export class Button extends Control {
     /**
      * @param {View} label 
      */

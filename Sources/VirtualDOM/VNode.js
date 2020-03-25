@@ -73,8 +73,10 @@ export class VNode {
             }
 
             for (let i in this.events) {
-                if (typeof this.events[i] === "function") {
-                    result.addEventListener(i, this.events[i])
+                for (let handler of this.events[i]) {
+                    if (typeof handler === "function") {
+                        result.addEventListener(i, handler)
+                    }
                 }
             }
 
@@ -124,20 +126,24 @@ export function renderToVNode (view, saveVNode = false) {
     if (view instanceof VNode) {
         node = view
     } else {
-        node = view.getBody()
+        node = view
+        let components = [view]
 
-        while (node instanceof View) {
+        do {
+            components.push(node)
             node = node.getBody()
-        }
+        } while (node instanceof View)
         
         if (!(node instanceof VNode)) {
             throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
         }
 
-        node.component = view
+        node.component = components[components.length - 1]
 
         if (saveVNode) {
-            view.lastVNode = node
+            for (let i = 0; i < components.length; ++i) {
+                components[i].lastVNode = node
+            }
         }
     }
 

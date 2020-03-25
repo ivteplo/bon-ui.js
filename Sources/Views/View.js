@@ -129,7 +129,7 @@ export class View {
         }
 
         Reconciler.addUnitOfWork(() => {
-            this.lastVNode = renderToVNode(this)
+            renderToVNode(this, true)
             this.lastVNode.mountTo(parent)
             this.handleMount()
         })
@@ -214,7 +214,11 @@ export class View {
      */
     setHandlerFor ({ event, handler }) {
         if (isString(event) && typeof handler === "function") {
-            this.events[event] = handler
+            if (!(event in this.events)) {
+                this.events[event] = []
+            }
+
+            this.events[event].push(handler)
         }
 
         return this
@@ -499,11 +503,17 @@ function updateComponentDOM (lastVNode, vNode) {
     }
 
     for (let i in lastVNode.events) {
-        lastVNode.dom.removeEventListener(i, lastVNode.events[i])
+        for (let handler of lastVNode.events[i]) {
+            lastVNode.dom.removeEventListener(i, handler)
+        }
     }
 
     for (let i in vNode.events) {
-        lastVNode.dom.addEventListener(i, vNode.events[i])
+        for (let handler of lastVNode.events[i]) {
+            if (typeof handler === "function") {
+                lastVNode.dom.addEventListener(i, handler)
+            }
+        }
     }
 
     for (let i in lastVNode.attributes) {

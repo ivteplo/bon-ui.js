@@ -18,8 +18,12 @@
     export * from "./Views/Generic/Text"
     export * from "./Views/Generic/Link"
     export * from "./Views/Generic/Image"
-    export * from "./Views/Generic/Button"
+    export * from "./Views/Generic/Control"
     export * from "./Views/Generic/Canvas"
+
+    // Forms
+    export * from "./Views/Form/Button"
+    export * from "./Views/Form/TextBox"
 
     // Layouts
     export * from "./Views/Layouts/HStack"

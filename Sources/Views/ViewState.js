@@ -37,12 +37,24 @@ export class ViewState {
 
     /**
      * @description A method to set the value for the state item
-     * @param {string} key 
+     * @param {string|object} key 
      * @param {*} value 
      */
     set (key, value) {
         if (typeof key === "string" || key instanceof String) {
             this._values[key.toString()] = value
+            this._changeHandler()
+
+            return new ViewStateResponse({
+                type: "success",
+                updated: true,
+                message: "ViewState has been updated successfully"
+            })
+        } else if (typeof key === "object") {
+            for (let k in key) {
+                this._values[k.toString()] = key[k]
+            }
+
             this._changeHandler()
 
             return new ViewStateResponse({

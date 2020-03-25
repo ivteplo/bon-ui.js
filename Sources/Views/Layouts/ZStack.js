@@ -35,11 +35,11 @@ export class ZStack extends View {
         vNode.tag = "div"
         vNode.body = children.filter(value => value != null)
 
-        for (let i = 0; i < children.length; ++i) {
-            children[i].styles.zIndex = i
+        for (let i = 0; i < vNode.body.length; ++i) {
+            vNode.body[i].styles.zIndex = i
             
-            if (children[i].styles.position == undefined) {
-                children[i].styles.position = "relative"
+            if (vNode.body[i].styles.position == undefined) {
+                vNode.body[i].styles.position = "relative"
             }
         }
         
