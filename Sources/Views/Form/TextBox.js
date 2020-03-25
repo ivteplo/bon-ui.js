@@ -24,9 +24,12 @@ import { Text } from "../Generic/Text"
  */
 export class TextBox extends Control {
     /**
-     * @param {string} placeholder
+     * @param {{
+     *  placeholder: string,
+     *  multiline: boolean
+     * }} param0
      */
-    constructor (placeholder = "") {
+    constructor ({ placeholder = "", multiline = false }) {
         super()
         this.placeholder = placeholder
         this.styles.outline = "none"
@@ -42,6 +45,11 @@ export class TextBox extends Control {
                     this.state.set("empty", eventInfo.target.innerText === "")
                 }
             }})
+        
+        if (!multiline) {
+            this.setSize({ height: new Length(1, Measure.parentFontSize) })
+                .setCSSProperty({ property: "whiteSpace", value: "nowrap" })
+        }
     }
 
     getInitialState() {

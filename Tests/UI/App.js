@@ -16,9 +16,6 @@ import { Header } from "./Header"
 class App extends View {
     getBody () {
         return (
-            new TextBox("ilikebonui@teplovs.com")
-        )
-        return (
             new VStack([
                 new NavigationBar(),
                 new Header(),
