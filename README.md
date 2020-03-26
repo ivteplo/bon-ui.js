@@ -84,6 +84,6 @@ class App extends View {
 There is a Medium post that describes how to work with Bon UI. You can read it [here](https://link.medium.com/zuF8phk864)
 
 ## :exclamation:Important notes
-- Documentation will be written a bit later
+- Documentation is in development
 - This is the alpha version of framework
 - Please, contact us if you wish us to add something to the framework or found a bug
