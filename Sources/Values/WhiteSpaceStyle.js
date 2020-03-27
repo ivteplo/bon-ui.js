@@ -13,7 +13,7 @@ import { Enum } from "./Enum"
 /**
  * @public @enum
  */
-export const WhiteSpaceStyle = new Enum("default", "code", "codeWrap", "codeLine")
+export const WhiteSpaceStyle = new Enum("default", "code", "codeWrap", "codeLine", "noWrap")
 
 /**
  * @description A function to convert the FitType enum item to css value
@@ -33,5 +33,7 @@ export function whiteSpaceStyleToCssValue(type) {
             return "pre-wrap"
         case WhiteSpaceStyle.codeLine:
             return "pre-line"
+        case WhiteSpaceStyle.noWrap:
+            return "nowrap"
     }
 }

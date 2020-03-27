@@ -503,15 +503,15 @@ function updateComponentDOM (lastVNode, vNode) {
     }
 
     for (let i in lastVNode.events) {
-        for (let handler of lastVNode.events[i]) {
-            lastVNode.dom.removeEventListener(i, handler)
+        for (let j in vNode.events[i]) {
+            lastVNode.dom.removeEventListener(i, lastVNode.events[i][j])
         }
     }
 
     for (let i in vNode.events) {
-        for (let handler of lastVNode.events[i]) {
-            if (typeof handler === "function") {
-                lastVNode.dom.addEventListener(i, handler)
+        for (let j in vNode.events[i]) {
+            if (typeof vNode.events[i][j] === "function") {
+                lastVNode.dom.addEventListener(i, vNode.events[i][j])
             }
         }
     }

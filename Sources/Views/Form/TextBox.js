@@ -8,6 +8,7 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
+import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle"
 import { Length, Measure, parentFontSize, percents } from "../../Values/Length"
 import { OutlineStyle } from "../../Values/OutlineStyle"
 import { Positioning } from "../../Values/Positioning"
@@ -32,7 +33,7 @@ export class TextBox extends Control {
     constructor ({ placeholder = "", multiline = false }) {
         super()
         this.placeholder = placeholder
-        this.styles.outline = "none"
+        this.multiline = multiline
         this.setOutline({ all: 1, color: Colors.lightGray, style: OutlineStyle.solid, radius: 7 })
             .setPadding({ all: 7 })
             .setFont(Fonts.inherit)
@@ -45,11 +46,20 @@ export class TextBox extends Control {
                     this.state.set("empty", eventInfo.target.innerText === "")
                 }
             }})
-        
-        if (!multiline) {
-            this.setSize({ height: parentFontSize(1) })
-                .setCSSProperty({ property: "whiteSpace", value: "nowrap" })
+            .setWhiteSpaceStyle(this.multiline ? WhiteSpaceStyle.default : WhiteSpaceStyle.noWrap)
+            .setSize({ width: 150 })
+    }
+
+    /**
+     * @description A method to set the white space showing style
+     * @param {Symbol} style A member of the WhiteSpaceStyle enum
+     */
+    setWhiteSpaceStyle(style) {
+        if (WhiteSpaceStyle.contains(style)) {
+            this.styles.whiteSpace = whiteSpaceStyleToCssValue(style)
         }
+
+        return this
     }
 
     getInitialState() {
@@ -61,13 +71,22 @@ export class TextBox extends Control {
     getBody () {
         var { label } = this
 
-        var vNode = super.getBody()
-        vNode.tag = "div"
-        vNode.attributes.contenteditable = "true"
-
-        return (
+        var result = (
             new ZStack([
-                vNode,
+                new VNode({
+                    tag: "div",
+                    attributes: {
+                        contenteditable: true
+                    },
+                    styles: {
+                        outline: "none",
+                        border: "none",
+                        width: "100%",
+                        height: this.multiline ? "100%" : "1em",
+                        whiteSpace: this.styles.whiteSpace
+                    },
+                    events: this.events
+                }),
                 new ZStack([
                     new Text(this.placeholder)
                         .setCSSProperty({ property: "overflow", value: "hidden" })
@@ -87,5 +106,10 @@ export class TextBox extends Control {
                     .setCSSProperty({ property: "display", value: (this.state.get("empty") ? "block" : "none") })
             ])
         )
+        
+        result.styles = Object.assign(result.styles, this.styles)
+        result.attributes = Object.assign(result.styles, this.attributes)
+
+        return result
     }
 }
