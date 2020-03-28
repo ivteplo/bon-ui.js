@@ -1,4 +1,6 @@
 Tests
+jsdoc.json
+Tutorials/tutorials.json
 Documentation
 .eslintrc.json
 server.py
