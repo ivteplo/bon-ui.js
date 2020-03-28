@@ -11,13 +11,21 @@
 import { Enum } from "./Enum"
 
 /**
- * @public @enum
+ * The enum that is used to set the alignment type of some of the views.
+ * @enum
+ * @property {Symbol} start             Aligns the items to the start 
+ * @property {Symbol} end               Aligns the items to the end
+ * @property {Symbol} center            Aligns the items to the center
+ * @property {Symbol} spaceAround       Aligns the items the way that there is the space between them and between start/end 
+ * @property {Symbol} spaceBetween      Aligns the items the way that there is the space between them
+ * @property {Symbol} shrink            Aligns the items to make the items the same size (width or height)
  */
 export const Alignment = new Enum("start", "end", "center", "spaceAround", "spaceBetween", "shrink")
 
 /**
- * @description A function to convert the Alignment enum item to css value
- * @param {Symbol} alignment 
+ * A function to convert the Alignment enum item to css value
+ * @param {Symbol} alignment An item of the `Alignment` enum
+ * @returns {String} CSS value of the `justify-content` or `align-items` property
  */
 export function alignmentToCssValue(alignment) {
     if (!Alignment.contains(alignment)) {
@@ -41,8 +49,9 @@ export function alignmentToCssValue(alignment) {
 }
 
 /**
- * @description A function to convert the Alignment enum item to css value
- * @param {Symbol} alignment 
+ * A function to convert the Alignment enum item to css value
+ * @param {Symbol} alignment An item of the `Alignment` enum
+ * @returns {String} CSS value of the `text-align` property
  */
 export function textAlignmentToCssValue(alignment) {
     if (!Alignment.contains(alignment)) {

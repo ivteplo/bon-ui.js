@@ -9,17 +9,15 @@
 // 
 
 /**
- * @public @class
- * @description The response, returned by ViewState after changing it
+ * The response, returned by ViewState after changing it
+ * @class
  */
 export class ViewStateResponse {
     /**
-     * 
-     * @param {{
-     *  type: String,
-     *  updated: Boolean,
-     *  message: String
-     * }} param0 
+     * @param {Object}  options
+     * @param {String}  options.type        Type of the response
+     * @param {Boolean} options.updated     Has view updated or not
+     * @param {String}  options.message     The message of the response
      */
     constructor ({ type, updated, message }) {
         this.type = type
@@ -28,6 +26,6 @@ export class ViewStateResponse {
     }
 
     toString () {
-        return this.message
+        return this.type + ": " + this.message + " (view was " + (this.updated ? "" : "not ") + "updated" 
     }
 }

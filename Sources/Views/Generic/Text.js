@@ -15,7 +15,8 @@ import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment"
 import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle"
 
 /**
- * @public @class
+ * A class that is used to represent the text
+ * @class
  * @extends View
  */
 export class Text extends View {
@@ -31,8 +32,8 @@ export class Text extends View {
     }
 
     /**
-     * @description A method to set the text alignment
-     * @param {Symbol} alignment 
+     * A method to set the text alignment
+     * @param {Symbol} alignment Item of the Alignment enum
      */
     setAlignment(alignment) {
         if (Alignment.contains(alignment)) {
@@ -43,8 +44,8 @@ export class Text extends View {
     }
 
     /**
-     * @description A method to set the text white space showing style
-     * @param {Symbol} style 
+     * A method to set the text white space showing style
+     * @param {Symbol} style Item of the WhiteSpaceStyle enum
      */
     setWhiteSpaceStyle(style) {
         if (WhiteSpaceStyle.contains(style)) {

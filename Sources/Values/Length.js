@@ -11,19 +11,26 @@
 import { Enum } from "./Enum"
 
 /**
- * @public @enum
+ * An enum that is used to specify the measure of the length
+ * @enum
+ * @property {Symbol} pixels            Pixels
+ * @property {Symbol} points            Screen points
+ * @property {Symbol} percents          Percents of a parent size
+ * @property {Symbol} fontSize          Size relative to the document default font size
+ * @property {Symbol} parentFontSize    Size relative to the parent font size
+ * @property {Symbol} viewportHeight    Percents of a browser height
+ * @property {Symbol} viewportWidth     Percents of a browser width
  */
 export const Measure = new Enum("pixels", "points", "percents", "fontSize", "parentFontSize", "viewportHeight", "viewportWidth")
 
 /**
- * @public @class
- * @description A class to describe the size of something
+ * A class to describe the size of something
+ * @class
  */
 export class Length {
-
     /**
-     * @param {number} value 
-     * @param {Symbol} measure 
+     * @param {Number} value    The value of the length
+     * @param {Symbol} measure  The item of the Measure enum
      */
     constructor (value, measure) {
         if (!(typeof value === "number" || value instanceof Number) || !Measure.contains(measure)) {
@@ -40,8 +47,9 @@ export class Length {
 }
 
 /**
- * @public @function
- * @param {Symbol} measure 
+ * A function that is used to convert the Measure enum item to the CSS unit
+ * @param   {Symbol} measure 
+ * @returns {String} CSS unit
  */
 export function measureToCssUnit (measure) {
     if (!Measure.contains(measure)) {
@@ -67,7 +75,7 @@ export function measureToCssUnit (measure) {
 }
 
 /**
- * @description A shorthand for length in pixels
+ * A shorthand for length in pixels
  * @param {number} value 
  */
 export function pixels(value) {
@@ -75,7 +83,7 @@ export function pixels(value) {
 }
 
 /**
- * @description A shorthand for length in points 
+ * A shorthand for length in points 
  * @param {number} value 
  */
 export function points(value) {
@@ -83,7 +91,7 @@ export function points(value) {
 }
 
 /**
- * @description A shorthand for length in percents
+ * A shorthand for length in percents
  * @param {number} value 
  */
 export function percents(value) {
@@ -91,7 +99,7 @@ export function percents(value) {
 }
 
 /**
- * @description A shorthand for length in font sizes (rem in CSS)
+ * A shorthand for length in font sizes (rem in CSS)
  * @param {number} value 
  */
 export function fontSize(value) {
@@ -99,7 +107,7 @@ export function fontSize(value) {
 }
 
 /**
- * @description A shorthand for length in parent font sizes (em in CSS)
+ * A shorthand for length in parent font sizes (em in CSS)
  * @param {number} value 
  */
 export function parentFontSize(value) {
@@ -107,7 +115,7 @@ export function parentFontSize(value) {
 }
 
 /**
- * @description A shorthand for length in viewport widths
+ * A shorthand for length in viewport widths
  * @param {number} value 
  */
 export function viewportWidth(value) {
@@ -115,7 +123,7 @@ export function viewportWidth(value) {
 }
 
 /**
- * @description A shorthand for length in viewport heights
+ * A shorthand for length in viewport heights
  * @param {number} value 
  */
 export function viewportHeight(value) {

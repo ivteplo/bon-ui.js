@@ -34,7 +34,15 @@ function requestDoingWork () {
     window.requestIdleCallback(performWork, { timeout: 500 })
 }
 
+/**
+ * A class that is used to schedule an update of the view
+ * @class
+ */
 export class Reconciler {
+    /**
+     * A method to schedule a call of the function
+     * @param {Function} func Function that will be called when the browser is not busy
+     */
     static addUnitOfWork (func) {
         if (typeof func === "function") {
             workQueue.push(func)

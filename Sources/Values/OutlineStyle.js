@@ -11,13 +11,20 @@
 import { Enum } from "./Enum"
 
 /**
- * @public @enum
+ * @enum
+ * @property {Symbol} solid     Solid outline
+ * @property {Symbol} dashed    Dashed outline
+ * @property {Symbol} dotted    Dotted outline
+ * @property {Symbol} groove    Outline with a carved appearance
+ * @property {Symbol} hidden    No outline
+ * @property {Symbol} ridge     Outline with an extruded appearance
  */
-export const OutlineStyle = new Enum("solid", "dashed", "dotted", "groove", "hidden", "ridge", "none")
+export const OutlineStyle = new Enum("solid", "dashed", "dotted", "groove", "hidden", "ridge")
 
 /**
- * @description A function to convert the OutlineStyle enum item to css value
- * @param {Symbol} style 
+ * A function to convert the OutlineStyle enum item to css value
+ * @param   {Symbol} style 
+ * @returns {String} CSS `border-style` value
  */
 export function outlineStyleToCssValue(style) {
     if (!OutlineStyle.contains(style)) {

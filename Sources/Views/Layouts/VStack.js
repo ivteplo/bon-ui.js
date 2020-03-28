@@ -12,7 +12,8 @@ import { HStack } from "./HStack"
 import { Alignment, alignmentToCssValue } from "../../Values/Alignment"
 
 /**
- * @public @class
+ * A view that represents vertical stack (column)
+ * @class
  * @extends HStack
  */
 export class VStack extends HStack {
@@ -21,11 +22,10 @@ export class VStack extends HStack {
     }
 
     /**
-     * 
-     * @param {{
-     *  horizontal: Symbol,
-     *  vertical: Symbol
-     * }} param0 
+     * A method to set the alignment to the specific type
+     * @param {Object} options
+     * @param {Symbol} options.horizontal   Item of the Alignment enum
+     * @param {Symbol} options.vertical     Item of the Alignment enum
      */
     setAlignment ({ horizontal, vertical }) {
         if (Alignment.contains(horizontal)) {

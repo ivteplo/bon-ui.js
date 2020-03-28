@@ -11,8 +11,8 @@
 import { ViewStateResponse } from "./ViewStateResponse"
 
 /**
- * @public @class
- * @description A view state that contains variables. When you change them through the method "set", the component will be invalidated
+ * A view state that contains variables. When you change them through the method "set", the component will be invalidated
+ * @class
  */
 export class ViewState {
     constructor () {
@@ -20,14 +20,17 @@ export class ViewState {
         this._changeHandler = () => {}
     }
 
+    /**
+     * A function to clear the state
+     */
     restore () {
         this._values = {}
         this._changeHandler = () => {}
     }
 
     /**
-     * @description A method to add callback on state change, which was completed successfully
-     * @param {function} callback 
+     * A method to add callback on state change, which was completed successfully
+     * @param {Function} callback A function that will be called after the state was successfully updated
      */
     setChangeHandler (callback) {
         if (typeof callback === "function") {
@@ -36,9 +39,17 @@ export class ViewState {
     }
 
     /**
-     * @description A method to set the value for the state item
+     * A method to set the value for the state item
      * @param {string|object} key 
      * @param {*} value 
+     * @example
+     * var view = new View()
+     * view.state.set({
+     *  name: "Tom",
+     *  surname: "Johns"
+     * })
+     * 
+     * view.state.set("surname", "Smith")
      */
     set (key, value) {
         if (typeof key === "string" || key instanceof String) {
@@ -72,8 +83,8 @@ export class ViewState {
     }
 
     /**
-     * @description A method to get the value of the state item
-     * @param {string} key 
+     * A method to get the value of the state item
+     * @param {string} key A name of the state variable
      */
     get (key) {
         if (typeof key === "string" || key instanceof String) {

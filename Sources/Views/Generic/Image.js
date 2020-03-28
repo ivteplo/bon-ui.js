@@ -11,20 +11,26 @@
 import { View } from "../View"
 import { FitType, fitTypeToCssValue } from "../../Values/FitType"
 
+/**
+ * A view that represents the Image
+ * @class
+ * @extends View
+ */
 export class Image extends View {
     /**
-     * @param {string} url 
-     * @param {string} altText
+     * @param {Object} options
+     * @param {String} options.url      URL to the image
+     * @param {String} options.altText  The text that will be shown if the image is not loaded
      */
-    constructor(url, altText) {
+    constructor({ url, altText = "" }) {
         super()
         this.url = url
         this.altText = typeof altText === "string" ? altText : "image"
     }
 
     /**
-     * @description A method to set the fit type of the image
-     * @param {Symbol} type 
+     * A method to set the fit type of the image
+     * @param {Symbol} type Item of the FitType enum
      */
     setFitType(type) {
         if (FitType.contains(type)) {

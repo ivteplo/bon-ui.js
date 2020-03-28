@@ -11,13 +11,19 @@
 import { Enum } from "./Enum"
 
 /**
- * @public @enum
+ * A enum that contains possible fit types. Used for Image view
+ * @enum
+ * @property {Symbol} cover             The image will be bigger than or equal to the specified size
+ * @property {Symbol} fill              The image will be stretched
+ * @property {Symbol} contain           The image will be less than or equal to the specified size
+ * @property {Symbol} none              The image is not resized
  */
-export const FitType = new Enum("cover", "fill", "contain", "none", "scaleDown")
+export const FitType = new Enum("cover", "fill", "contain", "none")
 
 /**
- * @description A function to convert the FitType enum item to css value
- * @param {Symbol} type
+ * A function to convert the FitType enum item to css value
+ * @param   {Symbol} type
+ * @returns {String} CSS `object-fit` value
  */
 export function fitTypeToCssValue(type) {
     if (!FitType.contains(type)) {
@@ -37,3 +43,4 @@ export function fitTypeToCssValue(type) {
             return "scale-down"
     }
 }
+

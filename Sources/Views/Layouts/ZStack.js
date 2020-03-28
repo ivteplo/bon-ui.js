@@ -11,12 +11,13 @@
 import { View } from "../View"
 
 /**
- * @public @class
+ * A view that represents the z-axis stack (the layers order)
+ * @class
  * @extends View
  */
 export class ZStack extends View {
     /**
-     * @param {View[]} children 
+     * @param {Array<View|VNode>} children Items of the stack
      */
     constructor (children) {
         super()

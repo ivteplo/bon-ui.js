@@ -11,20 +11,17 @@
 import { View } from "../View"
 
 /**
- * @public @class
+ * A class that is used to implement controls
+ * @class
  * @extends View
  */
 export class Control extends View {
-    constructor () {
-        super()
-    }
-
     getInitialState() {
         return { active: true }
     }
 
     /**
-     * @description A method to deactivate the control
+     * A method to deactivate the control
      */
     disable() {
         this.state.set("active", false)
@@ -32,7 +29,7 @@ export class Control extends View {
     }
 
     /**
-     * @description A method to activate the control
+     * A method to activate the control
      */
     activate() {
         this.state.set("active", true)
@@ -40,8 +37,8 @@ export class Control extends View {
     }
 
     /**
-     * @description A method to activate/deactivate the control
-     * @param {boolean} value
+     * A method to activate/deactivate the control
+     * @param {Boolean} value If true then the control will be active, else disabled
      */
     setActiveTo(value) {
         if (typeof value === "boolean" || value instanceof Boolean) {

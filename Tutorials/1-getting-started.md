@@ -1,6 +1,4 @@
-# Getting started
-
-## Setting up the project
+### Setting up the project
 There is a boilerplate on Github. Clone it to your project folder by executing this command in the terminal:
 ```bash
 git clone https://github.com/teplovs/bon-ui-boilerplate bon-ui-app
@@ -8,7 +6,7 @@ cd bon-ui
 npm install # or `yarn install`
 ```
 
-## Your first view
+### Your first view
 In Bon UI each component is called “a view”.
 In file Source/App.js there is a description of the view App:
 ```javascript
@@ -41,11 +39,11 @@ app.mountTo(document.body)
 
 The `getBody` method describes how our “view” looks. To do that you can use a `VNode` (virtual node) or other views. Fortunately, there are built-in components in the Bon UI framework.
 
-## Your first app build
+### Your first app build
 To build the app in a production mode (the `Build/bundle.js` will be minified), execute `npm run build`.
 If you are developing the app, run `npm run watch`. The webpack will watch for chages in files and will rebuild the app (without minifying).
 
-## Playing with the states
+### Playing with the states
 Let’s update the Sources/App.js file to make it look this way:
 ```javascript
 
@@ -82,5 +80,5 @@ export class App extends View {
 Once you have rebuilt the project, you are going to see in the browser the text and the button under it. Each time you click a button the text updates and shows current counter value.
 You can use states to make it easier to update information on the page when button clicked, changed the value of the textbox etc.
 
-## Resources
+### Resources
 [Bon UI Boilerplate](https://github.com/teplovs/bon-ui-boilerplate)

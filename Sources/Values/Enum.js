@@ -8,7 +8,14 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
+/**
+ * A class that is used to represent the enum
+ * @class
+ */
 export class Enum {
+    /**
+     * @param {String} ...items The names of the items in the enum
+     */
     constructor (...items) {
         for (let i of items) {
             if (!(typeof i === "string" || i instanceof String)) {
@@ -22,9 +29,9 @@ export class Enum {
     }
 
     /**
-     * @description A method to check if enum contains the item
+     * A method to check if enum contains the item
      * @param {Symbol} item 
-     * @returns {boolean}
+     * @returns {Boolean}
      */
     contains (item) {
         for (let i in this) {
@@ -37,9 +44,9 @@ export class Enum {
     }
 
     /**
-     * @description A method to get the string identifier of the enum item
+     * A method to get the string identifier of the enum item
      * @param {Symbol} item 
-     * @returns {string|undefined}
+     * @returns {String|undefined} Undefined if there is no such item in the enum
      */
     getIdentifier (item) {
         for (let i in this) {
@@ -51,3 +58,4 @@ export class Enum {
         return undefined
     }
 }
+

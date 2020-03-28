@@ -9,9 +9,9 @@
 // 
 
 import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle"
-import { Length, Measure, parentFontSize, percents } from "../../Values/Length"
 import { OutlineStyle } from "../../Values/OutlineStyle"
 import { Positioning } from "../../Values/Positioning"
+import { percents } from "../../Values/Length"
 import { VNode } from "../../VirtualDOM/VNode"
 import { Control } from "../Generic/Control"
 import { Colors } from "../../Values/Color"
@@ -20,15 +20,15 @@ import { Fonts } from "../../Values/Font"
 import { Text } from "../Generic/Text"
 
 /**
- * @public @class
+ * A view that represents the textbox
+ * @class
  * @extends Control
  */
 export class TextBox extends Control {
     /**
-     * @param {{
-     *  placeholder: string,
-     *  multiline: boolean
-     * }} param0
+     * @param {Object}  options
+     * @param {String}  [options.placeholder] Text that is shown inside the textbox when it is empty
+     * @param {Boolean} [options.multiline]   Makes textbox one-lined or multilined
      */
     constructor ({ placeholder = "", multiline = false }) {
         super()
@@ -51,7 +51,7 @@ export class TextBox extends Control {
     }
 
     /**
-     * @description A method to set the white space showing style
+     * A method to set the white space showing style
      * @param {Symbol} style A member of the WhiteSpaceStyle enum
      */
     setWhiteSpaceStyle(style) {
@@ -69,8 +69,6 @@ export class TextBox extends Control {
     }
 
     getBody () {
-        var { label } = this
-
         var result = (
             new ZStack([
                 new VNode({

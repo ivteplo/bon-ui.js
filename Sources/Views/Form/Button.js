@@ -13,12 +13,13 @@ import { Colors } from "../../Values/Color"
 import { Fonts } from "../../Values/Font"
 
 /**
- * @public @class
+ * A view that represents the button
+ * @class
  * @extends Control
  */
 export class Button extends Control {
     /**
-     * @param {View} label 
+     * @param {View} label The label inside the button
      */
     constructor (label) {
         super()

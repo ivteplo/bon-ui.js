@@ -46,20 +46,25 @@ export * from "./Values/OutlineStyle"
 export * from "./Values/WhiteSpaceStyle"
 
 // Styles
+/**
+ * A function that makes the page look better
+ * @param {Object}  options
+ * @param {Boolean} options.applyFlexToBody Applies the `display: flex` to the body if `true`
+ */
 export function normalizeDocumentStyles ({ applyFlexToBody = true }) {
     window.addEventListener ("load", () => {
         document.querySelectorAll("html, body").forEach(item => {
             item.style.margin = "0"
             item.style.padding = "0"
         })
+        
+        document.body.style.minHeight = "100vh"
+        document.body.style.font = "normal 14pt sans-serif"
 
         if (applyFlexToBody) {
             document.body.style.display = "flex"
-            document.body.style.minHeight = "100vh"
             document.body.style.alignItems = "center"
             document.body.style.justifyContent = "center"
         }
-        
-        document.body.style.font = "normal 14pt sans-serif"
     })
 }

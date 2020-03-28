@@ -12,12 +12,13 @@ import { View } from "../View"
 import { Alignment, alignmentToCssValue } from "../../Values/Alignment"
 
 /**
- * @public @class
+ * A view that represents the horizontal stack (row)
+ * @class
  * @extends View
  */
 export class HStack extends View {
     /**
-     * @param {View[]} children 
+     * @param {Array<View|VNode>} children The items of the stack
      */
     constructor (children) {
         super()
@@ -25,11 +26,10 @@ export class HStack extends View {
     }
 
     /**
-     * 
-     * @param {{
-     *  horizontal: Symbol,
-     *  vertical: Symbol
-     * }} param0 
+     * A method to set the alignment to the specific type
+     * @param {Object} options
+     * @param {Symbol} options.horizontal   Item of the Alignment enum
+     * @param {Symbol} options.vertical     Item of the Alignment enum
      */
     setAlignment ({ horizontal, vertical }) {
         if (Alignment.contains(horizontal)) {

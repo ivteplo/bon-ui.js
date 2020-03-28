@@ -9,17 +9,16 @@
 // 
 
 /**
- * @public @class
- * @description A class to represent the color
+ * A class to represent the color
+ * @class
  */
 export class Color {
     /**
-     * @param {{
-     *  red: number,
-     *  green: number,
-     *  blue: number,
-     *  alpha: number
-     * }} param0 
+     * @param {Object} options
+     * @param {Number} options.red
+     * @param {Number} options.green
+     * @param {Number} options.blue
+     * @param {Number} options.alpha
      */
     constructor ({ red, green, blue, alpha = 1 }) {
         [red, green, blue, alpha].forEach(item => {
@@ -34,6 +33,11 @@ export class Color {
         this.alpha = (alpha > 1 ? 1 : (alpha < 0 ? 0 : alpha))
     }
 
+    /**
+     * A method that returns the new Color with specified alpha value
+     * @param {Number}  alpha The number between 0 and 1
+     * @returns {Color} the clone of the current color with specified alpha value
+     */
     withAlpha (alpha) {
         var clone = Object.assign({}, this)
         if ((typeof alpha === "number" || alpha instanceof Number) && Number(alpha) >= 0 && Number(alpha) <= 1) {
@@ -48,6 +52,9 @@ export class Color {
     }
 }
 
+/**
+ * The list of handpicked colors
+ */
 export const Colors = {
     // white and grey and blue colors
     white: new Color({ red: 0xFF, green: 0xFF, blue: 0xFF }),
@@ -91,3 +98,4 @@ export const Colors = {
     rebeccaPurple: new Color({ red: 0x66, green: 0x2E, blue: 0x96 }),
     deepViolet: new Color({ red: 0x36, green: 0x05, blue: 0x68 }),
 }
+

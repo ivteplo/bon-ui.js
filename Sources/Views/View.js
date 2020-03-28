@@ -32,8 +32,8 @@ function isString(value) {
 }
 
 /**
- * @public @class
- * @description An UI item
+ * A class to respresent the UI item
+ * @class
  */
 export class View {
     constructor () {
@@ -54,7 +54,7 @@ export class View {
     }
 
     /**
-     * @description A method that returns the key->value object, which will be transformed into the state
+     * A method that returns the key->value object, which will be transformed into the state
      * @example
      * class Test extends View {
      *  getInitialState() {
@@ -63,14 +63,14 @@ export class View {
      *      }
      *  }
      * }
-     * @returns {object}
+     * @returns {Object} Variables in the state and their default values
      */
     getInitialState () {
         return {}
     }
 
     /**
-     * @description A method to restore the initial state
+     * A method to restore the initial state
      */
     restoreState () {
         this.state.restore()
@@ -91,8 +91,7 @@ export class View {
     }
 
     /**
-     * @description A method that returns the body (content) of the view
-     * @override
+     * A method that returns the body (content) of the view
      */
     getBody () {
         var { styles, attributes, events } = this
@@ -106,18 +105,18 @@ export class View {
     }
 
     /**
-     * @description A method called after mounting
+     * A method called after mounting
      */
     handleMount() {}
 
     /**
-     * @description A method called after invalidation
+     * A method called after invalidation
      */
     handleInvalidation() {}
 
     /**
-     * @description A method to mount the view
-     * @param {Node} parent 
+     * A method to mount the view
+     * @param {Node} parent DOM object where to mount the view
      */
     mountTo (parent = document.body) {
         if (this.mounted) {
@@ -136,7 +135,7 @@ export class View {
     }
 
     /**
-     * @description A method to force reload the view
+     * A method to force reload the view
      */
     invalidate () {
         if (this.mounted) {
@@ -150,7 +149,7 @@ export class View {
     }
 
     /**
-     * @description A method to force reload the view without waiting
+     * A method to force reload the view without scheduling
      */
     forceInvalidate () {
         if (this.mounted) {
@@ -166,8 +165,8 @@ export class View {
     //
 
     /**
-     * @description A method to set the ability to select the component's text/image to true or false
-     * @param {Boolean} value 
+     * A method to set the ability to select the component's text/image to true or false
+     * @param {Boolean} [value] 
      */
     setSelectableTo (value) {
         if (typeof value === "boolean" || value instanceof Boolean) {
@@ -178,10 +177,9 @@ export class View {
     }
 
     /**
-     * @description A method to set the foreground properties
-     * @param {{
-     *  color: Color
-     * }} param0 
+     * A method to set the foreground properties
+     * @param {Object} options
+     * @param {Color}  [options.color]  Color that will be set to the foreground
      */
     setForeground ({ color }) {
         if (color instanceof Color) {
@@ -192,10 +190,9 @@ export class View {
     }
 
     /**
-     * @description A method to set the background properties
-     * @param {{
-     *  color: Color
-     * }} param0 
+     * A method to set the background properties
+     * @param {Object} options
+     * @param {COlor}  [options.color]  Color that will be set to the background
      */
     setBackground({ color }) {
         if (color instanceof Color) {
@@ -206,11 +203,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the handler for the event
-     * @param {{
-     *  event: string,
-     *  handler: function
-     * }} param0 
+     * A method to set the handler for the event
+     * @param {Object}      options
+     * @param {String}      [options.event]       Name of an event for which to add handler
+     * @param {Function}    [options.handler]     Function that will be called after event happened
      */
     setHandlerFor ({ event, handler }) {
         if (isString(event) && typeof handler === "function") {
@@ -225,8 +221,8 @@ export class View {
     }
 
     /**
-     * @description A method to set the font properties
-     * @param {Font} font 
+     * A method to set the font properties
+     * @param {Font}    [font]  Font to set for the view
      */
     setFont (font) {
         if (font instanceof Font) {
@@ -237,14 +233,13 @@ export class View {
     }
 
     /**
-     * @description A method to change the offset of the view
-     * @param {{
-     *  all: Length|number,
-     *  top: Length|number,
-     *  right: Length|number,
-     *  bottom: Length|number,
-     *  left: Length|number
-     * }} param0 
+     * A method to change the offset of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.all]       Offset for all sides
+     * @param {Length|Number}   [options.top]       Offset for top side
+     * @param {Length|Number}   [options.right]     Offset for right side
+     * @param {Length|Number}   [options.bottom]    Offset for bottom side
+     * @param {Length|Number}   [options.left]      Offset for left side
      */
     setOffset ({ all, top, right, bottom, left }) {
         if (isValidLength(all)) {
@@ -271,14 +266,13 @@ export class View {
     }
 
     /**
-     * @description A method to change the padding of the view
-     * @param {{
-     *  all: Length|number,
-     *  top: Length|number,
-     *  right: Length|number,
-     *  bottom: Length|number,
-     *  left: Length|number
-     * }} param0 
+     * A method to change the padding of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.all]       Padding for all sides
+     * @param {Length|Number}   [options.top]       Padding for top side
+     * @param {Length|Number}   [options.right]     Padding for right side
+     * @param {Length|Number}   [options.bottom]    Padding for bottom side
+     * @param {Length|Number}   [options.left]      Padding for left side
      */
     setPadding ({ all, top, right, bottom, left }) {
         if (isValidLength(all)) {
@@ -305,17 +299,16 @@ export class View {
     }
 
     /**
-     * 
-     * @param {{
-     *  left: number|Length,
-     *  top: number|Length,
-     *  right: number|Length,
-     *  bottom: number|Length,
-     *  all: number|Length,
-     *  color: Color,
-     *  style: Symbol,
-     *  radius: number|Length
-     * }} param0
+     * A method to set the outline of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.all]       Size of outline
+     * @param {Length|Number}   [options.top]       Top outline size
+     * @param {Length|Number}   [options.right]     Right outline size
+     * @param {Length|Number}   [options.bottom]    Bottom outline size
+     * @param {Length|Number}   [options.left]      Left outline size
+     * @param {Length|Number}   [options.radius]    Radius of outline
+     * @param {Color}           [options.color]     Outline color
+     * @param {Symbol}          [options.style]     Style of an outline. Item of OutlineStyle enum
      */
     setOutline ({ left, top, right, bottom, all, color, style, radius }) {
         if (isValidLength(all)) {
@@ -358,11 +351,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the size of the view
-     * @param {{
-     *  width: Length|number,
-     *  height: Length|number
-     * }} param0 
+     * A method to set the size of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.width]     Width of the view
+     * @param {Length|Number}   [options.height]    Height of the view
      */
     setSize({ width, height }) {
         if (isValidLength(width)) {
@@ -377,11 +369,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the minimal size of the view
-     * @param {{
-     *  width: Length|number,
-     *  height: Length|number
-     * }} param0 
+     * A method to set the minimal size of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.width]     Minimal width of the view
+     * @param {Length|Number}   [options.height]    Minimal height of the view
      */
     setMinSize({ width, height }) {
         if (isValidLength(width)) {
@@ -396,11 +387,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the maximal size of the view
-     * @param {{
-     *  width: Length|number,
-     *  height: Length|number
-     * }} param0 
+     * A method to set the maximal size of the view
+     * @param {Object}          options
+     * @param {Length|Number}   [options.width]     Maximal width of the view
+     * @param {Length|Number}   [options.height]    Maximal height of the view
      */
     setMaxSize({ width, height }) {
         if (isValidLength(width)) {
@@ -415,14 +405,13 @@ export class View {
     }
 
     /**
-     * @description A method to set the positioning of the View 
-     * @param {{
-     *  type: Symbol,
-     *  top: Length|number,
-     *  left: Length|number,
-     *  right: Length|number,
-     *  bottom: Length|number
-     * }} param0 
+     * A method to set the positioning of the View 
+     * @param {Object}          options
+     * @param {Length|Number}   [options.top]       Top position
+     * @param {Length|Number}   [options.right]     Right position
+     * @param {Length|Number}   [options.bottom]    Bottom position
+     * @param {Length|Number}   [options.left]      Left position
+     * @param {Symbol}          [options.type]      Type of positioning. Item of Positioning enum
      */
     setPositioning({ type, top, left, right, bottom }) {
         if (Positioning.contains(type)) {
@@ -449,11 +438,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the value for the CSS property of the View
-     * @param {{
-     *  property: string,
-     *  value: string
-     * }} param0 
+     * A method to set the value for the CSS property of the View
+     * @param {Object}          options
+     * @param {Length|Number}   [options.property]      Property name
+     * @param {Length|Number}   [options.value]         Property value
      */
     setCSSProperty({ property, value }) {
         if (isString(property) && isString(value)) {
@@ -464,11 +452,10 @@ export class View {
     }
 
     /**
-     * @description A method to set the attribute for the View
-     * @param {{
-     *  name: string,
-     *  value: string
-     * }} param0 
+     * A method to set the attribute for the View
+     * @param {Object}          options
+     * @param {Length|Number}   [options.name]      Attribute name
+     * @param {Length|Number}   [options.value]     Attribute value
      */
     setAttribute({ name, value }) {
         if (isString(name) && isString(value)) {
@@ -482,7 +469,6 @@ export class View {
 /**
  * @param {VNode} lastVNode 
  * @param {VNode} vNode 
- * @returns {Symbol}
  */
 function updateComponentDOM (lastVNode, vNode) {
     if (lastVNode.tag !== vNode.tag || lastVNode.type === VNodeType.text || vNode.type === VNodeType.text) {

@@ -12,34 +12,50 @@ import { Enum } from "./Enum"
 import { Length, pixels, parentFontSize } from "./Length"
 
 /**
- * @public @enum
+ * @enum
+ * @property {Symbol} default       Default text style
+ * @property {Symbol} largeTitle    Main heading of the page style
+ * @property {Symbol} title         Secondary-level heading of the page
+ * @property {Symbol} subheading    Third-level heading of the page
+ * @property {Symbol} monospace     Text style for code
  */
 export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "monospace")
 
 /**
- * @public @enum
+ * @enum
+ * @property {Symbol} regular       Default text weight
+ * @property {Symbol} ultraLight    Very light text weight
+ * @property {Symbol} light         Light text weight
+ * @property {Symbol} thin          Thin text weight
+ * @property {Symbol} medium        Medium text weight
+ * @property {Symbol} semibold      Semibold text weight
+ * @property {Symbol} bold          Bold text weight
+ * @property {Symbol} heavy         Heavy text weight
+ * @property {Symbol} black         Black text weight
  */
 export const Weight = new Enum("regular", "ultraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
 
 /**
- * @public @enum
+ * @enum
+ * @property {Symbol} normal        Default font style
+ * @property {Symbol} italic        Italic font style
+ * @property {Symbol} oblique       Oblique font style
  */
 export const FontStyle = new Enum("normal", "italic", "oblique")
 
 /**
- * @public @class
- * @description A class to describe which font to use for the component
+ * A class to describe which font to use for the component
+ * @class
  */
 export class Font {
     /**
-     * 
-     * @param {{
-     *  name?: string,
-     *  textStyle?: string,
-     *  size?: Length|number,
-     *  weight?: string
-     * }} param0 
-     * @todo Add font-style support
+     * @param {Object}          options
+     * @param {String}          [options.name]          Name of a font
+     * @param {Symbol}          [options.textStyle]     Style of a text
+     * @param {Length|number}   [options.size]          Size of a font
+     * @param {Symbol}          [options.weight]        Weight of a font
+     * @param {Symbol}          [options.fontStyle]     Style of a font
+     * @todo  Add font-style support
      */
     constructor ({ name = null, textStyle = null, size = null, weight = null, fontStyle = null  }) {
         this.name = typeof name === "string" || name instanceof String ? name.toString() : null
@@ -55,31 +71,35 @@ export class Font {
     }
 
     /**
-     * 
-     * @param {{
-     *  name?: string,
-     *  textStyle?: string,
-     *  size?: Length|number,
-     *  weight?: string
-     * }} param0 
+     * A method to create a copy of a font and change some of properties
+     * @param {Object}          options
+     * @param {String}          [options.name]          Name of a font
+     * @param {Symbol}          [options.textStyle]     Style of a text
+     * @param {Length|number}   [options.size]          Size of a font
+     * @param {Symbol}          [options.weight]        Weight of a font
+     * @param {Symbol}          [options.fontStyle]     Style of a font
      */
-    with ({ name, textStyle, size, weight }) {
+    with ({ name, textStyle, size, weight, fontStyle }) {
         var clone = Object.assign({}, this)
         
-        if (name !== null && name !== undefined) {
-            clone.name = name
+        if (typeof name === "string" || name instanceof String) {
+            clone.name = name.toString()
         }
 
-        if (textStyle !== null && textStyle !== undefined) {
+        if (TextStyle.contains(textStyle)) {
             clone.textStyle = textStyle
         }
 
-        if (size !== null && size !== undefined) {
-            clone.size = size
+        if (size instanceof Length || typeof size === "number" || size instanceof Number) {
+            clone.size = !(size instanceof Length) ? pixels(size) : size
         }
 
-        if (weight !== null && weight !== undefined) {
+        if (Weight.contains(weight)) {
             clone.weight = weight
+        }
+
+        if (FontStyle.contains(fontStyle)) {
+            clone.fontStyle = fontStyle
         }
 
         return new Font(clone)
@@ -116,8 +136,9 @@ export class Font {
 }
 
 /**
- * @description A function to convert the TextStyle item to the tag name
- * @param {Symbol} style 
+ * A function to convert the TextStyle item to the tag name
+ * @param   {Symbol} style 
+ * @returns {String} HTML tag name
  */
 export function textStyleToTagName (style) {
     if (!(TextStyle.contains(style))) {
@@ -141,8 +162,9 @@ export function textStyleToTagName (style) {
 }
 
 /**
- * @description A function to convert the Weight item to the css font-weight value
- * @param {Symbol} weight 
+ * A function to convert the Weight item to the css font-weight value
+ * @param   {Symbol} weight 
+ * @returns {String} CSS `font-weight` value
  */
 export function weightToCssValue (weight) {
     if (!(Weight.contains(weight))) {
@@ -172,8 +194,9 @@ export function weightToCssValue (weight) {
 }
 
 /**
- * @description A function to convert the FontStyle item to the css font-style value
- * @param {Symbol} fontStyle 
+ * A function to convert the FontStyle item to the css font-style value
+ * @param   {Symbol} fontStyle 
+ * @returns {String} CSS `font-style` value
  */
 export function fontStyleToCssValue(fontStyle) {
     if (!(FontStyle.contains(fontStyle))) {

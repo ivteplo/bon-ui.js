@@ -13,12 +13,13 @@ import { VStack } from "./VStack"
 import { VNode } from "../../VirtualDOM/VNode"
 
 /**
- * @public @class
+ * A class that represents the list
+ * @class
  * @extends VStack
  */
 export class List extends VStack {
     /**
-     * @param {View[]} children 
+     * @param {Array<View|VNode>} children The items of the list
      */
     constructor (...args) {
         super(...args)
@@ -26,8 +27,9 @@ export class List extends VStack {
     }
 
     /**
+     * A method to set the type of the list style
+     * @param {String} type 
      * @todo create an enum for list style types, add images support
-     * @param {string} type 
      */
     setListStyleType (type) {
         if (typeof type === "string" || type instanceof String) {

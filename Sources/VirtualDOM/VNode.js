@@ -12,24 +12,27 @@ import { View } from "../Views/View"
 import { Enum } from "../Values/Enum"
 
 /**
- * @public @enum
+ * A list of virtual node types
+ * @enum
+ * @property {Symbol} tag   Used when the real DOM object is going to be a block
+ * @property {Symbol} text  Used when the real DOM object is going to be a text
  */
 export const VNodeType = new Enum("tag", "text")
 
 /**
- * @public @class
- * @description A node of the Virtual DOM
+ * A node of the Virtual DOM
+ * @class
  */
 export class VNode {
     /**
-     * @param {{
-     *  tag: string,
-     *  body: (VNode|View|string)[],
-     *  styles: object,
-     *  events: object,
-     *  attriutes: object
-     * }} param0 
-     * @param {View|null} component
+     * @param {Object}              options
+     * @param {String}              [options.text]          Text if the virtual node type will be text
+     * @param {String}              [options.tag]           Tag of the real DOM node
+     * @param {Array<View|VNode>}   [options.body]          Body of the node
+     * @param {Object}              [options.styles]        Styles that will be applied to the real DOM node (key: value)
+     * @param {Object}              [options.events]        Events of the real DOM node that will be handled by the handlers (key: handlers, where `handlers` is the array of functions)
+     * @param {Object}              [options.attributes]    Attributes that will be applied to the real DOM node (key: value)
+     * @param {View|null}           component               The view (if this node is the result of rendering of view)
      */
     constructor ({ text, tag, body, styles, events, attributes }, component = null) {
         if (tag || body || styles || events || attributes) {
@@ -49,7 +52,9 @@ export class VNode {
     }
 
     /**
-     * @description This method converts the VNode to the DOM object
+     * A method that converts the VNode to the DOM object
+     * @param {Object}  options
+     * @param {Boolean} [options.save]  Save the real DOM node to the variable or not
      * @returns {Node|null} Returns null if there is an error while rendering the child nodes
      */
     toHTMLNode ({ save=true }) {
@@ -93,8 +98,8 @@ export class VNode {
     }
 
     /**
-     * @description A method to mount to the parent
-     * @param {Node} parent 
+     * A method to mount the virtual DOM node to the parent
+     * @param {Node} parent Parent where to mount the node
      */
     mountTo (parent) {
         if (this.dom instanceof Node && this.dom.parentElement instanceof Node) {
@@ -116,7 +121,7 @@ export class VNode {
 }
 
 /**
- * @description A function to render view until body returns VNode
+ * A function to render view until body returns VNode
  * @param {View|VNode} view
  * @param {Boolean} saveVNode
  */

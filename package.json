@@ -20,13 +20,16 @@
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
-    "test": "mocha 'Tests/*.js' --require esm"
+    "test": "mocha 'Tests/*.js' --require esm",
+    "docs": "jsdoc -c jsdoc.json"
   },
   "devDependencies": {
     "babel-minify": "^0.5.1",
+    "better-docs": "^1.4.7",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
+    "jsdoc": "^3.6.3",
     "mocha": "^7.1.1",
     "rollup": "^1.32.0"
   },

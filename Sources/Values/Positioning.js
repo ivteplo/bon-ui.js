@@ -11,13 +11,19 @@
 import { Enum } from "./Enum"
 
 /**
- * @public @enum
+ * @enum
+ * @property {Symbol} relative      Position the object relative to itself
+ * @property {Symbol} absolute      Position the object relative to the parent with `relative` positioning
+ * @property {Symbol} fixed         Position the object relative to the browser viewport
+ * @property {Symbol} sticky        Position the object to make it "stick" to the specified position when scrolling
+ * @property {Symbol} static        Default positioning
  */
 export const Positioning = new Enum("relative", "absolute", "fixed", "sticky", "static")
 
 /**
- * @description A function to convert the Positioning enum item to css value
- * @param {Symbol} positioning 
+ * A function to convert the Positioning enum item to css value
+ * @param   {Symbol} positioning 
+ * @returns {String} CSS `position` value
  */
 export function positioningToCssValue(positioning) {
     if (!Positioning.contains(positioning)) {
@@ -25,15 +31,7 @@ export function positioningToCssValue(positioning) {
     }
 
     switch (positioning) {
-        case Positioning.relative:
-            return "relative"
-        case Positioning.absolute:
-            return "absolute"
-        case Positioning.fixed:
-            return "fixed"
-        case Positioning.sticky:
-            return "sticky"
-        case Positioning.static:
-            return "static"
+        default:
+            return Positioning.getIdentifier(positioning)
     }
 }
