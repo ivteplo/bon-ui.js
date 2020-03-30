@@ -83,6 +83,9 @@ class App extends View {
 ## Getting started with Bon UI
 There is a Medium post that describes how to work with Bon UI. You can read it [here](https://link.medium.com/zuF8phk864)
 
+## API Documentation
+You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website.
+
 ## :exclamation:Important notes
 - Documentation is in development
 - This is the alpha version of framework
