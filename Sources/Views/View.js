@@ -36,13 +36,17 @@ function isString(value) {
  * @class
  */
 export class View {
-    constructor () {
+    /**
+     * @param {Object} options Options for the View
+     */
+    constructor (options) {
         this.lastVNode = null
         this.mounted = false
         this.styles = {}
         this.events = {}
         this.attributes = {}
         this.state = new ViewState()
+        this.options = options || {}
         this.restoreState()
         
         Object.defineProperty(this, "mounted", {
