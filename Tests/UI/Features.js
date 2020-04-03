@@ -19,19 +19,19 @@ export class Features extends View {
                 new Feature({
                     heading: new Text("Declarative syntax"),
                     description: new Text("With Bon UI it is very easy to create dynamic and interactive user interfaces. Declarative syntax helps you to navigate in code and to easily understand what it does."),
-                    code: new Image("./Images/declarative.png", "Example")
+                    code: new Image({ url: "./Images/declarative.png", altText: "Example" })
                 }),
 
                 new Feature({
                     heading: new Text("States system"),
                     description: new Text("Each component has it's own state. When you update the state, the reconciler will automaticly update the DOM."),
-                    code: new Image("./Images/states.png", "Example")
+                    code: new Image({ url: "./Images/states.png", altText: "Example" })
                 }),
 
                 new Feature({
                     heading: new Text("Components from the box"),
                     description: new Text("When you have installed the Bon UI, there are already preinstalled and configured components (which are called views). They have got methods to setup their looking. You can also create your own components easily: your component can depend on other components and use HTML and CSS power."),
-                    code: new Image("./Images/components.png", "Example")
+                    code: new Image({ url: "./Images/components.png", altText: "Example" })
                 })
             ])
                 .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })

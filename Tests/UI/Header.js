@@ -15,7 +15,7 @@ export class Header extends View {
     getBody () {
         return (
             new VStack([
-                new Image("./Images/bon-ui.png", "Logo")
+                new Image({ url: "./Images/bon-ui.png", altText: "Logo" })
                     .setSize({ width: 200, height: 200 })
                     .setFitType(FitType.contain),
                 new Text("Bon UI")

@@ -16,7 +16,7 @@ export class NavigationBar extends View {
         return (
             new HStack([
                 new HStack([
-                    new Image("./Images/teplovs.png", "Teplovs")
+                    new Image({ url: "./Images/teplovs.png", altText: "Teplovs" })
                         .setSize({ height: 30 }),
                     
                     new HStack([

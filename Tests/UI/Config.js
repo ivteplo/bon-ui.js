@@ -10,6 +10,8 @@
 
 import { Color, Colors as BonUIColors } from "../../Sources/BonUI"
 
+export const appTitle = "Bon UI Test"
+
 export const Colors = {
     lightGray: new Color({ red: 0xCC, green: 0xCC, blue: 0xCC }),
     orange: new Color({ red: 0xff, green: 0x66, blue: 0x00 }),
