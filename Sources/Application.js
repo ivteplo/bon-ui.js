@@ -20,6 +20,10 @@ function setTitle(titleStr) {
     }
 }
 
+/**
+ * Class that contains methods to control the app
+ * @class
+ */
 export class Application {
     /**
      * A method to set the title of the web app
@@ -43,7 +47,6 @@ export class Application {
      * @param   {Symbol}    [options.weight]   Weight of the font. Item of the Weight enum
      * @param   {Symbol}    [options.style]    Style of the font. Item of the FontStyle enum
      * @returns {Promise}
-     * @todo    Test the function
      */
     static loadFont({ name, url, weight = null, style = null }) {
         var descriptors = {}

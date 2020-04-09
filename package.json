@@ -21,7 +21,8 @@
     "build": "rollup -c rollup.config.js",
     "minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
     "test": "mocha 'Tests/*.js' --require esm",
-    "docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json"
+    "docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json",
+    "prepublish": "npm run build && npm run minify && npm run docs"
   },
   "devDependencies": {
     "babel-minify": "^0.5.1",
