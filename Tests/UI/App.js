@@ -8,10 +8,10 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, normalizeDocumentStyles, Fonts, Length, Measure, Alignment, viewportWidth, Application } from "../../Sources/BonUI"
+import { View, VStack, normalizeDocumentStyles, Length, Measure, Alignment, viewportWidth, Application, Weight, Text } from "../../Sources/BonUI"
 import { NavigationBar } from "./NavigationBar"
+import { appTitle, Fonts } from "./Config"
 import { Features } from "./Features"
-import { appTitle } from "./Config"
 import { Header } from "./Header"
 
 class App extends View {
@@ -29,7 +29,9 @@ class App extends View {
     }
 }
 
-normalizeDocumentStyles({ flexBody: true })
-Application.setTitle(appTitle)
-Application.setView(new App())
+window.addEventListener("load", () => {
+    normalizeDocumentStyles({ flexBody: true })
+    Application.setTitle(appTitle)
+    Application.setView(new App())
+})
 

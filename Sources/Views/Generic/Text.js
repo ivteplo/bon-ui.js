@@ -14,6 +14,8 @@ import { Font, textStyleToTagName, TextStyle } from "../../Values/Font"
 import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment"
 import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle"
 
+var defaultSelectable = false
+
 /**
  * A class that is used to represent the text
  * @class
@@ -21,12 +23,22 @@ import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSp
  */
 export class Text extends View {
     /**
+     * A method to set the default value of selectable to specified (If selectable is true then you can select the text, else you can not)
+     * @param {Boolean} value Value that will be set as default
+     */
+    static setDefaultSelectableTo(value) {
+        if (value instanceof Boolean || typeof value === "boolean") {
+            defaultSelectable = Boolean(value)
+        }
+    }
+
+    /**
      * @param {string} text 
      */
     constructor (text) {
         super()
         this.text = text
-        this.setSelectableTo(false)
+        this.setSelectableTo(defaultSelectable)
         this.styles.margin = 0
         this.styles.padding = 0
     }

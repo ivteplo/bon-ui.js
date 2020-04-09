@@ -46,18 +46,23 @@ export class Application {
      * @todo    Test the function
      */
     static loadFont({ name, url, weight = null, style = null }) {
-        var font = new FontFace()
-        font.family = name
-        
+        var descriptors = {}
+
         if (Weight.contains(weight)) {
-            font.weight = weightToCssValue(weight)
+            descriptors.weight = weightToCssValue(weight)
         }
 
         if (FontStyle.contains(style)) {
-            font.style = fontStyleToCssValue(style)
+            descriptors.style = fontStyleToCssValue(style)
         }
 
-        return font.load()
+        descriptors.name = name
+
+        var font = new FontFace(name, `url(${url})`, descriptors)
+        
+        return font.load().then(loadedFont => {
+            document.fonts.add(loadedFont)
+        })
     }
 
     /**

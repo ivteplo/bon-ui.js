@@ -8,8 +8,8 @@
 // See https://www.apache.org/licenses/LICENSE-2.0 for license information
 // 
 
-import { View, VStack, Image, Text, Alignment, Fonts, FitType, Length, Measure, HStack, Weight, percents } from "../../Sources/BonUI"
-import { Colors } from "./Config"
+import { View, VStack, Image, Text, Alignment, FitType, Length, Measure, HStack, Weight, percents } from "../../Sources/BonUI"
+import { Colors, Fonts } from "./Config"
 
 export class Feature extends View {
     constructor({ heading, description, code }) {

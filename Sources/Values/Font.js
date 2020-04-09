@@ -25,6 +25,7 @@ export const TextStyle = new Enum("default", "largeTitle", "title", "subheading"
  * @enum
  * @property {Symbol} regular       Default text weight
  * @property {Symbol} ultraLight    Very light text weight
+ * @property {Symbol} extraLight    Very light text weight. The same as ultraLight
  * @property {Symbol} light         Light text weight
  * @property {Symbol} thin          Thin text weight
  * @property {Symbol} medium        Medium text weight
@@ -33,7 +34,7 @@ export const TextStyle = new Enum("default", "largeTitle", "title", "subheading"
  * @property {Symbol} heavy         Heavy text weight
  * @property {Symbol} black         Black text weight
  */
-export const Weight = new Enum("regular", "ultraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
+export const Weight = new Enum("regular", "ultraLight", "extraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
 
 /**
  * @enum
@@ -175,6 +176,8 @@ export function weightToCssValue (weight) {
         case Weight.ultraThin:
             return "100"
         case Weight.thin:
+        case Weight.ultraLight:
+        case Weight.extraLight:
             return "200"
         case Weight.light:
             return "300"
