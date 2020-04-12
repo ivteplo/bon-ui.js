@@ -9,6 +9,7 @@
 // 
 
 import { View } from "./Views/View"
+import { VNodeType, VNode, renderToVNode } from "./VirtualDOM/VNode"
 import { Weight, FontStyle, weightToCssValue, fontStyleToCssValue } from "./Values/Font"
 
 function setTitle(titleStr) {
@@ -17,6 +18,86 @@ function setTitle(titleStr) {
     
     if (!title.parentNode) {
         document.head.appendChild(title)
+    }
+}
+
+/**
+ * A list of DOM node types
+ * @enum
+ * @property {Symbol} tag   Used when the DOM object is going to be a block
+ * @property {Symbol} text  Used when the DOM object is going to be a text
+ */
+export const DOMNodeType = VNodeType
+
+function camelCaseToCSSStyle(str) {
+    // Convert words to lower case and add hyphens around it (for stuff like "&")
+    return str.replace(/[A-Z][a-z]*/g, str => '-' + str.toLowerCase() + '-')
+            // remove double hyphens
+            .replace('--', '-')
+            // remove hyphens at the beginning and the end
+            .replace(/(^-)|(-$)/g, '')
+}
+
+function replaceQuotes(str) {
+    return str.replace(/\\'/g, "'").replace(/'/g, '"').replace(/\\"/g, '"').replace(/"/g, "\\\"")
+}
+
+/**
+ * A class to represent the DOM node from the server side
+ */
+export class DOMNode {
+    /**
+     * @param {Object}         options
+     * @param {String}         [options.text]       - Text if the node type will be text
+     * @param {String}         [options.tag]        - Tag of the DOM node
+     * @param {Array<DOMNode>} [options.body]       - Body of the node
+     * @param {Object}         [options.styles]     - Styles that will be applied to the DOM node (key: value)
+     * @param {Object}         [options.attributes] - Attributes that will be applied to the DOM node (key: value)
+     */
+    constructor({ text, tag, styles, attributes, body }) {
+        if (tag || body || styles || attributes) {
+            this.type = DOMNodeType.tag
+            this.tag = tag || "div"
+            this.body = Array.isArray(body) ? body : []
+            this.styles = typeof styles === "object" ? styles : {}
+            this.attributes = typeof attributes === "object" ? attributes : {}
+        } else {
+            this.type = DOMNodeType.text
+            this.text = text || ""
+        }
+    }
+
+    toString() {
+        if (this.type === DOMNodeType.text) {
+            return this.text
+        }
+
+        var attributesString = ""
+        var stylesString = ""
+        var bodyString = ""
+
+        for (let attribute in this.attributes) {
+            if (this.attributes[attribute] !== null && this.attributes[attribute] !== undefined) {
+                attributesString += attribute.toString() + "=" + this.attributes[attribute].toString() + " "
+            }
+        }
+
+        for (let style in this.styles) {
+            if (this.styles[style] !== null && this.styles[style] !== undefined) {
+                stylesString += camelCaseToCSSStyle(style.toString()) + ":" + replaceQuotes(this.styles[style].toString()) + ";"
+            }
+        }
+
+        for (let child in this.body) {
+            if (!(this.body[child] instanceof DOMNode)) {
+                throw new Error("Unexpected child passed")
+                return null
+            }
+
+            bodyString += this.body[child].toString()
+        }
+
+        return (`<${this.tag} ${attributesString} style='${stylesString}'>` + (["img", "br", "hr"].indexOf(this.tag) >= 0 ? "" : `${bodyString}</${this.tag}>`)).replace("  ", " ")
     }
 }
 
@@ -80,5 +161,31 @@ export class Application {
         } else {
             view.mountTo(document.body)
         }
+    }
+
+    /**
+     * A method to use from the server side to render the static version of the app
+     * @param {View} view View that will be rendered from the server side
+     */
+    static staticRender(view) {
+        if (!(view instanceof View || view instanceof VNode)) {
+            throw new Error("Expected view or vNode passed")
+            return
+        }
+
+        var node = renderToVNode({ view: view, saveVNode: false, ignoreStateChange: true })
+
+        var result = new DOMNode(node.type === VNodeType.tag ? {
+
+            tag: node.tag,
+            styles: node.styles,
+            attributes: node.attributes,
+            body: node.body.map(child => {
+                return Application.staticRender(child)
+            })
+
+        } : { text: node.text })
+
+        return result
     }
 }

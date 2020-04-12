@@ -1,5 +1,5 @@
 //
-// App.js
+// ContentView.js
 // Created on 07/01/2020
 //
 // Copyright (c) 2020 Teplovs
@@ -14,7 +14,7 @@ import { appTitle, Fonts } from "./Config"
 import { Features } from "./Features"
 import { Header } from "./Header"
 
-class App extends View {
+class ContentView extends View {
     getBody () {
         return (
             new VStack([
@@ -32,6 +32,6 @@ class App extends View {
 window.addEventListener("load", () => {
     normalizeDocumentStyles({ flexBody: true })
     Application.setTitle(appTitle)
-    Application.setView(new App())
+    Application.setView(new ContentView())
 })
 

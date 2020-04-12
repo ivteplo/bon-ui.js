@@ -132,7 +132,7 @@ export class View {
         }
 
         Reconciler.addUnitOfWork(() => {
-            renderToVNode(this, true)
+            renderToVNode({ view: this, saveVNode: true })
             this.lastVNode.mountTo(parent)
             this.handleMount()
         })
@@ -144,10 +144,7 @@ export class View {
     invalidate () {
         if (this.mounted) {
             Reconciler.addUnitOfWork(() => {
-                let vNode = renderToVNode(this)
-                updateComponentDOM(this.lastVNode, vNode)
-                this.lastVNode = vNode
-                this.handleInvalidation()
+                this.forceInvalidate()
             })
         }
     }
@@ -157,7 +154,7 @@ export class View {
      */
     forceInvalidate () {
         if (this.mounted) {
-            let vNode = renderToVNode(this)
+            let vNode = renderToVNode({ view: this })
             updateComponentDOM(this.lastVNode, vNode)
             this.lastVNode = vNode
             this.handleInvalidation()

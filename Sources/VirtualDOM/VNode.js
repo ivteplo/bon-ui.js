@@ -122,22 +122,31 @@ export class VNode {
 
 /**
  * A function to render view until body returns VNode
- * @param {View|VNode} view
- * @param {Boolean} saveVNode
+ * @param {Object}     options
+ * @param {View|VNode} options.view                 View to render to VNode
+ * @param {Boolean}    [options.saveVNode]          If specified, the vNode will be saved to the `view.lastVNode`
+ * @param {Boolean}    [options.ignoreStateChange]  If specified, the state change will be ignored
  */
-export function renderToVNode (view, saveVNode = false) {
+export function renderToVNode ({ view, saveVNode = false, ignoreStateChange = false }) {
     let node
 
     if (view instanceof VNode) {
         node = view
     } else {
         node = view
-        let components = [view]
-
-        do {
+        let components = []
+        
+        while (node instanceof View) {
             components.push(node)
-            node = node.getBody()
-        } while (node instanceof View)
+
+            if (ignoreStateChange) {
+                let nodeClone = Object.create(node)
+                nodeClone.state.set = () => {}
+                node = nodeClone.getBody()
+            } else {
+                node = node.getBody()
+            }
+        }
         
         if (!(node instanceof VNode)) {
             throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
@@ -154,7 +163,7 @@ export function renderToVNode (view, saveVNode = false) {
 
     for (let i in node.body) {
         if (node.body[i] instanceof View || node.body[i] instanceof VNode) {
-            node.body[i] = renderToVNode(node.body[i], true)
+            node.body[i] = renderToVNode({ view: node.body[i], saveVNode: true, ignoreStateChange: ignoreStateChange })
         } else {
             throw new Error("Unexpected child passed")
         }
