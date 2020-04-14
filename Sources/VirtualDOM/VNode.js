@@ -118,6 +118,55 @@ export class VNode {
             this.component.handleMount()
         }
     }
+
+    /**
+     * A method to convert the vNode to HTML string
+     */
+    toString() {
+        if (this.type === VNodeType.text) {
+            return this.text
+        }
+
+        var attributesString = ""
+        var stylesString = ""
+        var bodyString = ""
+
+        for (let attribute in this.attributes) {
+            if (this.attributes[attribute] !== null && this.attributes[attribute] !== undefined) {
+                attributesString += `${attribute.toString()}="${this.attributes[attribute].toString()}"`
+            }
+        }
+
+        for (let style in this.styles) {
+            if (this.styles[style] !== null && this.styles[style] !== undefined) {
+                stylesString += camelCaseToCSSStyle(style.toString()) + ":" + replaceQuotes(this.styles[style].toString()) + ";"
+            }
+        }
+
+        for (let child in this.body) {
+            if (!(this.body[child] instanceof VNode)) {
+                throw new Error("Unexpected child passed")
+                return null
+            }
+
+            bodyString += this.body[child].toString()
+        }
+
+        return (`<${this.tag} ${attributesString} style='${stylesString}'>` + (["img", "br", "hr"].indexOf(this.tag) >= 0 ? "" : `${bodyString}</${this.tag}>`)).replace("  ", " ")
+    }
+}
+
+function camelCaseToCSSStyle(str) {
+    // Convert words to lower case and add hyphens around it (for stuff like "&")
+    return str.replace(/[A-Z][a-z]*/g, str => '-' + str.toLowerCase() + '-')
+            // remove double hyphens
+            .replace('--', '-')
+            // remove hyphens at the beginning and the end
+            .replace(/(^-)|(-$)/g, '')
+}
+
+function replaceQuotes(str) {
+    return str.replace(/\\'/g, "'").replace(/'/g, '"').replace(/\\"/g, '"').replace(/"/g, "'")
 }
 
 /**

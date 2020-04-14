@@ -15,7 +15,7 @@ browserEnv()
 
 import { View, Text } from "../Sources/BonUI"
 
-class ContentView extends View {
+class AppView extends View {
     getInitialState () {
         return {
             text: "Hello world!"
@@ -29,7 +29,7 @@ class ContentView extends View {
     }
 }
 
-const content = new ContentView()
+const content = new AppView()
 content.mountTo(document.body)
 
 describe("Render", () => {

@@ -1,6 +1,6 @@
 # Bon UI
 A framework with declarative syntax for developing UI for web apps
-<div style="display: flex; justify-content: center"><img width="150" alt="Bon UI Logo" src="Tests/UI/Images/bon-ui.png"></div>
+<div style="display: flex; justify-content: center"><img width="150" alt="Bon UI Logo" src="bon-ui-logo.png"></div>
 
 ## :heavy_check_mark: Features
 ### Component-based

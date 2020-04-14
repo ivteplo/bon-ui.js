@@ -465,6 +465,14 @@ export class View {
 
         return this
     }
+
+    /**
+     * A method to convert the view to HTML string
+     */
+    toString() {
+        var node = renderToVNode({ view: this, saveVNode: false, ignoreStateChange: true })
+        return node.toString()
+    }
 }
 
 /**

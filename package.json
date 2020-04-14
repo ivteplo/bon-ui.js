@@ -18,11 +18,12 @@
   "main": "Distribution/BonUI.umd.js",
   "module": "Distribution/BonUI.esm.js",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
+    "build:source": "rollup -c rollup.config.js",
+    "build:minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
     "test": "mocha 'Tests/*.js' --require esm",
-    "docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json",
-    "prepublish": "npm run build && npm run minify && npm run docs"
+    "build:docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json",
+    "build": "npm run build:source && npm run build:minify && npm run build:docs",
+    "postinstall": "node ./postinstall.js"
   },
   "devDependencies": {
     "babel-minify": "^0.5.1",

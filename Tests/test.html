@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Bon UI test</title>
+	</head>
+	<body>
+		<script src="../Distribution/BonUI.umd.js"></script>
+		<script>
+			const { View, Text, ApplicationManager } = BonUI
+
+			class AppView extends View {
+				getBody() {
+					return (
+						new Text("Hello world!")
+					)
+				}
+			}
+
+			class AppManager extends ApplicationManager {
+				loadApp() {
+					AppManager.normalizeDocumentStyles({ applyFlexToBody: true })
+					super.loadApp()
+				}
+			}
+
+			const appManager = new AppManager()
+			appManager.setView(new AppView())
+			window.addEventListener("load", () => {
+				appManager.loadApp()
+			})
+		</script>
+	</body>
+</html>
