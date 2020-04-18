@@ -22,7 +22,7 @@
     "build:minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module",
     "test": "mocha 'Tests/*.js' --require esm",
     "build:docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json",
-    "build": "npm run build:source && npm run build:minify && npm run build:docs",
+    "build": "npm run build:source && npm run build:minify && npm run test && npm run build:docs",
     "postinstall": "node ./postinstall.js"
   },
   "devDependencies": {

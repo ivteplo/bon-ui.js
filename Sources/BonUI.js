@@ -21,6 +21,10 @@
     export * from "./Views/Generic/Control"
     export * from "./Views/Generic/Canvas"
 
+    // Navigation
+    export * from "./Views/Navigation/Route"
+    export * from "./Views/Navigation/Router"
+
     // Forms
     export * from "./Views/Form/Button"
     export * from "./Views/Form/TextBox"
@@ -33,6 +37,9 @@
     
 // VirtualDOM
 export * from "./VirtualDOM/VNode"
+
+// Workers
+export * from "./Worker"
 
 // Values
 export * from "./Values/Enum"

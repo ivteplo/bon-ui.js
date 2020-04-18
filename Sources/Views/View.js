@@ -10,14 +10,15 @@
 
 import { OutlineStyle, outlineStyleToCssValue } from "../Values/OutlineStyle"
 import { Positioning, positioningToCssValue } from "../Values/Positioning"
-import { VNode, VNodeType, renderToVNode } from "../VirtualDOM/VNode"
+import { VNode, VNodeType } from "../VirtualDOM/VNode"
 import { Reconciler } from "../VirtualDOM/Reconciler"
 import { Length, pixels } from "../Values/Length"
 import { ViewState } from "./ViewState"
 import { Color } from "../Values/Color"
 import { Font } from "../Values/Font"
+import { Worker } from "../Worker"
 
-// function updateComponentDOM is described after the class View
+// function Reconciler.updateVNodeDOM is described after the class View
 
 function isValidLength(value) {
     return value instanceof Length || value instanceof Number || typeof value === "number"
@@ -42,6 +43,7 @@ export class View {
     constructor (options) {
         this.lastVNode = null
         this.mounted = false
+        this.key = null
         this.styles = {}
         this.events = {}
         this.attributes = {}
@@ -58,14 +60,28 @@ export class View {
     }
 
     /**
+     * A method to set a unique key to the view to make the reconcilation more fast and optimized
+     * @prop {Number|String} key Key that will be set to the view
+     */
+    setKey(key) {
+        if (typeof key === "number" || key instanceof Number) {
+            this.key = Number(key)
+        } else {
+            this.key = key.toString()
+        }
+
+        return this
+    }
+
+    /**
      * A method that returns the key->value object, which will be transformed into the state
      * @example
      * class Test extends View {
-     *  getInitialState() {
-     *      return {
-     *          test: true
-     *      }
-     *  }
+     *     getInitialState() {
+     *         return {
+     *             test: true
+     *         }
+     *     }
      * }
      * @returns {Object} Variables in the state and their default values
      */
@@ -98,20 +114,26 @@ export class View {
      * A method that returns the body (content) of the view
      */
     getBody () {
-        var { styles, attributes, events } = this
+        var { styles, attributes, events, key } = this
 
         return new VNode({
+            key: key,
             tag: "div",
             styles: styles,
             events: events,
             attributes: attributes
-        })
+        }, this)
     }
 
     /**
      * A method called after mounting
      */
     handleMount() {}
+
+    /**
+     * A method called after unmounting
+     */
+    handleUnmount() {}
 
     /**
      * A method called after invalidation
@@ -131,8 +153,8 @@ export class View {
             throw new Error("The parent is not an instance of Node")
         }
 
-        Reconciler.addUnitOfWork(() => {
-            renderToVNode({ view: this, saveVNode: true })
+        Worker.addUnitOfWork(() => {
+            View.renderToVNode({ view: this, saveVNode: true })
             this.lastVNode.mountTo(parent)
             this.handleMount()
         })
@@ -143,7 +165,7 @@ export class View {
      */
     invalidate () {
         if (this.mounted) {
-            Reconciler.addUnitOfWork(() => {
+            Worker.addUnitOfWork(() => {
                 this.forceInvalidate()
             })
         }
@@ -154,8 +176,8 @@ export class View {
      */
     forceInvalidate () {
         if (this.mounted) {
-            let vNode = renderToVNode({ view: this })
-            updateComponentDOM(this.lastVNode, vNode)
+            let vNode = View.renderToVNode({ view: this })
+            Reconciler.updateVNodeDOM(this.lastVNode, vNode)
             this.lastVNode = vNode
             this.handleInvalidation()
         }
@@ -470,74 +492,96 @@ export class View {
      * A method to convert the view to HTML string
      */
     toString() {
-        var node = renderToVNode({ view: this, saveVNode: false, ignoreStateChange: true })
+        var node = View.renderToVNode({ view: this, saveVNode: false, ignoreStateChange: true })
         return node.toString()
     }
-}
 
-/**
- * @param {VNode} lastVNode 
- * @param {VNode} vNode 
- */
-function updateComponentDOM (lastVNode, vNode) {
-    if (lastVNode.tag !== vNode.tag || lastVNode.type === VNodeType.text || vNode.type === VNodeType.text) {
-        lastVNode.dom.replaceWith(vNode.toHTMLNode({ save: true }))
-        return
-    }
+    /**
+     * A method to clone styles, attributes and events of one view to this
+     */
+    applyViewProperties(view) {
+        if (view instanceof View) {
+            this.styles = Object.assign(this.styles, typeof view.styles === "object" ? view.styles : {})
+            this.attributes = Object.assign(this.styles, typeof view.styles === "object" ? view.attributes : {})
 
-    for (let i in lastVNode.styles) {
-        if (!(i in vNode.styles)) {
-            lastVNode.dom.style[i] = ""
-        }
-    }
+            for (let i in view.events) {
+                this.setHandlerFor({ event: i, handler: view.events[i] })
+            }
 
-    for (let i in vNode.styles) {
-        if (!(i in lastVNode.styles && lastVNode.styles[i].toString() === vNode.styles[i].toString())) {
-            lastVNode.dom.style[i] = vNode.styles[i]
-        }
-    }
-
-    for (let i in lastVNode.events) {
-        for (let j in vNode.events[i]) {
-            lastVNode.dom.removeEventListener(i, lastVNode.events[i][j])
-        }
-    }
-
-    for (let i in vNode.events) {
-        for (let j in vNode.events[i]) {
-            if (typeof vNode.events[i][j] === "function") {
-                lastVNode.dom.addEventListener(i, vNode.events[i][j])
+            if (view.key) {
+                this.setKey(view.key)
             }
         }
+
+        return this
     }
 
-    for (let i in lastVNode.attributes) {
-        if (!(i in vNode.attributes)) {
-            lastVNode.dom.removeAttribute(i)
+    /**
+     * A method to clone mounting, invalidation and unmounting handlers of one view to this
+     */
+    applyViewHandlers(view) {
+        if (view instanceof View) {
+            this.handleMount = view.handleMount
+            this.handleInvalidate = view.handleInvalidate
+            this.handleUnmount = view.handleUnmount
         }
+
+        return this
     }
 
-    for (let i in vNode.attributes) {
-        if (!(i in lastVNode.attributes && lastVNode.attributes[i].toString() === vNode.attributes[i].toString())) {
-            lastVNode.dom.setAttribute(i, vNode.attributes[i])
-        }
-    }
+    /**
+     * A function to render view until body returns VNode
+     * @param   {Object}     options
+     * @param   {View|VNode} options.view                 View to render to VNode
+     * @param   {Boolean}    [options.saveVNode]          If specified, the vNode will be saved to the `view.lastVNode`
+     * @param   {Boolean}    [options.ignoreStateChange]  If specified, the state change will be ignored
+     * @returns {VNode}      Result of recursive rendering of view to virtual node
+     */
+    static renderToVNode({ view, saveVNode = false, ignoreStateChange = false }) {
+        let node
 
-    if (lastVNode.body.length !== vNode.body.length) {
-        lastVNode.dom.innerHTML = ""
-        
-        for (let i in vNode.body) {
-            vNode.body[i].mountTo(lastVNode.dom)
-        }
-    } else {
-        for (let i in vNode.body) {
-            updateComponentDOM(lastVNode.body[i], vNode.body[i])
+        if (view instanceof VNode) {
+            node = view
+        } else {
+            node = view
+            let components = []
             
-            if (lastVNode.body[i].component instanceof View) {
-                lastVNode.body[i].component.handleInvalidation()
+            while (node instanceof View) {
+                components.push(node)
+
+                if (ignoreStateChange) {
+                    let nodeClone = Object.create(node)
+                    nodeClone.state.set = () => {}
+                    node = nodeClone.getBody()
+                } else {
+                    node = node.getBody()
+                }
+            }
+
+            if (node !== null) {
+                if (!(node instanceof VNode)) {
+                    throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
+                }
+
+                node.component = components[components.length - 1]
+                for (let i in node.body) {
+                    if (node.body[i] instanceof View || node.body[i] instanceof VNode) {
+                        node.body[i] = View.renderToVNode({ view: node.body[i], saveVNode: true, ignoreStateChange: ignoreStateChange })
+                    } else {
+                        throw new Error("Unexpected child passed")
+                    }
+                }
+            }
+
+            if (saveVNode) {
+                for (let i = 0; i < components.length; ++i) {
+                    components[i].lastVNode = node
+                }
             }
         }
+
+        return node
     }
 
-    vNode.dom = lastVNode.dom
 }
+

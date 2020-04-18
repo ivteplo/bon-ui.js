@@ -10,7 +10,7 @@
 
 import { expect } from "chai"
 import browserEnv from "browser-env"
-import { View, Text, Application } from "../Sources/BonUI"
+import { View, Text, ApplicationManager } from "../Sources/BonUI"
 
 class AppView extends View {
     getInitialState () {
@@ -28,7 +28,7 @@ class AppView extends View {
 }
 
 const content = new AppView()
-const result = Application.staticRender(content).toString()
+const result = content.toString()
 
 describe("Server side rendering", () => {
 

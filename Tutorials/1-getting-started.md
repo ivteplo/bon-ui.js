@@ -8,11 +8,11 @@ npm install # or `yarn install`
 
 ### Your first view
 In Bon UI each component is called “a view”.
-In file Source/App.js there is a description of the view App:
+In file Sources/Views/AppView.js there is a description of the view App:
 ```javascript
 import { View, Text } from "@teplovs/bon-ui"
 
-export class App extends View {
+export class AppView extends View {
     // this method describes how the "view" looks
     getBody() {
         return (
@@ -22,19 +22,30 @@ export class App extends View {
 }
 ```
 
-In file Source/AppDelegate.js there are instructions for application loading:
+In file Sources/AppManager.js there are instructions for application loading:
 ```javascript
-import { normalizeDocumentStyles } from "@teplovs/bon-ui"
-import { App } from "./App"
+import { ApplicationManager } from "@teplovs/bon-ui"
+import { AppView } from "./Views/AppView"
 
-const app = new App()
-// function `normalizeDocumentStyles` removes margins 
-// and paddings from the `html` and `body`.
-// if you have set `flexBody` to `true` then
-// the `display: flex` style will be applied to the body
-normalizeDocumentStyles({ flexBody: true })
-// method `mountTo` adds the view to the body
-app.mountTo(document.body)
+class AppManager extends ApplicationManager {
+    loadApp() {
+        // function `ApplicationManager.normalizeDocumentStyles` removes margins 
+        // and paddings from the `html` and `body`.
+        // if you have set `flexBody` to `true` then
+        // the `display: flex` style will be applied to the body
+        // method `mountTo` adds the view to the body
+        // (`AppManager` extends `ApplicationManager`)
+        AppManager.normalizeDocumentStyles({ flexBody: true })
+        super.loadApp()
+    }
+}
+
+const appManager = new AppManager()
+window.addEventListener("load", () => {
+    appManager.setView(new AppView())
+    appManager.setTitle("Bon UI - Hello World!")
+    appManager.loadApp()
+})
 ```
 
 The `getBody` method describes how our “view” looks. To do that you can use a `VNode` (virtual node) or other views. Fortunately, there are built-in components in the Bon UI framework.
@@ -44,12 +55,12 @@ To build the app in a production mode (the `Build/bundle.js` will be minified), 
 If you are developing the app, run `npm run watch`. The webpack will watch for chages in files and will rebuild the app (without minifying).
 
 ### Playing with the states
-Let’s update the Sources/App.js file to make it look this way:
+Let’s update the Sources/Views/AppView.js file to make it look this way:
 ```javascript
 
 import { Text, Button, VStack, View } from "@teplovs/bon-ui"
 
-export class App extends View {
+export class AppView extends View {
     // this method returns the object that contains key: value pair of variables
     // that are in the state by default
     getInitialState() {

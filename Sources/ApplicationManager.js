@@ -9,7 +9,7 @@
 // 
 
 import { View } from "./Views/View"
-import { VNodeType, VNode, renderToVNode } from "./VirtualDOM/VNode"
+import { VNodeType, VNode } from "./VirtualDOM/VNode"
 import { Weight, FontStyle, weightToCssValue, fontStyleToCssValue } from "./Values/Font"
 
 /**
