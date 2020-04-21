@@ -136,11 +136,11 @@ export class VNode {
      */
     unmount() {
         if (this.dom instanceof Node && this.dom.parentElement instanceof Node) {
-            this.dom.parentElement.removeChild(this.dom)
-
             if (this.view instanceof View) {
                 this.view.handleUnmount()
             }
+
+            this.dom.parentElement.removeChild(this.dom)
         }
     }
 

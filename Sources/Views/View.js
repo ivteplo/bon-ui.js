@@ -112,8 +112,9 @@ export class View {
 
     /**
      * A method that returns the body (content) of the view
+     * @param {String} [side] Side of the rendering (`"server"`, `"client"` etc.)
      */
-    getBody () {
+    getBody (side = "client") {
         var { styles, attributes, events, key } = this
 
         return new VNode({
@@ -131,7 +132,7 @@ export class View {
     handleMount() {}
 
     /**
-     * A method called after unmounting
+     * A method called before unmounting
      */
     handleUnmount() {}
 
@@ -157,6 +158,19 @@ export class View {
             View.renderToVNode({ view: this, saveVNode: true })
             this.lastVNode.mountTo(parent)
             this.handleMount()
+        })
+    }
+
+    /**
+     * A method to unmount the view
+     */
+    unmount () {
+        if (!this.mounted) {
+            throw new Error("The view is not mounted")
+        }
+
+        Worker.addUnitOfWork(() => {
+            this.lastVNode.unmount()
         })
     }
 
@@ -491,8 +505,8 @@ export class View {
     /**
      * A method to convert the view to HTML string
      */
-    toString() {
-        var node = View.renderToVNode({ view: this, saveVNode: false, ignoreStateChange: true })
+    toString(side = "server") {
+        var node = View.renderToVNode({ view: this, saveVNode: false, ignoreStateChange: true, side: side })
         return node.toString()
     }
 
@@ -535,9 +549,10 @@ export class View {
      * @param   {View|VNode} options.view                 View to render to VNode
      * @param   {Boolean}    [options.saveVNode]          If specified, the vNode will be saved to the `view.lastVNode`
      * @param   {Boolean}    [options.ignoreStateChange]  If specified, the state change will be ignored
+     * @param   {String}     [options.side]               Side of the rendering (`"server"`, `"client"` etc.)
      * @returns {VNode}      Result of recursive rendering of view to virtual node
      */
-    static renderToVNode({ view, saveVNode = false, ignoreStateChange = false }) {
+    static renderToVNode({ view, saveVNode = false, ignoreStateChange = false, side = "client" }) {
         let node
 
         if (view instanceof VNode) {
@@ -552,9 +567,9 @@ export class View {
                 if (ignoreStateChange) {
                     let nodeClone = Object.create(node)
                     nodeClone.state.set = () => {}
-                    node = nodeClone.getBody()
+                    node = nodeClone.getBody(side)
                 } else {
-                    node = node.getBody()
+                    node = node.getBody(side)
                 }
             }
 
@@ -566,7 +581,7 @@ export class View {
                 node.component = components[components.length - 1]
                 for (let i in node.body) {
                     if (node.body[i] instanceof View || node.body[i] instanceof VNode) {
-                        node.body[i] = View.renderToVNode({ view: node.body[i], saveVNode: true, ignoreStateChange: ignoreStateChange })
+                        node.body[i] = View.renderToVNode({ view: node.body[i], saveVNode: true, ignoreStateChange: ignoreStateChange, side: side })
                     } else {
                         throw new Error("Unexpected child passed")
                     }
