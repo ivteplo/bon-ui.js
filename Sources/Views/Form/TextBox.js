@@ -21,8 +21,6 @@ import { Text } from "../Generic/Text"
 
 /**
  * A view that represents the textbox
- * @class
- * @extends Control
  */
 export class TextBox extends Control {
     /**
@@ -37,77 +35,27 @@ export class TextBox extends Control {
         this.setOutline({ all: 1, color: Colors.lightGray, style: OutlineStyle.solid, radius: 7 })
             .setPadding({ all: 7 })
             .setFont(Fonts.inherit)
-            .setSize({ width: 210 })
             .setBackground({ color: Colors.white })
             .setForeground({ color: Colors.black })
-            .setCSSProperty({ property: "overflow", value: "hidden" })
-            .setHandlerFor({ event: "input", handler: eventInfo => {
-                if ((eventInfo.target.innerText === "") !== this.state.get("empty")) {
-                    this.state.set("empty", eventInfo.target.innerText === "")
-                }
-            }})
-            .setWhiteSpaceStyle(this.multiline ? WhiteSpaceStyle.default : WhiteSpaceStyle.noWrap)
-            .setSize({ width: 150 })
+            .applyCSS({ resize: "none", outline: "none" })
+            .setAttributes({ placeholder: this.placeholder })
     }
 
     /**
-     * A method to set the white space showing style
-     * @param {Symbol} style A member of the WhiteSpaceStyle enum
+     * A method to set the text white space showing style
+     * @param {Symbol} style Item of the WhiteSpaceStyle enum
      */
     setWhiteSpaceStyle(style) {
         if (WhiteSpaceStyle.contains(style)) {
             this.styles.whiteSpace = whiteSpaceStyleToCssValue(style)
         }
-
+        
         return this
     }
 
-    getInitialState() {
-        var state = super.getInitialState()
-        state.empty = true
-        return state
-    }
-
     getBody () {
-        var result = (
-            new ZStack([
-                new VNode({
-                    tag: "div",
-                    attributes: {
-                        contenteditable: true
-                    },
-                    styles: {
-                        outline: "none",
-                        border: "none",
-                        width: "100%",
-                        height: this.multiline ? "100%" : "1em",
-                        whiteSpace: this.styles.whiteSpace
-                    },
-                    events: this.events
-                }),
-                new ZStack([
-                    new Text(this.placeholder)
-                        .setCSSProperty({ property: "overflow", value: "hidden" })
-                        .setMaxSize({ width: percents(100) })
-                        .setForeground({ color: Colors.lightGray })
-                ])
-                    .setPositioning({ type: Positioning.absolute, top: 0, left: 0 })
-                    .setMaxSize({ width: percents(100) })
-                    .setPadding({ 
-                        left: this.styles.paddingLeft || this.styles.padding, 
-                        top: this.styles.paddingTop || this.styles.padding,
-                        right: this.styles.paddingRight || this.styles.padding,
-                        bottom: this.styles.paddingBottom || this.styles.padding
-                    })
-                    .setCSSProperty({ property: "pointerEvents", value: "none" })
-                    .setCSSProperty({ property: "boxSizing", value: "border-box" })
-                    .setCSSProperty({ property: "display", value: (this.state.get("empty") ? "block" : "none") })
-            ])
-        )
-        
-        result.styles = Object.assign(result.styles, this.styles)
-        result.attributes = Object.assign(result.styles, this.attributes)
-
+        var result = super.getBody()
+        result.tag = (this.multiline ? "textarea" : "input")
         return result
     }
 }

@@ -47,6 +47,7 @@ export class Worker {
         if (typeof func === "function") {
             workQueue.push(func)
             requestDoingWork()
+            return workQueue[workQueue.length - 1]
         }
     }
 }

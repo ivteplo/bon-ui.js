@@ -13,8 +13,8 @@ import { Positioning, positioningToCssValue } from "../Values/Positioning"
 import { VNode, VNodeType } from "../VirtualDOM/VNode"
 import { Reconciler } from "../VirtualDOM/Reconciler"
 import { Length, pixels } from "../Values/Length"
-import { ViewState } from "./ViewState"
 import { Color } from "../Values/Color"
+import { State } from "../State/State"
 import { Font } from "../Values/Font"
 import { Worker } from "../Worker"
 
@@ -47,16 +47,54 @@ export class View {
         this.styles = {}
         this.events = {}
         this.attributes = {}
-        this.state = new ViewState()
         this.options = options || {}
-        this.restoreState()
+        this.preferForceInvalidation = false
+
+        this.state = new State((state = this.getInitialState(), action) => {
+            switch (action.type) {
+                case "set":
+                    return Object.assign(state, action.value)
+                default:
+                    return state
+            }
+        })
+
+        this.state.subscribe(() => {
+            if (this.preferForceInvalidation) {
+                this.forceInvalidate()
+            } else {
+                this.invalidate()
+            }
+        })
+
+        this.state.set = (keys) => {
+            this.state.dispatch({ type: "set", value: keys })
+        }
+
+        this.state.get = (key) => {
+            return this.state._currentState[key]
+        }
         
         Object.defineProperty(this, "mounted", {
-            get: () => {
-                return this.lastVNode instanceof VNode && this.lastVNode.dom instanceof Node
-            },
+            get: () => this.lastVNode instanceof VNode && this.lastVNode.dom instanceof Node,
             set: () => {}
         })
+    }
+
+    /**
+     * Method to set the prefered invalidation mode to force (when state is changed, view will update without scheduling)
+     */
+    preferForceInvalidation () {
+        this.preferForceInvalidation = true
+        return this
+    }
+
+    /**
+     * Method to set the prefered invalidation mode to scheduled (when state is changed, view will update with scheduling)
+     */
+    preferScheduledInvalidation () {
+        this.preferForceInvalidation = false
+        return this
     }
 
     /**
@@ -90,27 +128,6 @@ export class View {
     }
 
     /**
-     * A method to restore the initial state
-     */
-    restoreState () {
-        this.state.restore()
-        var initialState = this.getInitialState()
-        if (typeof initialState === "object") {
-            for (let key in initialState) {
-                let response = this.state.set(key, initialState[key])
-
-                if (!response.updated) {
-                    throw new Error(response.toString())
-                }
-            }
-        }
-
-        this.state.setChangeHandler(() => {
-            this.invalidate()
-        })
-    }
-
-    /**
      * A method that returns the body (content) of the view
      * @param {String} [side] Side of the rendering (`"server"`, `"client"` etc.)
      */
@@ -129,17 +146,35 @@ export class View {
     /**
      * A method called after mounting
      */
-    handleMount() {}
+    handleMount() {
+        if (this.events.mount) {
+            this.events.mount.forEach(handler => {
+                handler(this)
+            })
+        }
+    }
 
     /**
      * A method called before unmounting
      */
-    handleUnmount() {}
+    handleUnmount() {
+        if (this.events.unmount) {
+            this.events.unmount.forEach(handler => {
+                handler(this)
+            })
+        }
+    }
 
     /**
      * A method called after invalidation
      */
-    handleInvalidation() {}
+    handleInvalidation() {
+        if (this.events.invalidation) {
+            this.events.invalidation.forEach(handler => {
+                handler(this)
+            })
+        }
+    }
 
     /**
      * A method to mount the view
@@ -241,11 +276,10 @@ export class View {
 
     /**
      * A method to set the handler for the event
-     * @param {Object}      options
-     * @param {String}      [options.event]       Name of an event for which to add handler
-     * @param {Function}    [options.handler]     Function that will be called after event happened
+     * @param {String}      event       Name of an event for which to add handler
+     * @param {Function}    handler     Function that will be called after event happened
      */
-    setHandlerFor ({ event, handler }) {
+    addHandlerFor (event, handler) {
         if (isString(event) && typeof handler === "function") {
             if (!(event in this.events)) {
                 this.events[event] = []
@@ -475,28 +509,28 @@ export class View {
     }
 
     /**
-     * A method to set the value for the CSS property of the View
-     * @param {Object}          options
-     * @param {Length|Number}   [options.property]      Property name
-     * @param {Length|Number}   [options.value]         Property value
+     * A method to apply CSS styles to the view
+     * @param {Object} properties Object with CSS properties and their values
      */
-    setCSSProperty({ property, value }) {
-        if (isString(property) && isString(value)) {
-            this.styles[property] = value
+    applyCSS (properties) {
+        for (let property in properties) {
+            if (isString(property) && isString(properties[property])) {
+                this.styles[property] = properties[property]
+            }
         }
 
         return this
     }
 
     /**
-     * A method to set the attribute for the View
-     * @param {Object}          options
-     * @param {Length|Number}   [options.name]      Attribute name
-     * @param {Length|Number}   [options.value]     Attribute value
+     * A method to set the attributes for the View
+     * @param {Object} attributes Object with HTML attributes and their values
      */
-    setAttribute({ name, value }) {
-        if (isString(name) && isString(value)) {
-            this.attributes[name] = value
+    setAttributes(attributes) {
+        for (let name in attributes) {
+            if (isString(name) && isString(attributes[name])) {
+                this.attributes[name] = attributes[name]
+            }
         }
 
         return this
@@ -519,7 +553,7 @@ export class View {
             this.attributes = Object.assign(this.styles, typeof view.styles === "object" ? view.attributes : {})
 
             for (let i in view.events) {
-                this.setHandlerFor({ event: i, handler: view.events[i] })
+                this.addHandlerFor(i, view.events[i])
             }
 
             if (view.key) {
@@ -536,7 +570,7 @@ export class View {
     applyViewHandlers(view) {
         if (view instanceof View) {
             this.handleMount = view.handleMount
-            this.handleInvalidate = view.handleInvalidate
+            this.handleInvalidation = view.handleInvalidation
             this.handleUnmount = view.handleUnmount
         }
 

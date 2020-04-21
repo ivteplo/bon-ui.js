@@ -17,9 +17,7 @@ import { View, Text } from "../Sources/BonUI"
 
 class AppView extends View {
     getInitialState () {
-        return {
-            text: "Hello world!"
-        }
+        return { text: "Hello world!" }
     }
 
     getBody () {
@@ -41,7 +39,7 @@ describe("Render", () => {
     })
     
     it("should update DOM on state change", () => {
-        content.state.set("text", "Hi!")
+        content.state.set({ text: "Hi!" })
         expect(content.lastVNode.dom.innerHTML).to.equal("Hi!")
     })
 

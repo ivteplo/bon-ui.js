@@ -16,7 +16,7 @@ import { Route } from "./Route"
  */
 export class Router extends View {
     /**
-     * @param {Route[]} routes Routes for the app
+     * @param {Route[]} routes  Routes for the app
      */
     constructor(routes) {
         super({ routes })
