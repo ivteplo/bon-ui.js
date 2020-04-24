@@ -587,7 +587,7 @@ export class View {
      * @returns {VNode}      Result of recursive rendering of view to virtual node
      */
     static renderToVNode({ view, saveVNode = false, ignoreStateChange = false, side = "client" }) {
-        let node
+        var node
 
         if (view instanceof VNode) {
             node = view

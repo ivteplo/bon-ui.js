@@ -1,5 +1,5 @@
 //
-// RenderTest.js
+// 001-RenderTest.js
 // Created on 11/01/2020
 //
 // Copyright (c) 2020 Teplovs
@@ -32,13 +32,13 @@ content.mountTo(document.body)
 
 describe("Render", () => {
 
-    it("should append child to the body", () => {
+    it("must append child to the body", () => {
         expect(content.mounted).to.equal(true)
         expect(content.lastVNode.dom.parentNode.tagName).to.equal("BODY")
         expect(content.lastVNode.dom.innerHTML).to.equal("Hello world!")
     })
     
-    it("should update DOM on state change", () => {
+    it("must update DOM on state change", () => {
         content.state.set({ text: "Hi!" })
         expect(content.lastVNode.dom.innerHTML).to.equal("Hi!")
     })

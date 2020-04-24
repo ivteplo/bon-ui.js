@@ -12,11 +12,7 @@ import { View } from "../View"
 
 function pathMatches(pathname, { path, exact }) {
     if (!path) {
-        return {
-            path: null,
-            url: pathname,
-            isExact: true
-        }
+        return { path: null, url: pathname, isExact: true }
     }
 
     const matches = new RegExp(`^${path}`).exec(pathname)
@@ -54,18 +50,15 @@ export class Route extends View {
     }
 
     getBody() {
-        const { path, exact, view } = this.options
-        const matches = pathMatches(location.pathname, { path, exact })
+        return this.options.view
+    }
 
-        if (!matches) {
-            return null
-        }
-
-        if (view instanceof View) {
-            return view
-        }
-
-        throw new Error("Expected a view to be passed")
+    /**
+     * Method to check if path passed is equal to this route path
+     * @param {String} path Current path
+     */
+    pathMatches(path) {
+        return pathMatches(path, { path: this.options.path, exact: (this.options.exact === undefined ? true : this.options.exact) })
     }
 }
 

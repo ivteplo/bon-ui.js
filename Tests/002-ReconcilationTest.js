@@ -1,5 +1,5 @@
 //
-// ReconcilationTest.js
+// 002-ReconcilationTest.js
 // Created on 17/04/2020
 //
 // Copyright (c) 2020 Teplovs
@@ -51,7 +51,7 @@ content.state.set({ text: "HI!" })
 
 describe("Reconcilation", () => {
 
-    it("should not remount items with key specified", () => {
+    it("must not remount items with key specified", () => {
     //    expect(window.mountedTimes).to.equal(2)
     })
 

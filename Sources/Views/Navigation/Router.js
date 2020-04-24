@@ -16,19 +16,18 @@ import { Route } from "./Route"
  */
 export class Router extends View {
     /**
+     * @param {String}  path    Current web path
      * @param {Route[]} routes  Routes for the app
      */
-    constructor(routes) {
-        super({ routes })
+    constructor(path, routes) {
+        super({ path, routes })
     }
 
     getBody() {
         for (let i in this.options.routes) {
-            if (this.options.routes[i] instanceof Route) {
+            if (this.options.routes[i] instanceof Route && this.options.routes[i].pathMatches(this.options.path)) {
                 let node = this.options.routes[i].getBody()
-                if (node instanceof View) {
-                    return node
-                }
+                return node
             }
         }
 
