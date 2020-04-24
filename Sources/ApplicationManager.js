@@ -27,11 +27,11 @@ export class ApplicationManager {
      * @param {String} title Title of the app
      */
     setTitle(title) {
-        var title = document.querySelector("title") || document.createElement("title")
-        title.innerText = titleStr
+        var titleTag = document.querySelector("title") || document.createElement("title")
+        titleTag.innerText = title
         
-        if (!title.parentNode) {
-            document.head.appendChild(title)
+        if (!titleTag.parentNode) {
+            document.head.appendChild(titleTag)
         }
     }
 
