@@ -578,6 +578,15 @@ export class View {
     }
 
     /**
+     * A method to make "alive" the DOM, generated using the server side rendering
+     * @param {Node} dom DOM node, generated using the server side rendering
+     */
+    hydrate(dom) {
+        const node = View.renderToVNode({ view: this, saveVNode: true })
+        node.hydrate(dom)
+    }
+
+    /**
      * A function to render view until body returns VNode
      * @param   {Object}     options
      * @param   {View|VNode} options.view                 View to render to VNode
@@ -593,26 +602,29 @@ export class View {
             node = view
         } else {
             node = view
-            let components = []
+            let views = []
             
             while (node instanceof View) {
-                components.push(node)
+                views.push(node)
 
                 if (ignoreStateChange) {
-                    let nodeClone = Object.create(node)
-                    nodeClone.state.set = () => {}
-                    node = nodeClone.getBody(side)
+                    const nodeStateSet = node.state.set
+                    node.state.set = () => {}
+                    
+                    let newNode = node.getBody(side)
+                    node.state.set = nodeStateSet
+                    node = newNode
                 } else {
                     node = node.getBody(side)
                 }
             }
 
-            if (node !== null) {
+            if (node != null) {
                 if (!(node instanceof VNode)) {
                     throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
                 }
 
-                node.component = components[components.length - 1]
+                node.view = views[views.length - 1]
                 for (let i in node.body) {
                     if (node.body[i] instanceof View || node.body[i] instanceof VNode) {
                         node.body[i] = View.renderToVNode({ view: node.body[i], saveVNode: true, ignoreStateChange: ignoreStateChange, side: side })
@@ -623,8 +635,8 @@ export class View {
             }
 
             if (saveVNode) {
-                for (let i = 0; i < components.length; ++i) {
-                    components[i].lastVNode = node
+                for (let i = 0; i < views.length; ++i) {
+                    views[i].lastVNode = node
                 }
             }
         }

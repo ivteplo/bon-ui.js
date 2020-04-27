@@ -145,6 +145,55 @@ export class VNode {
     }
 
     /**
+     * A method to make "alive" the DOM, generated using the server side rendering
+     * @param {Node} dom DOM node, generated using the server side rendering
+     */
+    hydrate(dom) {
+        if (this.type === VNodeType.tag) {
+            if (dom.tagName.toLowerCase() !== this.tag) {
+                this.toHTMLNode({ save: true })
+                dom.replaceWith(this.dom)
+            } else {
+                for (let i in this.styles) {
+                    dom.style[i] = this.styles[i]
+                }
+
+                for (let i in this.attributes) {
+                    dom.setAttribute(i, this.attributes[i])
+                }
+
+                for (let event in this.events) {
+                    for (let handler in this.events[event]) {
+                        dom.addEventListener(event, this.events[event][handler])
+                    }
+                }
+
+                if (this.body.length !== dom.childNodes.length) {
+                    dom.innerHTML = ""
+
+                    for (let i in this.body) {
+                        this.body[i].mountTo(dom)
+                    }
+                } else {
+                    for (let i in this.body) {
+                        this.body[i].hydrate(dom.childNodes[i])
+                    }
+                }
+            }
+        } else if (this.type === VNodeType.text) {
+            dom.innerValue = this.text
+        } else {
+            throw new Error("Unexpected virtual node passed")
+        }
+
+        this.dom = dom
+
+        if (this.view) {
+            this.view.lastVNode = this
+        }
+    }
+
+    /**
      * A method to convert the virtual node to HTML string
      */
     toString() {

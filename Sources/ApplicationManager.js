@@ -27,12 +27,7 @@ export class ApplicationManager {
      * @param {String} title Title of the app
      */
     setTitle(title) {
-        var titleTag = document.querySelector("title") || document.createElement("title")
-        titleTag.innerText = title
-        
-        if (!titleTag.parentNode) {
-            document.head.appendChild(titleTag)
-        }
+        this.title = String(title)
     }
 
     /**
@@ -101,6 +96,7 @@ export class ApplicationManager {
         return (
             this.loadFonts()
                 .then(() => {
+                    document.head.title.innerText = this.title
                     this.loadView()
                 })
                 .catch(error => {
