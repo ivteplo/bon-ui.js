@@ -33,4 +33,4 @@ function print(text, color = null) {
 }
 
 print("\nThank you for using Bon UI", colors.fgCyan)
-print("Happy coding!\n", colors.fgYellow)
+print("Happy hacking!\n", colors.fgYellow)
