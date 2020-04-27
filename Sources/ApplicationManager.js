@@ -96,12 +96,11 @@ export class ApplicationManager {
         return (
             this.loadFonts()
                 .then(() => {
-                    document.head.title.innerText = this.title
+                    document.head.title = this.title
                     this.loadView()
                 })
                 .catch(error => {
-                    console.error("Error loading application")
-                    console.trace(error)
+                    console.error("Error loading application: ", error)
                 })
         )
     }
