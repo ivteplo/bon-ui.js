@@ -25,5 +25,12 @@ module.exports = [
             name: "BonUI",
             file: path.join(__dirname, "./Distribution/BonUI.umd.js")
         }
+    },
+    {
+        input: path.join(__dirname, "./Sources/BonUI.js"),
+        output: {
+            format: "cjs",
+            file: path.join(__dirname, "./Distribution/BonUI.cjs.js")
+        }
     }
 ]
