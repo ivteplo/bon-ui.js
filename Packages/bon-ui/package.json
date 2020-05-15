@@ -1,0 +1,55 @@
+{
+  "name": "@teplovs/bon-ui",
+  "version": "0.1.6-alpha",
+  "description": "A new JavaScript framework for developing powerful web applications",
+  "author": "Teplovs",
+  "license": "Apache-2.0",
+  "keywords": [
+    "Teplovs",
+    "UI",
+    "Bon UI",
+    "UX",
+    "User Interface",
+    "Web application",
+    "Framework",
+    "Declarative syntax"
+  ],
+  "private": false,
+  "main": "Distribution/BonUI.cjs.js",
+  "module": "Distribution/BonUI.esm.js",
+  "scripts": {
+    "build:source": "rollup -c Config/rollup.config.js",
+    "test": "mocha 'Tests/*.js' --require esm",
+    "build:docs": "jsdoc --readme Config/DOCUMENTATION_README.md -c Config/jsdoc.json",
+    "build": "npm run build:source && npm run test && npm run build:docs",
+    "watch": "rollup -c Config/rollup.config.js --watch"
+  },
+  "devDependencies": {
+    "babel-minify": "^0.5.1",
+    "better-docs": "^1.4.7",
+    "browser-env": "^3.3.0",
+    "chai": "^4.2.0",
+    "esm": "^3.2.25",
+    "jsdoc": "^3.6.3",
+    "mocha": "^7.1.1",
+    "rollup": "^1.32.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teplovs/bon-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/teplovs/bon-ui/issues"
+  },
+  "homepage": "https://github.com/teplovs/bon-ui#readme",
+  "dependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@purtuga/esm-webpack-plugin": "^1.2.1",
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
+    "make-dir": "^3.1.0",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.43.0"
+  }
+}

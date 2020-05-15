@@ -1,0 +1,24 @@
+{
+  "name": "create-bon-ui-app",
+  "version": "0.1.0-alpha",
+  "description": "Command for creating Bon UI applications",
+  "main": "App.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "author": "Teplovs",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
+    "cpy": "^8.1.0",
+    "cross-spawn": "^7.0.2",
+    "error": "^10.3.0",
+    "got": "^11.1.0",
+    "make-dir": "^3.1.0",
+    "prompts": "^2.3.2",
+    "tar": "^6.0.2",
+    "validate-npm-package-name": "^3.0.0"
+  },
+  "devDependencies": {}
+}
