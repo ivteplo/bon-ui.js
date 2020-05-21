@@ -1,9 +1,16 @@
-<h1 align="center">Bon UI</h1>
+<h1 align="center">
+    Bon UI
+</h1>
+
+<div align="center">
+    <img src="logo.png" alt="Bon UI logo" height="150">
+</div>
+
 <div align="center">
     <strong>A framework with declarative syntax for developing UI for web apps</strong>
 </div>
 
-<div>
+<div align="center">
     <!-- Current version on NPM -->
     <a href="https://npmjs.org/package/@teplovs/bon-ui">
         <img src="https://img.shields.io/npm/v/@teplovs/bon-ui?style=for-the-badge" alt="Latest avaliable version on NPM">

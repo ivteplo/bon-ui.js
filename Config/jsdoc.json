@@ -12,8 +12,7 @@
     "opts": {
         "template": "node_modules/better-docs",
         "encoding": "utf8",
-        "destination": "Documentation/",
-        "tutorials": "../../Tutorials"
+        "destination": "Documentation/"
     }
 }
 

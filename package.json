@@ -20,7 +20,7 @@
   "scripts": {
     "build:source": "rollup -c Config/rollup.config.js",
     "test": "mocha 'Tests/*.js' --require esm",
-    "build:docs": "jsdoc --readme Config/DOCUMENTATION_README.md -c Config/jsdoc.json",
+    "build:docs": "jsdoc --readme Config/docs.md -c Config/jsdoc.json",
     "build": "npm run build:source && npm run test && npm run build:docs",
     "watch": "rollup -c Config/rollup.config.js --watch"
   },
