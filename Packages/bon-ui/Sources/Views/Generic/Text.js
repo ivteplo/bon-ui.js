@@ -13,8 +13,6 @@ var defaultSelectable = false
 
 /**
  * A class that is used to represent the text
- * @class
- * @extends View
  */
 export class Text extends View {
     /**
@@ -28,10 +26,11 @@ export class Text extends View {
     }
 
     /**
-     * @param {string} text 
+     * @param {string} text
      */
     constructor (text) {
-        super({ text })
+        super({ text: String(text) })
+
         this.selectable(defaultSelectable)
             .offset({ all: 0 })
             .padding({ all: 0 })
@@ -86,3 +85,4 @@ export class Text extends View {
         return vNode
     }
 }
+

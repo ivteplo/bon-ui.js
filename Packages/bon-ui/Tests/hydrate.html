@@ -13,39 +13,53 @@
 		<script>
             //eruda.init()
 
-			const { View, Text, ApplicationManager } = BonUI
+			const { View, Text, ApplicationManager, Colors } = BonUI
 
             class AppView extends View {
                 initialState() {
                     return { text: "Hello world" }
                 }
 
-                body() {
+                body(side) {
+                    if (side === "client") {
+                        return (
+                            new Text(this.state.get("text"))
+                                .foreground({ color: Colors.vividOrangePeel })
+                                .handle("click", () => {
+                                    this.state.set({ text: "Hi!" })
+                                })
+                        )
+                    }
+
                     return (
-                        new Text(this.state.get("text"))
-                            .handle("click", () => {
-                                this.state.set({ text: "Hi!" })
-                            })
+                        new Text("Loading...")
+                            .foreground({ color: Colors.gray })
+                            .setAttributes({ "class": "my-text" })
                     )
                 }
             }
 
             class AppManager extends ApplicationManager {
+                initialize() {
+                    this.setView(new AppView({ pathname: location.pathname }))
+                        .setTitle("Bon UI - Hello World!")
+                        .setThemeColor(Colors.vividOrangePeel)
+                }
+
                 loadApp() {
                     AppManager.normalizeDocumentStyles({ flexBody: true })
-                    super.loadApp()
+                    const rootNode = document.querySelector("#root")
+                    rootNode.innerHTML = this.getViewString()
+                    const ssrNode = rootNode.children[0]
+                    setTimeout(() => {
+                        super.loadApp({ ssrNode })
+                    }, 1000)
                 }
             }
 
             const appManager = new AppManager()
             window.addEventListener("load", () => {
-                appManager.setView(new AppView({ pathname: location.pathname }))
-                appManager.setTitle("Bon UI - Hello World!")
-
-                document.querySelector("#root").innerHTML = appManager.view.toString()
-                
-                AppManager.normalizeDocumentStyles({ flexBody: true })
-                appManager.view.hydrate(document.querySelector("#root").children[0])
+                appManager.loadApp()
             })
 		</script>
 	</body>

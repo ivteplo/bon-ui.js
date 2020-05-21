@@ -6,6 +6,7 @@
 // Views
     // Core
     export * from "./State"
+    export * from "./Event"
     export * from "./Views/View"
 
     // Generic

@@ -371,6 +371,7 @@ export class ApplicationManager {
      * A function that makes the page look better
      * @param {Object}  options
      * @param {Boolean} options.applyFlexToBody Applies the `display: flex` to the body if `true`
+     * @todo replace to make support for server side rendering and to use it as class method
      */
     static normalizeDocumentStyles({ applyFlexToBody = true }) {
         if (!document.body) {

@@ -1,22 +1,36 @@
-# Bon UI
-A framework with declarative syntax for developing UI for web apps
-<div style="display: flex; justify-content: center"><img width="150" alt="Bon UI Logo" src="bon-ui-logo.png"></div>
+<h1 align="center">Bon UI</h1>
+<div align="center">
+    <strong>A framework with declarative syntax for developing UI for web apps</strong>
+</div>
+
+<div>
+    <!-- Current version on NPM -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/npm/v/@teplovs/bon-ui?style=for-the-badge" alt="Latest avaliable version on NPM">
+    </a>
+    <!-- Bundle size -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/bundlephobia/min/@teplovs/bon-ui?style=for-the-badge" alt="Bundle size of the latest avaliable version on NPM">
+    </a>
+    <!-- Downloads -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/npm/dt/@teplovs/bon-ui?style=for-the-badge" alt="Downloads count">
+    </a>
+</div>
 
 ## :heavy_check_mark: Features
 ### Component-based
 You can build your own reusable components or use built-in.
 ```javascript
-export class Feature extends View {
+class Feature extends View {
     body() {
-        const { title, description } = this.options
-
         return (
             new VStack([
-                new Text(title)
+                new Text(this.options.title)
                     .font(Fonts.title.with({ weight: Weight.bold }))
                     .offset({ bottom: 20 }),
 
-                description
+                this.options.description
                     .offset({ bottom: 20 })
             ])
                 .padding({ all: 10 })
@@ -52,7 +66,7 @@ class Header extends View {
 ### States system
 Each component has it's own state. When you update the state, the reconciler will automaticly update the DOM.
 ```javascript
-class App extends View {
+class AppView extends View {
     initialState() {
         return { counter: 1 }
     }
@@ -75,12 +89,10 @@ class App extends View {
 }
 ```
 
-## Getting started with Bon UI
-There is a Medium post that describes how to work with Bon UI. You can read it [here](https://link.medium.com/zuF8phk864)
-
 ## Documentation
 You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website.
 
 ## :exclamation:Important notes
 - This is the alpha version of framework
 - Please, contact us if you wish us to add something to the framework or found a bug
+

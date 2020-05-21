@@ -7,11 +7,7 @@
 	</head>
 	<body>
 		<script src="../Distribution/BonUI.umd.js"></script>
-        <!-- FOR TESTING FROM SMARTPHONE/TABLET -->
-        <!--<script src="https://cdn.jsdelivr.net/npm/eruda"></script>-->
 		<script>
-            //eruda.init()
-
 			const { Fonts, View, Button, Text, Alignment, State, ApplicationManager, VStack, TextBox, percents, viewportHeight, Colors, HStack } = BonUI
 
             var key = 0
@@ -40,6 +36,11 @@
             const todoState = new State(todoReducer)
 
 			class AppView extends View {
+                constructor () {
+                    super()
+                    this.textBox = null
+                }
+
 				body() {
                     return (
                         new VStack([
@@ -49,21 +50,19 @@
                                 .offset({ top: 10, bottom: 10 })
                                 .setKey("logo"),
 
-                            new TextBox({ placeholder: "What do I have to do?", multiline: false })
-                                .handle("keyup", event => {
+                            new TextBox({ placeholder: "What do I have to do?", multiline: true })
+                                .handle("input", (event) => {
                                     this.currentInput = event.target.value
                                 })
-                                .handle("invalidation", view => {
-                                    if (view.lastVNode.dom) {
-                                        view.lastVNode.dom.value = ""
-                                    }
+                                .handle("mounting", (event, view) => {
+                                    this.textBox = view
                                 })
                                 .setKey("input")
                                 .padding({ all: 30 })
                                 .outline({ all: 0 }),
                             
                             new Button(
-                                new Text("Add new todo")
+                                new Text("Add todo")
                                     .alignment(Alignment.start)
                             )
                                 .padding({ all: 30 })
@@ -74,6 +73,7 @@
                                         }})
                                         
                                         this.currentInput = ""
+                                        this.textBox.dom.value = ""
                                     }
                                 })
                                 .setKey("button-todo"),
@@ -103,7 +103,7 @@
 			class AppManager extends ApplicationManager {
                 initialize() {
                     this.setView(new AppView())
-                        .setIcon("favicon.ico", { ico: true })
+                        .setIcon("./favicon.ico", { ico: true })
                         .setTitle("Bon UI - Test")
                 }
 
@@ -117,10 +117,9 @@
 				}
 			}
 
-			const appManager = new AppManager()
-            window.appManager = appManager
+            window.appManager = new AppManager()
 			window.addEventListener("load", () => {
-				appManager.loadApp()
+				window.appManager.loadApp()
 			})
 		</script>
 	</body>

@@ -12,6 +12,7 @@ import { Color } from "../Values/Color"
 import { Font } from "../Values/Font"
 import { Worker } from "../Worker"
 import { State } from "../State"
+import { Event } from "../Event"
 
 // function Reconciler.updateVNodeDOM is described after the class View
 
@@ -69,12 +70,22 @@ export class View {
         this.state.get = (key) => {
             return this.state._currentState[key]
         }
-        
-        Object.defineProperty(this, "isMounted", {
-            get: () => this.lastVNode instanceof VNode && this.lastVNode.dom instanceof Node,
-            set: () => {}
-        })
+
+        this.initialize()
     }
+
+    get dom () {
+        return this.isMounted ? this.lastVNode.dom : null
+    }
+
+    get isMounted () {
+        return this.lastVNode instanceof VNode && this.lastVNode.dom instanceof Node
+    }
+
+    /**
+     * Function that is called after the constructor
+     */
+    initialize () {}
 
     /**
      * Method to set the prefered invalidation mode to force (when state is changed, view will update without scheduling)
@@ -158,7 +169,10 @@ export class View {
     handleMounting() {
         if (this._handlers.mounting) {
             this._handlers.mounting.forEach(handler => {
-                handler(this)
+                handler(new Event("mounting", {
+                    view: this,
+                    dom: this.dom
+                }), this)
             })
         }
     }
@@ -169,7 +183,10 @@ export class View {
     handleUnmounting() {
         if (this._handlers.unmounting) {
             this._handlers.unmounting.forEach(handler => {
-                handler(this)
+                handler(new Event("unmounting", {
+                    view: this,
+                    dom: this.dom
+                }), this)
             })
         }
     }
@@ -180,7 +197,10 @@ export class View {
     handleInvalidation() {
         if (this._handlers.invalidation) {
             this._handlers.invalidation.forEach(handler => {
-                handler(this)
+                handler(new Event("invalidation", {
+                    view: this,
+                    dom: this.dom
+                }), this)
             })
         }
     }
@@ -191,7 +211,10 @@ export class View {
     handleHydration() {
         if (this._handlers.hydration) {
             this._handlers.hydration.forEach(handler => {
-                handler(this)
+                handler(new Event("hydration", {
+                    view: this,
+                    dom: this.dom
+                }), this)
             })
         }
     }
@@ -296,8 +319,8 @@ export class View {
 
     /**
      * A method to set the handler for the event
-     * @param {String}      event       Name of an event for which to add handler
-     * @param {Function}    handler     Function that will be called after event happened
+     * @param {String|String[]} event       Name of an event for which to add handler or array of event names
+     * @param {Function}        handler     Function that will be called after event happened
      */
     handle (event, handler) {
         if (isString(event) && typeof handler === "function") {
@@ -305,7 +328,13 @@ export class View {
                 this._handlers[event] = []
             }
 
-            this._handlers[event].push(handler)
+            this._handlers[event].push((event) => {
+                handler(event, this)
+            })
+        } else if (Array.isArray(event)) {
+            event.forEach(eventName => {
+                this.handle(eventName, handler)
+            })
         }
 
         return this
@@ -665,5 +694,53 @@ export class View {
 
         return node
     }
+}
+
+/**
+ * Function to create a view class
+ * @param {Object}              options
+ * @param {Function}            [options.body]                  function that returns the view/virtual node that represents the view
+ * @param {Function}            [options.initialize]            function that is called after the constructor
+ * @param {Function|Object}     [options.initialState]          function that returns the initial state
+ * @param {Function}            [options.handleMounting]        function that is called when the view was mounted
+ * @param {Function}            [options.handleUnmounting]      function that is called when the view was unmounted
+ * @param {Function}            [options.handleInvalidation]    function that is called when the view was invalidated
+ * @param {Function}            [options.handleHydration]       function that is called when the view was hydrated
+ */
+export function createViewClass(options) {
+    const viewClass = class extends View {}
+    if (options.body instanceof Function) {
+        viewClass.prototype.body = options.body
+    }
+
+    if (options.initialize instanceof Function) {
+        viewClass.prototype.initialize = options.initialize
+    }
+
+    if (options.initialState instanceof Function) {
+        viewClass.prototype.initialState = options.initialState
+    } else if (typeof options.initialState === "object") {
+        viewClass.prototype.initialState = function () {
+            return options.initialState
+        }
+    }
+
+    if (options.handleMounting instanceof Function) {
+        viewClass.prototype.handleMounting = options.handleMounting
+    }
+
+    if (options.handleUnmounting instanceof Function) {
+        viewClass.prototype.handleUnmounting = options.handleUnmounting
+    }
+
+    if (options.handleInvalidation instanceof Function) {
+        viewClass.prototype.handleInvalidation = options.handleInvalidation
+    }
+
+    if (options.handleHydration instanceof Function) {
+        viewClass.prototype.handleHydration = options.handleHydration
+    }
+
+    return viewClass
 }
 

@@ -31,7 +31,7 @@ describe("Server side rendering", () => {
         expect(result).to.equal(`<p style='user-select:none;margin:0px;padding:0px;'>Hello world!</p>`)
     })
     
-    it("must not update state when rendering from server, and not set mounted to true", () => {
+    it("must not update state when rendering from server, and not set isMounted to true", () => {
         expect(content.state.get("text")).to.equal("Hello world!")
         expect(content.isMounted).to.equal(false)
     })

@@ -3,6 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { Reconciler } from "./Reconciler"
 import { View } from "../Views/View"
 import { Enum } from "../Values/Enum"
 
@@ -142,48 +143,12 @@ export class VNode {
     /**
      * A method to make "alive" the DOM, generated using the server side rendering
      * @param {Node} dom DOM node, generated using the server side rendering
-     * @todo Make better
      */
     hydrate(dom) {
-        if (this.type === VNodeType.tag) {
-            if (dom.tagName.toLowerCase() !== this.tag) {
-                this.toHTMLNode({ save: true })
-                dom.replaceWith(this.dom)
-            } else {
-                for (let i in this.styles) {
-                    dom.style[i] = this.styles[i]
-                }
-
-                for (let i in this.attributes) {
-                    dom.setAttribute(i, this.attributes[i])
-                }
-
-                for (let event in this.handlers) {
-                    for (let handler in this.handlers[event]) {
-                        dom.addEventListener(event, this.handlers[event][handler])
-                    }
-                }
-
-                if (this.body.length !== dom.childNodes.length) {
-                    dom.innerHTML = ""
-
-                    for (let i in this.body) {
-                        this.body[i].mountTo(dom)
-                    }
-                } else {
-                    for (let i in this.body) {
-                        this.body[i].hydrate(dom.childNodes[i])
-                    }
-                }
-            }
-        } else if (this.type === VNodeType.text) {
-            dom.innerValue = this.text
-        } else {
-            throw new Error("Unexpected virtual node passed")
-        }
+        var lastVNode = generateVNodeFromDOMNode(dom)
+        Reconciler.updateVNodeDOM(lastVNode, this)
 
         this.dom = dom
-
         if (this.view) {
             this.view.lastVNode = this
         }
@@ -191,7 +156,6 @@ export class VNode {
 
     /**
      * A method to convert the virtual node to HTML string
-     * @todo Add "key" support
      */
     toString() {
         if (this.type === VNodeType.text) {
@@ -202,15 +166,17 @@ export class VNode {
         var stylesString = ""
         var bodyString = ""
 
+        this.attributes.dataKey = this.key
+
         for (let attribute in this.attributes) {
             if (this.attributes[attribute] !== null && this.attributes[attribute] !== undefined) {
-                attributesString += `${attribute.toString()}="${this.attributes[attribute].toString()}"`
+                attributesString += `${camelCaseToKebabCase(attribute.toString())}="${this.attributes[attribute].toString()}"`
             }
         }
 
         for (let style in this.styles) {
             if (this.styles[style] !== null && this.styles[style] !== undefined) {
-                stylesString += camelCaseToCSSStyle(style.toString()) + ":" + replaceQuotes(this.styles[style].toString()) + ";"
+                stylesString += camelCaseToKebabCase(style.toString()) + ":" + replaceQuotes(this.styles[style].toString()) + ";"
             }
         }
 
@@ -227,7 +193,8 @@ export class VNode {
     }
 }
 
-function camelCaseToCSSStyle(str) {
+// kebab case is something like "hello-world"
+function camelCaseToKebabCase(str) {
     // Convert words to lower case and add hyphens around it (for stuff like "&")
     return str.replace(/[A-Z][a-z]*/g, str => '-' + str.toLowerCase() + '-')
             // remove double hyphens
@@ -240,4 +207,48 @@ function replaceQuotes(str) {
     return str.replace(/\\'/g, "'").replace(/'/g, '"').replace(/\\"/g, '"').replace(/"/g, "'")
 }
 
+function generateVNodeFromDOMNode(dom) {
+    var vNodeOptions = {}
+    if (dom instanceof Node && dom.nodeName !== "#text") {
+        vNodeOptions.tag = dom.tagName.toLowerCase()
+        vNodeOptions.attributes = {}
+        vNodeOptions.styles = {}
+        vNodeOptions.body = []
+        
+        for (let i = 0; i < dom.attributes.length; ++i) {
+            let attribute = dom.attributes.item(i)
+            if (attribute.nodeName === "style") {
+                let styles = attribute.nodeValue.split(";").filter(Boolean)
+                for (let i in styles) {
+                    let [ name, value ] = styles[i].split(":")
+                    name = name.trim()
+                    value = value.trim()
+                    vNodeOptions.styles[name] = value
+                }
+            } else if (attribute.nodeName === "data-key") {
+                vNodeOptions.key = attribute.nodeValue
+                if ((+attribute.nodeValue).toString() === attribute.nodeValue) {
+                    vNodeOptions.key = +attribute.nodeValue
+                }
+            } else {
+                vNodeOptions.attributes[attribute.nodeName] = attribute.nodeValue
+            }
+        }
+
+        if (dom.childNodes) {
+            for (let i = 0; i < dom.childNodes.length; ++i) {
+                vNodeOptions.body.push(generateVNodeFromDOMNode(dom.childNodes[i]))
+            }
+        }
+    // here we are not writing "&& dom.nodeName === "#text"" because we don't need to
+    } else if (dom instanceof Node) {
+        vNodeOptions.text = dom.nodeValue
+    } else {
+        throw new Error("Unexpected node passed. Expected DOM node, got " + node)
+    }
+
+    var vNode = new VNode(vNodeOptions)
+    vNode.dom = dom
+    return vNode
+}
 
