@@ -17,12 +17,31 @@ export class VStack extends HStack {
     }
 
     /**
-     * A method to set the alignment to the specific type
+     * A method to set the alignment to the specific type (use Alignment enum items)
      * @param {Object} options
-     * @param {Symbol} options.horizontal   Item of the Alignment enum
-     * @param {Symbol} options.vertical     Item of the Alignment enum
+     * @param {Symbol} options.horizontal   alignment on the horizontal axis
+     * @param {Symbol} options.vertical     alignment on the vertical axis
+     * @param {Symbol} options.both         alignment on the vertical and horizontal axises
+     * @example
+     * class ExampleView extends View {
+     *     body () {
+     *         return (
+     *             new VStack([
+     *                 new Text("Logo")
+     *                     .font(Fonts.title.with({ size: 20 })),
+     *                 new Text("Description")
+     *                     .offset({ top: 20 })
+     *             ]).alignment({ both: Alignment.center })
+     *         )
+     *     }
+     * }
      */
-    alignment ({ horizontal, vertical }) {
+    alignment ({ horizontal, vertical, both }) {
+        if (Alignment.contains(both)) {
+            this._styles.alignItems = alignmentToCssValue(both)
+            this._styles.justifyContent = alignmentToCssValue(both)
+        }
+
         if (Alignment.contains(horizontal)) {
             this._styles.alignItems = alignmentToCssValue(horizontal)
         }
