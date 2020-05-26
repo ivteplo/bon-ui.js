@@ -51,7 +51,6 @@ export class Font {
      * @param {Length|number}   [options.size]          Size of a font
      * @param {Symbol}          [options.weight]        Weight of a font
      * @param {Symbol}          [options.fontStyle]     Style of a font
-     * @todo  Add font-style support
      */
     constructor ({ name = null, textStyle = null, size = null, weight = null, fontStyle = null  }) {
         this.name = typeof name === "string" || name instanceof String ? name.toString() : null

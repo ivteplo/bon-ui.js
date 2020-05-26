@@ -3,6 +3,10 @@
 // Licensed under the Apache License, version 2.0
 //
 
+/**
+ * @todo make the API documentation better
+ */
+
 // Views
     // Core
     export * from "./State"
@@ -14,7 +18,6 @@
     export * from "./Views/Generic/Link"
     export * from "./Views/Generic/Image"
     export * from "./Views/Generic/Control"
-    export * from "./Views/Generic/Canvas"
 
     // Navigation
     export * from "./Views/Navigation/Route"

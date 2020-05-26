@@ -341,6 +341,27 @@ export class View {
     }
 
     /**
+     * Method to remove specific handler (does not work with anonymous functions)
+     * @param {String}      event       event name
+     * @param {Function}    handler     handler to remove
+     */
+    unhandle (event, handler) {
+        if (isString(event) && event in this._handlers) {
+            if (typeof handler === "function") {
+                for (let i = this._handlers[event].length - 1; i >= 0; --i) {
+                    if (this._handlers[event][i] === handler) {
+                        this._handlers[event].splice(i, 1)
+                    }
+                }
+            } else {
+                this._handlers[event] = []
+            }
+        }
+
+        return this
+    }
+
+    /**
      * A method to set the font properties
      * @param {Font}    [font]  Font to set for the view
      */

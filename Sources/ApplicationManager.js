@@ -141,17 +141,22 @@ export class ApplicationManager {
     }
 
     /**
-     * A method to set the main view of the app
+     * A method to set the main view of the app (please, set the view only once: full support for changing view is not implemented)
      * @param {View} view View that represents the app
-     * @todo Support for removing previos view and setting a new one
      */
     setView(view) {
         if (view instanceof View) {
             this.view = view
-            this.view.handle("mounting", this.handleViewMounting.bind(this))
-            this.view.handle("unmounting", this.handleViewUnmounting.bind(this))
-            this.view.handle("invalidation", this.handleViewInvalidation.bind(this))
-            this.view.handle("hydration", this.handleViewHydration.bind(this))
+            const handlers = {
+                mounting: this.handleViewMounting.bind(this),
+                unmounting: this.handleViewUnmounting.bind(this),
+                invalidation: this.handleViewInvalidation.bind(this),
+                hydration: this.handleViewHydration.bind(this)
+            }
+            
+            for (let event in handlers) {
+                this.view.handle(event, handlers[event])
+            }
         } else {
             throw new Error("Unexpected " + typeof view + " passed. Expected view")
         }

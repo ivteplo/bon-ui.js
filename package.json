@@ -26,11 +26,9 @@
   },
   "devDependencies": {
     "babel-minify": "^0.5.1",
-    "better-docs": "^1.4.7",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "esm": "^3.2.25",
-    "jsdoc": "^3.6.3",
     "mocha": "^7.1.1",
     "rollup": "^1.32.0"
   },
