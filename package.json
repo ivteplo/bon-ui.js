@@ -20,8 +20,7 @@
   "scripts": {
     "build:source": "rollup -c Config/rollup.config.js",
     "test": "mocha 'Tests/*.js' --require esm",
-    "build:docs": "jsdoc --readme Config/docs.md -c Config/jsdoc.json",
-    "build": "npm run build:source && npm run test && npm run build:docs",
+    "build": "npm run build:source && npm run test",
     "watch": "rollup -c Config/rollup.config.js --watch"
   },
   "devDependencies": {
@@ -40,14 +39,5 @@
     "url": "https://github.com/teplovs/bon-ui/issues"
   },
   "homepage": "https://github.com/teplovs/bon-ui#readme",
-  "dependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "@purtuga/esm-webpack-plugin": "^1.2.1",
-    "chalk": "^4.0.0",
-    "commander": "^5.1.0",
-    "make-dir": "^3.1.0",
-    "rimraf": "^3.0.2",
-    "webpack": "^4.43.0"
-  }
+  "dependencies": {}
 }
