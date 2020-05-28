@@ -77,11 +77,15 @@ export class AppView extends View {
                 
                 // the button will update the state each time we click it
                 new Button(new Text("Click me!"))
-                    .setHandlerFor({ event: "click", handler: () => {
+                    .addHandlerFor("click", () => {
                         // `this.state` is the class that has got methods `get` and `set`
                         // if you want the state to automatically update, you have to use them
-                        this.state.set("clickedTimes", this.state.get("clickedTimes") + 1)
-                    }})
+                        this.state.set(
+                            {
+                                "clickedTimes", this.state.get("clickedTimes") + 1
+                            }
+                        );
+                    })
             ])
         )
     }
