@@ -82,7 +82,7 @@ export class AppView extends View {
                         // if you want the state to automatically update, you have to use them
                         this.state.set(
                             {
-                                "clickedTimes", this.state.get("clickedTimes") + 1
+                                "clickedTimes": this.state.get("clickedTimes") + 1
                             }
                         );
                     })
