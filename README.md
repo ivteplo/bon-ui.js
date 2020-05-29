@@ -32,6 +32,7 @@
     * [Using CDN](#using-cdn)
     * [Using Github Releases](#using-github-releases)
 - [Documentation](#documentation)
+- [Contributing](#contributing)
 - [Important notes](#important-notes)
 - [Special thanks](#special-thanks)
 
@@ -115,28 +116,31 @@ If your project uses project manager like npm or yarn, you can run:
 ### Using CDN
 You can use CDN like unpkg to use Bon UI on your website.
 There are different URLs depending on which module type you need:
-- UMD module: [https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.umd.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.umd.js)
-- ES6 module: [https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js)
-- CommonJS module: [https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.cjs.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.cjs.js)
+- UMD module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.umd.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.umd.js)
+- ES6 module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js)
+- CommonJS module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.cjs.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.cjs.js)
 
 To add the latest Bon UI version using `<script>` tag, add this to your HTML file:
 ```html
-<script src="https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.umd.js" crossorigin="anonymous"></script> 
+<script src="https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.umd.js" crossorigin="anonymous"></script> 
 ```
 You can download the ES6 or CommonJS module using `curl` or `wget`:
 
-`$ curl https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js --output BonUI.js`
+`$ curl https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js --output BonUI.js`
 
-`$ wget https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js --output-file BonUI.js`
+`$ wget https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js --output-file BonUI.js`
 
 (here you can replace URL with any of specified before)
 ### Using Github Releases
 Inside the [repository releases section](https://github.com/teplovs/bon-ui/releases) you can find Bon UI releases. Here are some bundles with different module types like CommonJS, UMD and ES6.
 
 ## Documentation
-You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website.
+You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website (documentation here is only for the latest published version of Bon UI).
 
 More tutorials will be created soon. Stay tuned :)
+
+## Contributing
+To get started with contributing read [this](CONTRIBUTING.md)
 
 ## Important notes
 - This is the alpha version of framework
