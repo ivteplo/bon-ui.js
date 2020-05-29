@@ -1,13 +1,15 @@
 {
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
     "env": {
-        "es6": true,
-        "browser": true
+        "browser": true,
+        "node": true,
+        "es6": true
     },
     "rules": {
-        "semi": "error",
-        "comma-spacing": "error",
-        "indent": "error",
-        "no-undef": "error",
-        "no-unused-vars": "error"
+        "semi": [ "error", "never" ]
     }
 }

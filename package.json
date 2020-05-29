@@ -1,6 +1,10 @@
 {
   "name": "@teplovs/bon-ui",
   "version": "0.1.6-alpha",
+  "main": "Node/Dist/BonUI.cjs.js",
+  "module": "Node/Dist/BonUI.esm.js",
+  "browser": "Node/Dist/BonUI.esm.js",
+  "files": [ "Node/**" ],
   "description": "A new JavaScript framework for developing powerful web applications",
   "author": "Teplovs",
   "license": "Apache-2.0",
@@ -15,23 +19,22 @@
     "Declarative syntax"
   ],
   "private": false,
-  "main": "Distribution/BonUI.cjs.js",
-  "module": "Distribution/BonUI.esm.js",
   "scripts": {
-    "build:source": "rollup -c rollup.config.js",
-    "build:minify": "minify ./Distribution/BonUI.esm.js --out-file ./Distribution/BonUI.esm.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.umd.js --out-file ./Distribution/BonUI.umd.min.js --mangle.keepClassName --sourceType module && minify ./Distribution/BonUI.cjs.js --out-file ./Distribution/BonUI.cjs.min.js --mangle.keepClassName --sourceType module",
-    "test": "mocha 'Tests/*.js' --require esm",
-    "build:docs": "jsdoc --readme DOCUMENTATION_README.md -c jsdoc.json",
-    "build": "npm run build:source && npm run build:minify && npm run test && npm run build:docs",
-    "postinstall": "node ./postinstall.js"
+    "watch:source": "rollup -c Config/rollup.config.js --watch",
+    "build:source": "rollup -c Config/rollup.config.js",
+    "test": "mocha 'Node/Tests/*.js' --require esm",
+    "build": "npm run build:source && npm test",
+    "lint": "eslint '**/*.js'",
+    "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Node/Tests/*.js' --inspect-brk --require esm",
+    "prepublish": "npm run lint && npm run build"
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "babel-minify": "^0.5.1",
-    "better-docs": "^1.4.7",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
+    "eslint": "^7.1.0",
     "esm": "^3.2.25",
-    "jsdoc": "^3.6.3",
     "mocha": "^7.1.1",
     "rollup": "^1.32.0"
   },
@@ -42,5 +45,21 @@
   "bugs": {
     "url": "https://github.com/teplovs/bon-ui/issues"
   },
-  "homepage": "https://github.com/teplovs/bon-ui#readme"
+  "homepage": "https://github.com/teplovs/bon-ui#readme",
+  "dependencies": {
+    "@purtuga/esm-webpack-plugin": "^1.2.1",
+    "chalk": "^4.0.0",
+    "commander": "^5.1.0",
+    "cpy": "^8.1.0",
+    "cross-spawn": "^7.0.3",
+    "css-loader": "^3.5.3",
+    "error": "^10.4.0",
+    "got": "^11.1.4",
+    "make-dir": "^3.1.0",
+    "prompts": "^2.3.2",
+    "style-loader": "^1.2.1",
+    "tar": "^6.0.2",
+    "validate-npm-package-name": "^3.0.0",
+    "webpack": "^4.43.0"
+  }
 }

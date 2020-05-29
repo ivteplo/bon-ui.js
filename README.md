@@ -1,32 +1,57 @@
-# Bon UI
-A framework with declarative syntax for developing UI for web apps
-<div style="display: flex; justify-content: center"><img width="150" alt="Bon UI Logo" src="bon-ui-logo.png"></div>
+<h1 align="center">
+    Bon UI
+</h1>
 
-## :heavy_check_mark: Features
+<div align="center">
+    <img src="logo.png" alt="Bon UI logo" height="150">
+</div>
+
+<div align="center">
+    <strong>A framework with declarative syntax for developing UI for web apps</strong>
+</div>
+
+<div align="center">
+    <!-- Current version on NPM -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/npm/v/@teplovs/bon-ui?style=for-the-badge" alt="Latest avaliable version on NPM">
+    </a>
+    <!-- Bundle size -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/bundlephobia/min/@teplovs/bon-ui?style=for-the-badge" alt="Bundle size of the latest avaliable version on NPM">
+    </a>
+    <!-- Downloads -->
+    <a href="https://npmjs.org/package/@teplovs/bon-ui">
+        <img src="https://img.shields.io/npm/dt/@teplovs/bon-ui?style=for-the-badge" alt="Downloads count">
+    </a>
+</div>
+
+## Table of contents
+- [Features](#features)
+- [Installation](#installation)
+    * [Using Package Manager](#using-package-manager)
+    * [Using CDN](#using-cdn)
+    * [Using Github Releases](#using-github-releases)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [Important notes](#important-notes)
+- [Special thanks](#special-thanks)
+
+## Features
 ### Component-based
 You can build your own reusable components or use built-in.
 ```javascript
-export class Feature extends View {
-    constructor({ heading, description, code }) {
-        super()
-        this.heading = heading
-        this.description = description
-        this.code = code
-    }
-
-    getBody() {
-        var { code, heading, description } = this
-
+class Feature extends View {
+    body() {
         return (
             new VStack([
-                heading
-                    .setFont(Fonts.title.with({ weight: Weight.bold }))
-                    .setOffset({ bottom: 20 }),
-                description
-                    .setOffset({ bottom: 20 }),
-                code
+                new Text(this.options.title)
+                    .font(Fonts.title)
+                    .offset({ bottom: 20 }),
+
+                this.options.description
+                    .offset({ bottom: 20 })
             ])
-                .setPadding({ all: 10 })
+                .padding({ all: 10 })
         )
     }
 }
@@ -36,21 +61,21 @@ export class Feature extends View {
 With Bon UI it is very easy to create dynamic and interactive user interfaces. Declarative syntax helps you to navigate in code and to easily understand what it does.
 ```javascript
 class Header extends View {
-    getBody () {
+    body () {
         return (
             new VStack([
-                new Image("./Images/bon-ui.png", "Logo")
-                    .setSize({ width: 200, height: 200 })
-                    .setFitType(FitType.contain),
-                new Text("Bon UI")
-                    .setFont(Fonts.largeTitle)
-                    .setOffset({ top: 10, bottom: 10 })
-                    .setForeground({ color: Colors.orange }),
-                new Text("A new framework\nfor developing web applications")
-                    .setAlignment(Alignment.center)
+                new Image(config.logo)
+                    .size({ width: 200, height: 200 })
+                    .fitType(FitType.contain),
+                new Text(config.mainTitle)
+                    .font(Fonts.largeTitle)
+                    .offset({ top: 10, bottom: 10 })
+                    .foreground({ color: Colors.orange }),
+                new Text(config.description)
+                    .alignment(Alignment.center)
             ])
-                .setAlignment({ horizontal: Alignment.center, vertical: Alignment.center })
-                .setMinSize({ height: viewportHeight(100) })
+                .alignment({ both: Alignment.center })
+                .minSize({ height: viewportHeight(100) })
         )
     }
 }
@@ -59,37 +84,69 @@ class Header extends View {
 ### States system
 Each component has it's own state. When you update the state, the reconciler will automaticly update the DOM.
 ```javascript
-class App extends View {
-    getInitialState() {
+class AppView extends View {
+    initialState() {
         return { counter: 1 }
     }
 
-    getBody() {
+    body() {
         return (
             new VStack([
                 new Text("Increment the counter by clicking the button!")
-                    .setOffset({ bottom: 20 }),
+                    .offset({ bottom: 20 }),
                 
-                new Button(new Text("Counter: " + this.state.get("counter").toString()))
-                    .setHandlerFor({ event: "click", handler: event => {
-                        this.state.set("counter", this.state.get("counter") + 1)
-                    }})
+                new Button(
+                    new Text("Counter: " + this.state.get("counter"))
+                )
+                    .handle("click", event => {
+                        this.state.set({
+                            counter: this.state.get("counter") + 1
+                        })
+                    })
             ])
         )
     }
 }
 ```
 
-## Getting started with Bon UI
-There is a Medium post that describes how to work with Bon UI. You can read it [here](https://link.medium.com/zuF8phk864)
+## Installation
+### Using Package Manager
+If your project uses project manager like npm or yarn, you can run:
+`npm install @teplovs/bon-ui --save` (`yarn add @teplovs/bon-ui` if you use yarn)
+### Using CDN
+You can use CDN like unpkg to use Bon UI on your website.
+There are different URLs depending on which module type you need:
+- UMD module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.umd.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.umd.js)
+- ES6 module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.esm.js)
+- CommonJS module: [https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.cjs.js](https://unpkg.com/@teplovs/bon-ui/Distribution/BonUI.cjs.js)
 
-## Tutorials
-There is a folder `Tutorials` in the root of this repository. Here you can find tutorials about how to work with Bon UI. Also they are avaliable on website with API documentation.
+To add the latest Bon UI version using `<script>` tag, add this to your HTML file:
+```html
+<script src="https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.umd.js" crossorigin="anonymous"></script> 
+```
+You can download the ES6 or CommonJS module using `curl` or `wget`:
 
-## API Documentation
-You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website.
+`$ curl https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js --output BonUI.js`
 
-## :exclamation:Important notes
-- Documentation is in development
+`$ wget https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js --output-file BonUI.js`
+
+(here you can replace URL with any of specified before)
+### Using Github Releases
+Inside the [repository releases section](https://github.com/teplovs/bon-ui/releases) you can find Bon UI releases. Here are some bundles with different module types like CommonJS, UMD and ES6.
+
+## Documentation
+You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website (documentation here is only for the latest published version of Bon UI).
+
+More tutorials will be created soon. Stay tuned :)
+
+## Contributing
+To get started with contributing read [this](CONTRIBUTING.md)
+
+## Important notes
 - This is the alpha version of framework
 - Please, contact us if you wish us to add something to the framework or found a bug
+
+## Special thanks
+Special thanks to:
+- Ann-Cathrin Klose for writing [post about Bon UI in German on entwickler.de](https://entwickler.de/online/javascript/bon-ui-framework-react-579930406.html) (the first post written by other developers)
+
