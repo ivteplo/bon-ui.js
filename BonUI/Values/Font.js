@@ -102,31 +102,29 @@ export class Font {
 
     toString () {
         // font-style font-variant font-weight font-size/line-height font-family
-       var result = ""
+        var result = ""
 
-       if (FontStyle.contains(this.fontStyle)) {
-           result += fontStyleToCssValue(this.fontStyle) + " "
-       }
+        if (FontStyle.contains(this.fontStyle)) {
+            result += fontStyleToCssValue(this.fontStyle) + " "
+        }
 
-       if (Weight.contains(this.weight)) {
-           result += weightToCssValue(this.weight) + " "
-       } else {
-           result += "inherit "
-       }
+        if (Weight.contains(this.weight)) {
+            result += weightToCssValue(this.weight) + " "
+        }
 
-       if (this.size instanceof Length) {
-           result += this.size + " "
-       } else {
-           result += "inherit "
-       }
+        if (this.size instanceof Length || typeof this.size === "number") {
+            result += (this.size instanceof Length ? this.size : pixels(this.size)) + " "
+        } else {
+            result += "1em "
+        }
 
-       if (typeof this.name === "string") {
-           result += this.name
-       } else {
-           result += "inherit"
-       }
+        if (typeof this.name === "string") {
+            result += this.name
+        } else {
+            result += "inherit "
+        }
 
-       return result
+        return result.trim()
     }
 }
 
