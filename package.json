@@ -28,17 +28,15 @@
     "watch:source": "rollup -c Config/rollup.config.js --watch",
     "build:source": "rollup -c Config/rollup.config.js",
     "test": "mocha 'Node/Tests/*.js' --require esm",
-    "build": "npm run build:source && npm test && npm run build:docs",
+    "build": "npm run build:source && npm test",
     "lint": "eslint 'BonUI/**/*.js' 'Deno/**/*.js' 'Node/**/*.js' 'UITest/**/*.js'",
-    "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Node/Tests/*.js' --inspect-brk --require esm",
-    "build:docs": "documentation build BonUI.js BonUI/** -f html -o Docs/api/"
+    "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Node/Tests/*.js' --inspect-brk --require esm"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "babel-minify": "^0.5.1",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
-    "documentation": "^13.0.0",
     "eslint": "^7.1.0",
     "esm": "^3.2.25",
     "mocha": "^7.1.1",
@@ -56,16 +54,7 @@
     "@purtuga/esm-webpack-plugin": "^1.2.1",
     "chalk": "^4.0.0",
     "commander": "^5.1.0",
-    "cpy": "^8.1.0",
-    "cross-spawn": "^7.0.3",
-    "css-loader": "^3.5.3",
-    "error": "^10.4.0",
-    "got": "^11.1.4",
     "make-dir": "^3.1.0",
-    "prompts": "^2.3.2",
-    "style-loader": "^1.2.1",
-    "tar": "^6.0.2",
-    "validate-npm-package-name": "^3.0.0",
     "webpack": "^4.43.0"
   }
 }
