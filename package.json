@@ -10,6 +10,9 @@
   "bin": {
     "bon-ui": "Node/CLI.js"
   },
+  "exports": {
+    "./server": "./Node/Server.js"
+  },
   "description": "A new JavaScript framework for developing powerful web applications",
   "author": "Teplovs",
   "license": "Apache-2.0",
@@ -53,10 +56,12 @@
   "dependencies": {
     "@purtuga/esm-webpack-plugin": "^1.2.1",
     "chalk": "^4.0.0",
+    "chokidar": "^3.4.0",
     "commander": "^5.1.0",
     "cpy": "^8.1.0",
     "make-dir": "^3.1.0",
     "rimraf": "^3.0.2",
+    "socket.io": "^2.3.0",
     "webpack": "^4.43.0"
   }
 }

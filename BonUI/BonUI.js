@@ -11,11 +11,11 @@ export * from "./Views/View.js"
 
 // Generic
 export * from "./Views/Generic/Text.js"    
-export * from "./Views/Generic/Link.js"    
 export * from "./Views/Generic/Image.js"    
 export * from "./Views/Generic/Control.js"
 
 // Navigation
+export * from "./Views/Navigation/Link.js"    
 export * from "./Views/Navigation/Route.js"    
 export * from "./Views/Navigation/Router.js"
 

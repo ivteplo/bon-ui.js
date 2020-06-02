@@ -8,11 +8,24 @@ const rimraf = require("rimraf")
 const webpack = require("webpack")
 const makeDir = require("make-dir")
 const Helpers = require("./Helpers")
+const chokidar = require("chokidar")
+const childProcess = require("child_process")
 const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin")
 
 const writeFile = util.promisify(fs.writeFile)
 const _webpack = util.promisify(webpack)
 const _rimraf = util.promisify(rimraf)
+
+const defaultConfig = {
+    appManager: "AppManager.js",
+    env: { mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production" },
+    buildDirectory: ".build",
+    buildPublicDirectory: "public",
+    buildResourcesDirectory: "resources",
+    resourcesDirectory: "Resources",
+    bundleName: "bundle.mjs",
+    builtServerName: "Server.mjs"
+}
 
 function clearPreviousLine () {
     process.stdout.moveCursor(0, -1)
@@ -22,7 +35,7 @@ function clearPreviousLine () {
 
 class Builder {
     constructor (options) {
-        this.options = options
+        this.options = Object.assign(defaultConfig, options || {})
     }
 
     async buildProject ({ deleteBuildDirectory = true } = {}) {
@@ -122,8 +135,10 @@ class Builder {
             console.log(chalk.cyan("Generating " + this.options.builtServerName))
 
             const serverContents = `
+${this.options.env.mode === "production" ? `
 import AppManager from "./${this.options.buildPublicDirectory.trim("/")}/${this.options.bundleName.trimLeft("/")}"
-import http from "http"
+`.trim() : ""}
+import Server from "@teplovs/bon-ui/server"
 import path from "path"
 import util from "util"
 import url from "url"
@@ -136,7 +151,7 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 3000
 
 const publicPath = path.resolve(dirname, "./${this.options.buildPublicDirectory.trim("/")}")
 
-const server = http.createServer(async (request, response) => {
+const server = Server.createServer(async (request, response) => {
     try {
         process.stdout.write(\`\${request.method} - \${request.url} \`)
 
@@ -152,6 +167,10 @@ const server = http.createServer(async (request, response) => {
             response.writeHead(200)
             response.end(file, "utf8")
         } else {
+${this.options.env.mode !== "production" ? `
+            // used to not cache AppManager while development
+            const { default: AppManager } = await import("./${this.options.buildPublicDirectory.trim("/")}/${this.options.bundleName.trimLeft("/")}?time=\${Date.now()}")
+` : ""}
             const appManager = new AppManager({ path: request.url })
             const html = \`
 <!DOCTYPE html>
@@ -180,7 +199,15 @@ const server = http.createServer(async (request, response) => {
                     console.error("AppManager#loadApp has to return promise")
                 }
             })
+        </script>${this.options.env.mode === "development" ? `
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io("http://localhost:\${port}")
+            socket.on("browserReload", () => {
+                location.reload()
+            })
         </script>
+        ` : ""}
     </body>
 </html>
 \`
@@ -247,7 +274,7 @@ server.listen(port, () => {
 
     async runApp () {
         const buildDirectory = path.resolve(this.options.buildDirectory)
-        const buildPublicDirectory = path.join(buildDirectory, this.options.publicDirectory)
+        const buildPublicDirectory = path.join(buildDirectory, this.options.buildPublicDirectory)
         const buildInfoPath = path.join(buildDirectory, "BuildInfo.json")
         const bundlePath = path.join(buildPublicDirectory, this.options.bundleName)
 
@@ -268,14 +295,31 @@ server.listen(port, () => {
                 throw new Error(chalk.red(`File "${this.options.builtServerName}" is not found`))
             }
 
-            throw new Error("Not implemented")
+            const process = childProcess.fork(serverPath, {
+                env: this.options.env
+            })
+
+            process.on("error", error => {
+                throw error
+            })
+
+            process.on("exit", code => {
+                if (code !== 0) {
+                    throw new Error(chalk.red("Exit code - " + code))
+                }
+            })
         } else {
             throw new Error("Not implemented")
         }
     }
 
     async runDevServer () {
-
+        return (
+            this.buildProject({ server: true })
+               .then(() => {
+                   return this.runApp()
+               })
+        )
     }
 }
 

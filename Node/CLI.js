@@ -30,7 +30,7 @@ const commands = {
         new Command("dev")
             .description("Command to build Bon UI app")
             .action(() => {
-                command = "build"
+                command = "dev"
             })
             .option("--only-bundle", "Generate only bundle for the client app")
             .option("--no-server", "Generate HTML for the app without server")
@@ -91,24 +91,13 @@ if (!command || !(command in commands)) {
     process.exit(0)
 }
 
-const defaultConfig = {
-    appManager: "AppManager.js",
-    env: { mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production" },
-    buildDirectory: ".build",
-    buildPublicDirectory: "public",
-    buildResourcesDirectory: "resources",
-    resourcesDirectory: "Resources",
-    bundleName: "bundle.mjs",
-    builtServerName: "Server.mjs"
-}
 
 switch (command) {
     case "build": 
         {
             let builder = new Builder({
-                ...defaultConfig,
                 onlyBundle: Boolean(commands.build.onlyBundle),
-                server: !commands.build.server ? false : true,
+                server: Boolean(commands.build.server),
             })
 
             builder.buildProject()
@@ -120,9 +109,7 @@ switch (command) {
         break
     case "run":
         {
-            let builder = new Builder({
-                ...defaultConfig
-            })
+            let builder = new Builder({})
 
             builder.runApp()
                 .catch(error => {
@@ -134,9 +121,11 @@ switch (command) {
     case "dev":
         {
             let builder = new Builder({
-                ...defaultConfig,
-                port: commands.dev.port ? parseInt(commands.dev.port) : 3000
+                port: commands.dev.port ? parseInt(commands.dev.port) : 3000,
+                server: true
             })
+
+            builder.options.env.mode = "development"
 
             builder.runDevServer()
                 .catch(error => {
