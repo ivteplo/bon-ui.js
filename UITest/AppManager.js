@@ -1,3 +1,8 @@
+//
+// Copyright (c) 2020 Teplovs
+// Licensed under the Apache License, version 2.0
+//
+
 import { ApplicationManager } from "../BonUI.js"
 import { AppView } from "./AppView.js"
 

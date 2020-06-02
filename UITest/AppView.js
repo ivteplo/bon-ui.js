@@ -1,3 +1,8 @@
+//
+// Copyright (c) 2020 Teplovs
+// Licensed under the Apache License, version 2.0
+//
+
 import { View, Text, VStack, HStack, List, ForEach, Colors, Fonts, Alignment, percents } from "../BonUI.js"
 
 var colors = Object.keys(Colors)

@@ -1,4 +1,9 @@
 #!/usr/bin/env node
+//
+// Copyright (c) 2020 Teplovs
+// Licensed under the Apache License, version 2.0
+//
+
 const packageJson = require("../package.json")
 const { Command } = require("commander")
 const chalk = require("chalk")
