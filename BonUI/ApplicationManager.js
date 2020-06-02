@@ -318,7 +318,7 @@ export class ApplicationManager {
      * @param {Node}    [options.node] Node that will be used for hydration in case if the view was rendered from the server side
      */
     loadApp(options = {}) {
-        const promises = Promise.all([
+        return Promise.all([
             this.loadFonts(),
 
             new Promise((resolve, reject) => {
@@ -349,8 +349,6 @@ export class ApplicationManager {
                 resolve()
             })
         ].filter(Boolean))
-
-        return promises
     }
 
     /**

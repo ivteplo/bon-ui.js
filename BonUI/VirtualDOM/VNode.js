@@ -189,7 +189,11 @@ export class VNode {
             bodyString += this.body[child].toString()
         }
 
-        return (`<${this.tag} ${attributesString} style='${stylesString}'>` + (["img", "br", "hr"].indexOf(this.tag) >= 0 ? "" : `${bodyString}</${this.tag}>`)).replace("  ", " ")
+        if (stylesString != "") {
+            stylesString = "style='" + stylesString + "'"
+        }
+
+        return (`<${this.tag} ${attributesString} ${stylesString}>` + (["img", "br", "hr"].indexOf(this.tag) >= 0 ? "" : `${bodyString}</${this.tag}>`)).replace("  ", " ")
     }
 }
 

@@ -1,5 +1,5 @@
 export class AppView extends View {
-    getBody() {
+    body() {
         return (
             new Text("Hello world!")
         )

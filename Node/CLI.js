@@ -26,6 +26,16 @@ const commands = {
             })
     ),
 
+    dev: (
+        new Command("dev")
+            .description("Command to build Bon UI app")
+            .action(() => {
+                command = "build"
+            })
+            .option("--only-bundle", "Generate only bundle for the client app")
+            .option("--no-server", "Generate HTML for the app without server")
+    ),
+
     create: (
         new Command("create")
             .description("Command to create Bon UI app")
@@ -76,38 +86,64 @@ program.on("--help", () => {
 
 program.parse(process.argv)
 
-if (!command) {
-    // in the future, set command to "dev"
-    command = "build"
-}
-
-if (!(command in commands)) {
+if (!command || !(command in commands)) {
     program.outputHelpInformation()
     process.exit(0)
 }
 
+const defaultConfig = {
+    appManager: "AppManager.js",
+    env: { mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production" },
+    buildDirectory: ".build",
+    buildPublicDirectory: "public",
+    buildResourcesDirectory: "resources",
+    resourcesDirectory: "Resources",
+    bundleName: "bundle.mjs",
+    builtServerName: "Server.mjs"
+}
+
 switch (command) {
     case "build": 
-        console.log(`Running ${chalk.green("build")} command`)
-        console.log()
-        let builder = new Builder({
-            appManager: "AppManager.js",
-            onlyBundle: Boolean(commands.build.onlyBundle),
-            server: !commands.build.server ? false : "Server.js",
-            env: {
-                mode: process.env.NODE_ENV ? process.env.NODE_ENV : "production"
-            },
-            buildDirectory: ".build",
-            publicDirectory: "public",
-            bundleName: "bundle.js",
-            builtServerName: "Server.js"
-        })
-
-        builder.buildProject()
-            .catch(error => {
-                console.error(error)
-                process.exit(1)
+        {
+            let builder = new Builder({
+                ...defaultConfig,
+                onlyBundle: Boolean(commands.build.onlyBundle),
+                server: !commands.build.server ? false : true,
             })
+
+            builder.buildProject()
+                .catch(error => {
+                    console.error(error)
+                    process.exit(1)
+                })
+        }
+        break
+    case "run":
+        {
+            let builder = new Builder({
+                ...defaultConfig
+            })
+
+            builder.runApp()
+                .catch(error => {
+                    console.error(error)
+                    process.exit(1)
+                })
+        }
+        break
+    case "dev":
+        {
+            let builder = new Builder({
+                ...defaultConfig,
+                port: commands.dev.port ? parseInt(commands.dev.port) : 3000
+            })
+
+            builder.runDevServer()
+                .catch(error => {
+                    console.error(error)
+                    process.exit(1)
+                })
+        }
         break
 }
 
