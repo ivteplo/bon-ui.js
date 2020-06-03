@@ -6,7 +6,7 @@
 - Added `Media` view
 - Added helper `ForEach`
 - Started adding support for `Deno`
-- Started making the app `bon-ui` for setting up the project
+- Made the first version of `bon-ui` app for managing Bon UI projects
 
 ## 0.1.5-alpha:
 - Added CommonJS output type
