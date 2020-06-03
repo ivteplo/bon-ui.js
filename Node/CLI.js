@@ -6,11 +6,15 @@
 
 const packageJson = require("../package.json")
 const { Command } = require("commander")
+const prompts = require("prompts")
 const chalk = require("chalk")
 
 const { Builder } = require("./Builder")
+const { Project } = require("./Project")
 
 var command 
+// used for `bon-ui create`
+var appName 
 
 const commands = {
     build: (
@@ -44,9 +48,14 @@ const commands = {
     create: (
         new Command("create")
             .description("Command to create Bon UI app")
-            .action(() => {
+            .arguments("[app-name] [options]")
+            .usage("[app-name] [options]")
+            .action(name => {
                 command = "create"
+                appName = name
             })
+            .option("--template <template>", "Use specific template for the app")
+            .option("--use-npm", "Use npm even if yarn is installed")
     )
 }
 
@@ -96,48 +105,118 @@ if (!command || !(command in commands)) {
     process.exit(0)
 }
 
-
-switch (command) {
-    case "build": 
-        {
-            let builder = new Builder({
-                onlyBundle: Boolean(commands.build.onlyBundle),
-                server: Boolean(commands.build.server),
-            })
-
-            builder.buildProject()
-                .catch(error => {
-                    console.error(error)
-                    process.exit(1)
+async function runCommand () {
+    switch (command) {
+        case "build": 
+            {
+                let builder = new Builder({
+                    onlyBundle: Boolean(commands.build.onlyBundle),
+                    server: Boolean(commands.build.server),
                 })
-        }
-        break
-    case "run":
-        {
-            let builder = new Builder({})
 
-            builder.runApp()
-                .catch(error => {
-                    console.error(error)
-                    process.exit(1)
+                return builder.buildProject()
+            }
+            break
+        case "run":
+            {
+                let builder = new Builder({})
+
+                return builder.runApp()
+            }
+            break
+        case "dev":
+            {
+                let builder = new Builder({
+                    port: commands.dev.port ? parseInt(commands.dev.port) : 3000,
+                    server: true
                 })
-        }
-        break
-    case "dev":
-        {
-            let builder = new Builder({
-                port: commands.dev.port ? parseInt(commands.dev.port) : 3000,
-                server: true
-            })
 
-            builder.options.env.mode = "development"
+                builder.options.env.mode = "development"
 
-            builder.runDevServer()
-                .catch(error => {
-                    console.error(error)
-                    process.exit(1)
-                })
-        }
-        break
+                return builder.runDevServer()
+            }
+            break
+        case "create":
+            {
+                const options = {
+                    name: appName,
+                    // this is for people who want to use npm even if yarn is installed
+                    useNpm: commands.create.useNpm || false,
+                    template: commands.create.template
+                }
+
+                if (!options.name) {
+                    const name = await prompts({
+                        type: "text",
+                        name: "value",
+                        message: "What is your project name?",
+                        validate: value => {
+                            const regex = /^([A-Za-z0-9]+((-| )?)[A-Za-z0-9]+)+$/
+
+                            if (!regex.test(value)) {
+                                return "Project name can contain only English letters and spaces/dashes"
+                            }
+
+                            return true
+                        }
+                    })
+
+                    if (!name.value) {
+                        console.error(`Please, specify the ${chalk.red("project name")}`)
+                        process.exit(1)
+                    }
+
+                    options.name = name.value
+                }
+
+                if (!options.template || Project.isValidTemplate(options.template) !== true) {
+                    const templates = Project.getTemplatesForPrompt()
+                    const choices = Object.keys(templates).map(key => {
+                        return { title: templates[key], value: key }
+                    })
+
+                    const template = await prompts({
+                        type: "select",
+                        name: "value",
+                        message: "Please, select a template",
+                        choices,
+                        validate: value => Project.isValidTemplate(value)
+                    })
+
+                    if (!template.value) {
+                        console.error(`You have selected ${chalk.red("invalid template")}`)
+                        process.exit(1)
+                    }
+
+                    options.template = template.value
+                }
+
+                if (options.template === "example") {
+                    const example = await prompts({
+                        type: "text",
+                        name: "value",
+                        message: "Please, enter URL to project root",
+                        validate: value => Project.isValidTemplateURL(value)
+                    })
+
+                    if (!example.value) {
+                        console.error(`You have selected ${chalk.red("invalid template")}`)
+                        process.exit(1)
+                    }
+
+                    options.template = example.value
+                }
+
+                let project = new Project(options)
+                return project.create()
+            }
+            break
+    }
 }
+
+runCommand()
+    .catch(error => {
+        console.error(error)
+        process.exit(1)
+    })
 

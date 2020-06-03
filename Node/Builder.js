@@ -15,6 +15,7 @@ const makeDir = require("make-dir")
 const Helpers = require("./Helpers")
 const chokidar = require("chokidar")
 const childProcess = require("child_process")
+const { clearPreviousLine } = require("./Console")
 const EsmWebpackPlugin = require("@purtuga/esm-webpack-plugin")
 
 const writeFile = util.promisify(fs.writeFile)
@@ -30,12 +31,6 @@ const defaultConfig = {
     resourcesDirectory: "Resources",
     bundleName: "bundle.mjs",
     builtServerName: "Server.mjs"
-}
-
-function clearPreviousLine () {
-    process.stdout.moveCursor(0, -1)
-    process.stdout.cursorTo(0)
-    process.stdout.clearLine()
 }
 
 class Builder {
