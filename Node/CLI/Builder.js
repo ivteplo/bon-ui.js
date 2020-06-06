@@ -7,9 +7,10 @@ const fs = require("fs")
 const copy = require("cpy")
 const path = require("path")
 const util = require("util")
-const BonUI = require("../")
 const chalk = require("chalk")
+const BonUI = require("../../")
 const rimraf = require("rimraf")
+const Server = require("./Server")
 const webpack = require("webpack")
 const makeDir = require("make-dir")
 const Helpers = require("./Helpers")
@@ -30,12 +31,14 @@ const defaultConfig = {
     buildResourcesDirectory: "resources",
     resourcesDirectory: "Resources",
     bundleName: "bundle.mjs",
-    builtServerName: "Server.mjs"
+    builtServerName: "Server.mjs",
+    serviceWorker: "ServiceWorker.js"
 }
 
 class Builder {
     constructor (options) {
         this.options = Object.assign(defaultConfig, options || {})
+        this.options.env.NODE_ENV = this.options.env.mode
     }
 
     async buildProject ({ deleteBuildDirectory = true } = {}) {
@@ -58,6 +61,7 @@ class Builder {
         await makeDir(buildPublicDirectory)
         await makeDir(buildResourcesDirectory)
 
+        // build info is generated to be able to run the app later
         const buildInfo = {
             onlyBundle: this.options.onlyBundle,
             server: Boolean(this.options.server),
@@ -79,17 +83,29 @@ class Builder {
 
         console.log(chalk.cyan("Generating bundle..."))
 
+        // this is parameter for webpack.ProvidePlugin
+        // this lets users to be able to use Bon UI
+        // classes/functions/variables without imports
+        // and this makes the output bundle more optimized
         const BonUIProvidePlugin = {}
         for (let i in BonUI) {
             BonUIProvidePlugin[i] = [ "@teplovs/bon-ui", i ]
         }
 
+        // helpers are made to access files/data from files
+        // that are moved to the public (or public/resources) folder
+        // (because it can be challenging to know what is
+        // the right path to use when the project is built)
         const HelpersProvidePlugin = {}
         const helpersPath = path.join(__dirname, "Helpers.js")
         for (let i in Helpers) {
             HelpersProvidePlugin[i] = [ helpersPath, i ]
         }
 
+        // building client bundle
+        // (this is also used on the server,
+        // because currently server does not need
+        // to use another build)
         const clientBuildStats = await _webpack({
             mode: this.options.env.mode,
             entry: appManagerPath,
@@ -121,9 +137,21 @@ class Builder {
             return
         }
 
+        const serviceWorkerPath = path.resolve(this.options.serviceWorker)
+        const serviceWorkerExists = fs.existsSync(serviceWorkerPath)
+
+        if (serviceWorkerExists) {
+            console.log(chalk.cyan("Copying service worker..."))
+
+            await copy(serviceWorkerPath, buildPublicDirectory)
+
+            clearPreviousLine()
+            console.log(chalk.green("Service worker copied successfully!"))
+        }
+
+        // these vars are used to spend less time on writing if-else etc.
         const consoleTime = this.options.env.mode === "production" ? "" : 'console.time("App loading time")'
         const consoleTimeEnd = this.options.env.mode === "production" ? "" : 'console.timeEnd("App loading time")'
-
         const loadAppThen = this.options.env.mode === "production" ? "" : `
                     .then(() => {
                         console.log("App loaded successfully")
@@ -167,50 +195,18 @@ const server = Server.createServer(async (request, response) => {
             response.writeHead(200)
             response.end(file, "utf8")
         } else {
-${this.options.env.mode !== "production" ? `
-            // used to not cache AppManager while development
-            const { default: AppManager } = await import("./${this.options.buildPublicDirectory.trim("/")}/${this.options.bundleName.trimLeft("/")}?time=\${Date.now()}")
-` : ""}
+${this.options.env.mode === "production" ? `
             const appManager = new AppManager({ path: request.url })
-            const html = \`
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        \${appManager.getHeadString()}
-    </head>
-    <body>
-        <div id="root">\${appManager.getViewString()}</div>
-        <script type="module">
-            import AppManager from "/${this.options.bundleName}"
-            const appManager = new AppManager({ path: location.pathname })
-            ${consoleTime}
-            window.addEventListener("load", () => {
-                const result = appManager.loadApp({ node: document.querySelector("#root").childNodes[0] })
-                if (result instanceof Promise) {
-                    result
-                        ${loadAppThen}
-                        .catch(error => {
-                            console.error("Could not load app")
-                            console.error(error)
-                        })
-                } else {
-                    console.error("AppManager#loadApp has to return promise")
-                }
+` : ""}
+            const html = Server.generateHTML(${this.options.env.mode === "production" ? "appManager" : "undefined"}, {
+                bundleFile: "${this.options.bundleName}",
+                bundleEsm: true,
+                ${!serviceWorkerExists || this.options.serviceWorker !== "production" ? "" :
+                `serviceWorker: "${this.options.serviceWorker}",`}
+                socketIoReload: ${String(this.options.env.mode === "development")},
+                serverSideRendering: ${String(this.options.env.mode === "production")}
             })
-        </script>${this.options.env.mode === "development" ? `
-        <script src="/socket.io/socket.io.js"></script>
-        <script>
-            var socket = io("http://localhost:\${port}")
-            socket.on("browserReload", () => {
-                location.reload()
-            })
-        </script>
-        ` : ""}
-    </body>
-</html>
-\`
+
             response.writeHead(200)
             response.write(html, "utf8")
             response.end()
@@ -238,34 +234,14 @@ server.listen(port, () => {
             console.log(chalk.green(this.options.builtServerName + " generated successfully"))
         } else {
             console.log(chalk.cyan("Generating index.html..."))
-            const indexHtmlContents = `
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-        <script type="text/javascript" src="${this.options.bundleName}"></script>
-        <script>
-            (function () {
-                const appManager = new AppManager.default()
-                ${consoleTime}
-                window.addEventListener("load", () => {
-                    const result = appManager.loadApp()
-                    if (result instanceof Promise) {
-                        result
-                            ${loadAppThen}
-                            .catch(error => {
-                                console.error("Could not load app")
-                                console.error(error)
-                            })
-                    }
-                })
-            })()
-        </script>
-    </body>
-</html>`.trim()
+
+            const indexHtmlContents = Server.generateHTML(appManager, {
+                bundleFile: this.options.bundleName,
+                bundleEsm: true,
+                serviceWorker: this.options.env.mode === "production" && serviceWorkerExists ? this.options.serviceWorker : null,
+                socketIoReload: String(this.options.env.mode === "development"),
+            })
+
             await writeFile(path.join(buildPublicDirectory, "index.html"), indexHtmlContents + "\n", "utf8")
             clearPreviousLine()
             console.log(chalk.green("index.html generated successfully"))
@@ -283,7 +259,6 @@ server.listen(port, () => {
         }
 
         const buildInfo = require(buildInfoPath)
-        console.log("Build info", buildInfo)
 
         if (buildInfo.onlyBundle) {
             throw new Error(`Latest build has generated ${chalk.red("only bundle")}.`)

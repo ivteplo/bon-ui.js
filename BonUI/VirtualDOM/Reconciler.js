@@ -34,16 +34,16 @@ export class Reconciler {
             }
         }
 
-        for (let i in lastVNode.events) {
-            for (let j in vNode.events[i]) {
-                lastVNode.dom.removeEventListener(i, lastVNode.events[i][j])
+        for (let i in lastVNode.handlers) {
+            for (let j in vNode.handlers[i]) {
+                lastVNode.dom.removeEventListener(i, lastVNode.handlers[i][j])
             }
         }
 
-        for (let i in vNode.events) {
-            for (let j in vNode.events[i]) {
-                if (typeof vNode.events[i][j] === "function") {
-                    lastVNode.dom.addEventListener(i, vNode.events[i][j])
+        for (let i in vNode.handlers) {
+            for (let j in vNode.handlers[i]) {
+                if (typeof vNode.handlers[i][j] === "function") {
+                    lastVNode.dom.addEventListener(i, vNode.handlers[i][j])
                 }
             }
         }

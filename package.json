@@ -5,13 +5,14 @@
   "module": "Node/Dist/BonUI.esm.js",
   "browser": "Node/Dist/BonUI.esm.js",
   "files": [
-    "Node/**"
+    "Node/CLI/**",
+    "Node/Dist/**"
   ],
   "bin": {
-    "bon-ui": "Node/CLI.js"
+    "bon-ui": "Node/CLI/index.js"
   },
   "exports": {
-    "./server": "./Node/Server.js"
+    "./server": "./Node/CLI/Server.js"
   },
   "description": "A new JavaScript framework for developing powerful web applications",
   "author": "Teplovs",

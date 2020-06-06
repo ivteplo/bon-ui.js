@@ -4,7 +4,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-const packageJson = require("../package.json")
+const packageJson = require("../../package.json")
 const { Command } = require("commander")
 const prompts = require("prompts")
 const chalk = require("chalk")

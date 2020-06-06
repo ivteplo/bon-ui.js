@@ -22,7 +22,13 @@ export class ApplicationManager {
         this.meta = {}
         this.view = null
         this.serviceWorkerPath = null
+        this.normalizeStyles = true
         this.initialize()
+    }
+
+    disableStylesNormalization () {
+        this.normalizeStyles = false
+        return this
     }
 
     /**
@@ -326,6 +332,14 @@ export class ApplicationManager {
                 resolve()
             }),
 
+            options.node || !this.normalizeStyles ? undefined :
+                new Promise((resolve, reject) => {
+                    var vNode = this.generateStylesNormalizer()
+                    var dom = vNode.toHTMLNode({ save: false })
+                    document.head.prepend(dom)
+                    resolve()
+                }),
+
             options.node ? undefined :
                 new Promise((resolve, reject) => {
                     this.setupLinks()
@@ -349,6 +363,37 @@ export class ApplicationManager {
                 resolve()
             })
         ].filter(Boolean))
+    }
+
+    generateStylesNormalizer () {
+        const styles = (`
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
+            body {
+                font: 12pt sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                min-height: 100vh;
+                overflow: hidden;
+            }
+        `)
+
+        return new VNode({
+            tag: "style",
+            attributes: {
+                id: "bon-ui-styles-normalizer"
+            },
+            body: [
+                new VNode({
+                    text: styles
+                })
+            ]
+        })
     }
 
     /**
@@ -392,6 +437,12 @@ export class ApplicationManager {
             )
         }
 
+        if (this.normalizeStyles) {
+            tags.unshift(
+                this.generateStylesNormalizer()
+            )
+        }
+
         return tags.map(tag => tag.toString()).join("\n")
     }
 
@@ -403,7 +454,7 @@ export class ApplicationManager {
      * A function that makes the page look better
      * @param {Object}  options
      * @param {Boolean} options.applyFlexToBody Applies the `display: flex` to the body if `true`
-     * @todo replace to make support for server side rendering and to use it as class method
+     * @deprecated
      */
     static normalizeDocumentStyles({ applyFlexToBody = true }) {
         if (!document.body) {
