@@ -5,45 +5,58 @@
 
 import { View } from "../View.js"
 import { VStack } from "./VStack.js"
+import { Colors } from "../../Values/Color.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
+import { OutlineStyle } from "../../Values/OutlineStyle.js"
 
 /**
  * A class that represents the list
  * @class
  * @extends VStack
  */
-export class List extends VStack {
+export class List extends View {
     /**
      * @param {Array<View|VNode>} children The items of the list
      */
-    constructor (...args) {
-        super(...args)
-        this.listStyle({ type: "disk" })
-    }
+    constructor (data, viewFunc) {
+        super()
 
-    /**
-     * A method to set the list style
-     * @param {String} type 
-     * @todo create an enum for list style types, add images support
-     */
-    listStyle ({ type }) {
-        if (typeof type === "string" || type instanceof String) {
-            this._styles.listStyleType = type
+        if (!Array.isArray(data)) {
+            throw new Error("Expected an array, got " + typeof data)
         }
+
+        if (!(viewFunc instanceof Function)) {
+            throw new Error("Expected a function, got " + typeof viewFunc)
+        }
+
+        this.options.data = data
+        this.options.viewFunc = viewFunc
     }
 
     body () {
-        var vNode = super.body()
-        vNode.tag = "ul"
+        const result = (
+            new VStack([
+                this.options.data.map((item, index) => 
+                    new VNode({
+                        tag: "div",
+                        body: [
+                            this.options.viewFunc(item, index)
+                        ],
+                        styles: {
+                            borderBottom: "1px solid " + Colors.theme.separator
+                        }
+                    }))
+            ])
+            .applyCSS(this._styles)
+            .setAttributes(this._attributes)
+        )
 
-        for (let i = 0; i < vNode.body.length; ++i) {
-            vNode.body[i] = new VNode({
-                tag: "li",
-                body: [ vNode.body[i] ],
-                view: vNode.body[i]
-            })
+        for (let i in this._handlers) {
+            for (let j in this._handlers[i]) {
+                result.handle(i, this._handlers[i][j])
+            }
         }
-        
-        return vNode
+
+        return result
     }
 }

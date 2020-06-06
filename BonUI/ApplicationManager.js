@@ -4,8 +4,8 @@
 //
 
 import { View } from "./Views/View.js"
-import { Color } from "./Values/Color.js"
 import { VNode } from "./VirtualDOM/VNode.js"
+import { Color, Colors, createThemeState } from "./Values/Color.js"
 import { Weight, FontStyle, weightToCssValue, fontStyleToCssValue } from "./Values/Font.js"
 
 /**
@@ -13,7 +13,7 @@ import { Weight, FontStyle, weightToCssValue, fontStyleToCssValue } from "./Valu
  * @todo Test new features
  */
 export class ApplicationManager {
-    constructor() {
+    constructor () {
         this._handlers = []
 
         this.title = ""
@@ -23,6 +23,13 @@ export class ApplicationManager {
         this.view = null
         this.serviceWorkerPath = null
         this.normalizeStyles = true
+        this.themeState = createThemeState()
+        this.themeState.subscribe(() => {
+            if (this.view instanceof View && this.view.isMounted) {
+                this.view.invalidate()
+            }
+        })
+
         this.initialize()
     }
 
@@ -41,7 +48,7 @@ export class ApplicationManager {
      *     }
      * }
      */
-    initialize() {}
+    initialize () {}
 
     /**
      * A method that is called after the view is mounted
@@ -334,7 +341,7 @@ export class ApplicationManager {
 
             options.node || !this.normalizeStyles ? undefined :
                 new Promise((resolve, reject) => {
-                    var vNode = this.generateStylesNormalizer()
+                    var vNode = this.getNormalizedStylesTag()
                     var dom = vNode.toHTMLNode({ save: false })
                     document.head.prepend(dom)
                     resolve()
@@ -365,7 +372,7 @@ export class ApplicationManager {
         ].filter(Boolean))
     }
 
-    generateStylesNormalizer () {
+    getNormalizedStylesTag () {
         const styles = (`
             html, body {
                 margin: 0;
@@ -378,8 +385,15 @@ export class ApplicationManager {
                 justify-content: center;
                 align-items: center;
                 width: 100%;
-                min-height: 100vh;
+                height: 100vh;
                 overflow: hidden;
+                background-color: ${Colors.white};
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: ${Colors.black};
+                }
             }
         `)
 
@@ -439,7 +453,7 @@ export class ApplicationManager {
 
         if (this.normalizeStyles) {
             tags.unshift(
-                this.generateStylesNormalizer()
+                this.getNormalizedStylesTag()
             )
         }
 

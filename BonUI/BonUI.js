@@ -13,6 +13,7 @@ export * from "./Views/View.js"
 export * from "./Views/Generic/Text.js"    
 export * from "./Views/Generic/Image.js"    
 export * from "./Views/Generic/Control.js"
+export * from "./Views/Generic/Separator.js"
 
 // Navigation
 export * from "./Views/Navigation/Link.js"    
@@ -24,9 +25,11 @@ export * from "./Views/Form/Button.js"
 export * from "./Views/Form/TextBox.js"
 
 // Layouts
+export * from "./Views/Layouts/ScrollView.js"
 export * from "./Views/Layouts/HStack.js"    
 export * from "./Views/Layouts/VStack.js"    
 export * from "./Views/Layouts/ZStack.js"    
+export * from "./Views/Layouts/Media.js"
 export * from "./Views/Layouts/List.js"
 
 //// VirtualDOM

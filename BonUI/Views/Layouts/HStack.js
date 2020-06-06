@@ -59,6 +59,10 @@ export class HStack extends View {
     body () {
         var { children } = this
 
+        if (typeof children === "function") {
+            children = children()
+        }
+
         if (!Array.isArray(children)) {
             children = children ? [children] : []
         }

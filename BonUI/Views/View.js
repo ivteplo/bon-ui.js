@@ -15,8 +15,6 @@ import { Worker } from "../Worker.js"
 import { State } from "../State.js"
 import { Event } from "../Event.js"
 
-// function Reconciler.updateVNodeDOM is described after the class View
-
 function isValidLength(value) {
     return value instanceof Length || value instanceof Number || typeof value === "number"
 }
@@ -72,6 +70,7 @@ export class View {
             return this.state._currentState[key]
         }
 
+        this.applyCSS({ boxSizing: "border-box" })
         this.initialize()
     }
 
@@ -324,18 +323,20 @@ export class View {
      * @param {Function}        handler     Function that will be called after event happened
      */
     handle (event, handler) {
-        if (isString(event) && typeof handler === "function") {
-            if (!(event in this._handlers)) {
-                this._handlers[event] = []
-            }
+        if (typeof handler === "function") {
+            if (isString(event)) {
+                if (!(event in this._handlers)) {
+                    this._handlers[event] = []
+                }
 
-            this._handlers[event].push((event) => {
-                handler(event, this)
-            })
-        } else if (Array.isArray(event)) {
-            event.forEach(eventName => {
-                this.handle(eventName, handler)
-            })
+                this._handlers[event].push((event) => {
+                    handler(event, this)
+                })
+            } else if (Array.isArray(event)) {
+                event.forEach(eventName => {
+                    this.handle(eventName, handler)
+                })
+            }
         }
 
         return this

@@ -4,6 +4,7 @@
 //
 
 import { View } from "../View.js"
+import { Colors } from "../../Values/Color.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { Font, textStyleToTagName, TextStyle } from "../../Values/Font.js"
 import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment.js"
@@ -81,6 +82,25 @@ export class Text extends View {
         var vNode = super.body()
         vNode.tag = tag
         vNode.body = body
+
+        if (!this._styles.color) {
+            let color = Colors.theme.quaternaryLabel
+            switch (tag) {
+                case "h1":
+                    color = Colors.theme.label
+                    break
+                case "h2":
+                    color = Colors.theme.secondaryLabel
+                    break
+                case "h3":
+                    color = Colors.theme.tertiaryLabel
+                    break
+                default:
+                    break
+            }
+
+            vNode.styles.color = color.toString()
+        }
 
         return vNode
     }

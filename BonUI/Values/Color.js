@@ -3,6 +3,8 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { State } from "../State.js"
+
 /**
  * A class to represent the color
  * @class
@@ -45,6 +47,40 @@ export class Color {
     toString () {
         return `rgba(${this.red}, ${this.green}, ${this.blue}, ${this.alpha})`
     }
+}
+
+const darkTheme = {
+    blue: new Color({ red: 10, green: 132, blue: 255 }),
+    green: new Color({ red: 48, green: 209, blue: 88 }),
+    indigo: new Color({ red: 94, green: 92, blue: 230 }),
+    orange: new Color({ red: 255, green: 159, blue: 10 }),
+    pink: new Color({ red: 255, green: 55, blue: 95 }),
+    purple: new Color({ red: 191, green: 90, blue: 242 }),
+    red: new Color({ red: 255, green: 69, blue: 58 }),
+    teal: new Color({ red: 100, green: 210, blue: 255 }),
+    yellow: new Color({ red: 255, green: 214, blue: 10 }),
+    label: new Color({ red: 0xFF, green: 0xFF, blue: 0xFF }),
+    secondaryLabel: new Color({ red: 0xEE, green: 0xEE, blue: 0xEE }),
+    tertiaryLabel: new Color({ red: 0xBB, green: 0xBB, blue: 0xBB }),
+    quaternaryLabel: new Color({ red: 0x88, green: 0x88, blue: 0x88 }),
+    separator: new Color({ red: 0x33, green: 0x33, blue: 0x33 })
+}
+
+const lightTheme = {
+    blue: new Color({ red: 0, green: 122, blue: 255 }),
+    green: new Color({ red: 52, green: 199, blue: 89 }),
+    indigo: new Color({ red: 88, green: 86, blue: 214 }),
+    orange: new Color({ red: 255, green: 149, blue: 0 }),
+    pink: new Color({ red: 255, green: 45, blue: 85 }),
+    purple: new Color({ red: 175, green: 82, blue: 222 }),
+    red: new Color({ red: 255, green: 59, blue: 48 }),
+    teal: new Color({ red: 90, green: 200, blue: 250 }),
+    yellow: new Color({ red: 255, green: 204, blue: 0 }),
+    label: new Color({ red: 0, green: 0, blue: 0 }),
+    secondaryLabel: new Color({ red: 0x33, green: 0x33, blue: 0x33 }),
+    tertiaryLabel: new Color({ red: 0x55, green: 0x55, blue: 0x55 }),
+    quaternaryLabel: new Color({ red: 0x88, green: 0x88, blue: 0x88 }),
+    separator: new Color({ red: 0xE5, green: 0xE5, blue: 0xE5 })
 }
 
 /**
@@ -236,5 +272,44 @@ export const Colors = {
     whiteSmoke : new Color({ red: 245, green: 245, blue: 245}),
     yellow : new Color({ red: 255, green: 255, blue: 0}),
     yellowGreen : new Color({ red: 154, green: 205, blue: 50}),
+    theme: lightTheme
+}
+
+export function createThemeState () {
+    if (typeof window === "object" && "matchMedia" in window) {
+        const query = "(prefers-color-scheme: dark)"
+        const media = window.matchMedia(query)
+        const defaultState = {
+            mode: media.matches ? "dark" : "light"
+        }
+
+        const theme = new State((state = defaultState, action) => {
+            switch (action.type) {
+                case "color-scheme-update":
+                    return Object.assign(state, { mode: action.value })
+                default:
+                    return state
+            }
+        })
+
+        media.addListener(event => {
+            theme.dispatch({
+                type: "color-scheme-update",
+                value: event.matches ? "dark" : "light"
+            })
+        })
+
+        function handler () {
+            if (theme.current.mode === "dark") {
+                Colors.theme = darkTheme
+            } else {
+                Colors.theme = lightTheme
+            }
+        }
+
+        handler()
+        theme.subscribe(handler)
+        return theme
+    }
 }
 
