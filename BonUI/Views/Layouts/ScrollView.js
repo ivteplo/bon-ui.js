@@ -4,6 +4,7 @@
 //
 
 import { VStack } from "./VStack.js"
+import { Axis } from "../../Values/Axis.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { percents } from "../../Values/Length.js"
 
@@ -14,22 +15,16 @@ export class ScrollView extends VStack {
     }
 
     /**
-     * @param {Object}  options
-     * @param {Boolean} [options.horizontal]    make horizontal axis scrollable
-     * @param {Boolean} [options.vertical]      make vertical axis scrollable
-     * @param {Boolean} [options.both]          make both vertical and horizontal axises scrollable
+     * Method to set which axises are scrollable
+     * @param {Symbol} axis item of Axis enum
      */
-    scrollAxis ({ horizontal, vertical, both } = {}) {
-        if (typeof both === "boolean") {
-            this._styles.overflow = "scroll"
-        }
-
-        if (typeof horizontal === "boolean") {
+    scrollAxis (axis) {
+        if (axis === Axis.horizontal) {
             this._styles.overflowX = "scroll"
-        }
-
-        if (typeof vertical === "boolean") {
+        } else if (axis === Axis.vertical) {
             this._styles.overflowY = "scroll"
+        } else if (axis === Axis.both) {
+            this._styles.overflow = "scroll"
         }
 
         return this

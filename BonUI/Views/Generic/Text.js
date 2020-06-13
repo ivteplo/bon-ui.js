@@ -8,7 +8,6 @@ import { Colors } from "../../Values/Color.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { Font, textStyleToTagName, TextStyle } from "../../Values/Font.js"
 import { Alignment, textAlignmentToCssValue } from "../../Values/Alignment.js"
-import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../../Values/WhiteSpaceStyle.js"
 
 var defaultSelectable = false
 
@@ -33,7 +32,7 @@ export class Text extends View {
         super({ text: String(text) })
 
         this.selectable(defaultSelectable)
-            .offset({ all: 0 })
+            .offset({ all: 0, bottom: 10 })
             .padding({ all: 0 })
     }
 
@@ -46,18 +45,6 @@ export class Text extends View {
             this._styles.textAlign = textAlignmentToCssValue(alignment)
         }
 
-        return this
-    }
-
-    /**
-     * A method to set the text white space showing style
-     * @param {Symbol} style Item of the WhiteSpaceStyle enum
-     */
-    whiteSpaceStyle(style) {
-        if (WhiteSpaceStyle.contains(style)) {
-            this._styles.whiteSpace = whiteSpaceStyleToCssValue(style)
-        }
-        
         return this
     }
 

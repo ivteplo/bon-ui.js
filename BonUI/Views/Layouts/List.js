@@ -16,21 +16,19 @@ import { OutlineStyle } from "../../Values/OutlineStyle.js"
  */
 export class List extends View {
     /**
-     * @param {Array<View|VNode>} children The items of the list
+     * @param {Array}       data        array of items 
+     * @param {Function}    childGetter getter for item view that accepts item of `data` array
      */
-    constructor (data, viewFunc) {
-        super()
+    constructor (data, childGetter) {
+        super({ data, childGetter })
 
         if (!Array.isArray(data)) {
             throw new Error("Expected an array, got " + typeof data)
         }
 
-        if (!(viewFunc instanceof Function)) {
-            throw new Error("Expected a function, got " + typeof viewFunc)
+        if (!(childGetter instanceof Function)) {
+            throw new Error("Expected a function, got " + typeof childGetter)
         }
-
-        this.options.data = data
-        this.options.viewFunc = viewFunc
     }
 
     body () {
@@ -40,7 +38,7 @@ export class List extends View {
                     new VNode({
                         tag: "div",
                         body: [
-                            this.options.viewFunc(item, index)
+                            this.options.childGetter(item, index)
                         ],
                         styles: {
                             borderBottom: "1px solid " + Colors.theme.separator

@@ -3,17 +3,18 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { WhiteSpaceStyle, whiteSpaceStyleToCssValue } from "../Values/WhiteSpaceStyle.js"
 import { OutlineStyle, outlineStyleToCssValue } from "../Values/OutlineStyle.js"
 import { Positioning, positioningToCssValue } from "../Values/Positioning.js"
 import { VNode, VNodeType } from "../VirtualDOM/VNode.js"
 import { Reconciler } from "../VirtualDOM/Reconciler.js"
 import { Length, pixels } from "../Values/Length.js"
 import { flattenArray } from "../Values/Array.js"
+import { State } from "../Values/State.js"
+import { Event } from "../Values/Event.js"
 import { Color } from "../Values/Color.js"
 import { Font } from "../Values/Font.js"
 import { Worker } from "../Worker.js"
-import { State } from "../State.js"
-import { Event } from "../Event.js"
 
 function isValidLength(value) {
     return value instanceof Length || value instanceof Number || typeof value === "number"
@@ -343,27 +344,6 @@ export class View {
     }
 
     /**
-     * Method to remove specific handler (does not work with anonymous functions)
-     * @param {String}      event       event name
-     * @param {Function}    handler     handler to remove
-     */
-    unhandle (event, handler) {
-        if (isString(event) && event in this._handlers) {
-            if (typeof handler === "function") {
-                for (let i = this._handlers[event].length - 1; i >= 0; --i) {
-                    if (this._handlers[event][i] === handler) {
-                        this._handlers[event].splice(i, 1)
-                    }
-                }
-            } else {
-                this._handlers[event] = []
-            }
-        }
-
-        return this
-    }
-
-    /**
      * A method to set the font properties
      * @param {Font}    [font]  Font to set for the view
      */
@@ -621,15 +601,17 @@ export class View {
      */
     cloneViewProperties(view) {
         if (view instanceof View) {
-            this._styles = Object.assign(this.styles, typeof view.styles === "object" ? view.styles : {})
-            this._attributes = Object.assign(this._styles, typeof view.styles === "object" ? view.attributes : {})
+            this._styles = Object.assign(this._styles, typeof view._styles === "object" ? view._styles : {})
+            this._attributes = Object.assign(this._attributes, typeof view._attributes === "object" ? view._attributes : {})
 
-            for (let i in view.events) {
-                this.handle(i, view.events[i])
+            for (let i in view._handlers) {
+                for (let j in view._handlers[i]) {
+                    this.handle(i, view._handlers[i][j])
+                }
             }
 
-            if (view._key) {
-                this.setKey(view._key)
+            if (view.key) {
+                this.setKey(view.key)
             }
         }
 
@@ -637,14 +619,14 @@ export class View {
     }
 
     /**
-     * A method to clone mounting, invalidation and unmounting handlers of one view to this
+     * A method to clone mounting, invalidation, unmounting and hydration handlers of one view to this
      */
     cloneViewHandlers(view) {
         if (view instanceof View) {
-            this.handleMounting = view.handleMounting
-            this.handleInvalidation = view.handleInvalidation
-            this.handleUnmounting = view.handleUnmounting
-            this.handleHydration = view.handleHydration
+            this.handleMounting = view.handleMounting.bind(this)
+            this.handleInvalidation = view.handleInvalidation.bind(this)
+            this.handleUnmounting = view.handleUnmounting.bind(this)
+            this.handleHydration = view.handleHydration.bind(this)
         }
 
         return this
@@ -667,10 +649,9 @@ export class View {
      * @param   {Boolean}    [options.saveVNode]          If specified, the vNode will be saved to the `view.lastVNode`
      * @param   {Boolean}    [options.ignoreStateChange]  If specified, the state change will be ignored
      * @param   {String}     [options.side]               Side of the rendering (`"server"`, `"client"` etc.)
-     * @param   {Boolean}    [options.isChildView]        Specify if the view is the child of another one
      * @returns {VNode}      Result of recursive rendering of view to virtual node
      */
-    static renderToVNode({ view, saveVNode = false, ignoreStateChange = false, side = "client", isChildView = false }) {
+    static renderToVNode({ view, saveVNode = false, ignoreStateChange = false, side = "client" }) {
         var node
 
         if (view instanceof VNode) {
@@ -695,16 +676,6 @@ export class View {
             }
 
             if (node != null) {
-                if (isChildView && Array.isArray(node)) {
-                    return node.map(item => View.renderToVNode({
-                        ignoreStateChange: ignoreStateChange,
-                        isChildView: true,
-                        saveVNode: true,
-                        view: item,
-                        side: side,
-                    }))
-                }
-
                 if (!(node instanceof VNode)) {
                     throw new Error("Expected a VNode as the result of rendering the View (the rendering is recursive, so the error can be in the parent class or in the child class)")
                 }
@@ -722,7 +693,6 @@ export class View {
                     bodyResult.push(View.renderToVNode({ 
                         ignoreStateChange: ignoreStateChange, 
                         view: node.body[i], 
-                        isChildView: true,
                         saveVNode: true, 
                         side: side, 
                     }))
@@ -748,6 +718,19 @@ export class View {
         }
 
         return node
+    }
+
+    /**
+     * Method to set up the whitespace of the view
+     * @param {Object} options
+     * @param {Symbol} [options.style] whitespace showing style. Item of `WhiteSpaceStyle` enum
+     */
+    whiteSpace ({ style } = {}) {
+        if (WhiteSpaceStyle.contains(style)) {
+            this._styles.whiteSpace = whiteSpaceStyleToCssValue(style)
+        }
+
+        return this
     }
 
     // DEPRECATED METHODS
@@ -870,6 +853,22 @@ export class View {
     setSelectableTo(...args) {
         console.warn("Method `setSelectableTo` is deprecated. Please, start using new method `selectable`.")
         return this.selectable(...args)
+    }
+
+    /**
+     * @deprecated
+     */
+    setWhiteSpaceStyle(style) {
+        console.warn("Method `setWhiteSpaceStyle` is deprecated. Please, start using new method `whiteSpace`.")
+        return this.whiteSpace({ style })
+    }
+
+    /**
+     * @deprecated
+     */
+    whiteSpaceStyle(style) {
+        console.warn("Method `whiteSpaceStyle` is deprecated. Please, start using new method `whiteSpace`.")
+        return this.whiteSpace({ style })
     }
 }
 

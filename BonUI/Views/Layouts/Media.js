@@ -49,30 +49,24 @@ export function jsonToMediaQuery (object) {
  * View that will return specific content depending on the media request value
  */
 export class Media extends View {
-    initialState () {
-        return { value: false }
-    }
-
     /**
-     * 
      * @param {String|Object}   media               media request
-     * @param {Function}        viewFunc            function that gets true/false (media matches or not) and returns the view/virtual node that will be shown depending on the value
+     * @param {Function}        viewGetter          function that gets true/false (media matches or not) as an argument and returns the view/virtual node that will be shown depending on the value
      */
-    constructor (media, viewFunc) {
-        super({ viewFunc })
+    constructor (media, viewGetter) {
+        super({ media, viewGetter })
 
         // check if running in browser
         if (typeof window === "object" && "matchMedia" in window) {
-            var _media
+            let _media
             if (typeof media === "object") {
-                _media = jsonToMediaQuery(media)
+                _media = jsonToMediaQuery(this.options.media)
             } else {
-                _media = String(media)
+                _media = String(this.options.media)
             }
     
             this._mediaQuery = window.matchMedia(_media)
             this._mediaQuery.addListener(event => {
-                console.log(event)
                 this.state.set({
                     value: event.matches
                 })
@@ -82,8 +76,12 @@ export class Media extends View {
         }
     }
 
+    initialState () {
+        return { value: false }
+    }
+
     body () {
-        return this.options.viewFunc(this.state.get("value"))
+        return this.options.viewGetter(this.state.get("value"))
     }
 }
 

@@ -12,11 +12,10 @@ import { Alignment, alignmentToCssValue } from "../../Values/Alignment.js"
  */
 export class HStack extends View {
     /**
-     * @param {Array<View|VNode>} children The items of the stack
+     * @param {Array<View|VNode>|function} children The items of the stack
      */
     constructor (children) {
-        super()
-        this.children = children
+        super({ children })
     }
 
     /**
@@ -25,19 +24,6 @@ export class HStack extends View {
      * @param {Symbol} options.horizontal   alignment on the horizontal axis
      * @param {Symbol} options.vertical     alignment on the vertical axis
      * @param {Symbol} options.both         alignment on the vertical and horizontal axises
-     * @example
-     * class ExampleView extends View {
-     *     body () {
-     *         return (
-     *             new HStack([
-     *                 new Text("Logo")
-     *                     .font(Fonts.title.with({ size: 20 })),
-     *                 new Text("Description")
-     *                     .offset({ left: 20 })
-     *             ]).alignment({ both: Alignment.center })
-     *         )
-     *     }
-     * }
      */
     alignment ({ horizontal, vertical, both }) {
         if (Alignment.contains(both)) {
@@ -57,7 +43,7 @@ export class HStack extends View {
     }
 
     body () {
-        var { children } = this
+        var { children } = this.options
 
         if (typeof children === "function") {
             children = children()
@@ -73,6 +59,7 @@ export class HStack extends View {
         vNode.tag = "div"
         vNode.body = children.filter(value => value != null)
         vNode.styles.display = "flex"
+        vNode.styles.flexDirection = "row"
         
         return vNode
     }

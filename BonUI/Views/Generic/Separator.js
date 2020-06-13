@@ -4,37 +4,32 @@
 //
 
 import { View } from "../View.js"
-import { Enum } from "../../Values/Enum.js"
+import { Axis } from "../../Values/Axis.js"
 import { Colors } from "../../Values/Color.js"
 import { percents } from "../../Values/Length.js"
 
-/**
- * @enum
- * @property {Symbol} horizontal    horizontal direction
- * @property {Symbol} vertical      vertical direction
- */
-export const Direction = new Enum("horizontal", "vertical")
 
 export class Separator extends View {
     /**
-     * @param {Symbol} direction item of the Direction enum
+     * @param {Symbol} axis item of the Axis enum
      */
-    constructor (direction = Direction.horizontal) {
-        super({ direction })
+    constructor (axis = Axis.horizontal) {
+        super({ axis })
 
         const offset = 10
 
-        switch (this.options.direction) {
-            case Direction.horizontal:
+        switch (this.options.axis) {
+            case Axis.horizontal:
                 this.size({ width: percents(100), height: 1 })
                     .offset({ top: offset, bottom: offset })
                 break
-            case Direction.vertical:
-                this.size({ width: 1, height: percents(100) })
+            case Axis.vertical:
+                this.size({ width: 1 })
+                    .applyCSS({ alignSelf: "stretch" })
                     .offset({ left: offset, right: offset })
                 break
             default:
-                throw new Error("Unexpected direction passed. Expected item of Direction enum.")
+                throw new Error("Unexpected axis passed. Expected item of Axis enum.")
                 break
         }
 

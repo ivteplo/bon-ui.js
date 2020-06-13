@@ -5,8 +5,6 @@
 
 //// Views
 // Core
-export * from "./State.js"    
-export * from "./Event.js"    
 export * from "./Views/View.js"
 
 // Generic
@@ -41,11 +39,13 @@ export * from "./Worker.js"
 //// Values
 export * from "./Values/Enum.js"
 export * from "./Values/Font.js"
+export * from "./Values/Axis.js"
+export * from "./Values/Event.js"    
+export * from "./Values/State.js"
 export * from "./Values/Color.js"
 export * from "./Values/Array.js"
 export * from "./Values/Length.js"
 export * from "./Values/FitType.js"
-export * from "./Values/ForEach.js"
 export * from "./Values/Alignment.js"
 export * from "./Values/Positioning.js"
 export * from "./Values/OutlineStyle.js"

@@ -27,7 +27,7 @@ export class Image extends View {
      */
     fitType(type) {
         if (FitType.contains(type)) {
-            this.styles.objectFit = fitTypeToCssValue(type)
+            this._styles.objectFit = fitTypeToCssValue(type)
         }
 
         return this

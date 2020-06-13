@@ -27,9 +27,9 @@ export class Control extends View {
     }
 
     /**
-     * A method to activate the control
+     * A method to enable the control
      */
-    activate() {
+    enable() {
         this.state.set({
             active: true
         })

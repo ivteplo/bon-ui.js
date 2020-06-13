@@ -18,6 +18,8 @@ export class Button extends Control {
      */
     constructor (label) {
         super({ label })
+
+
         this.outline({ all: 0 })
             .applyCSS({ cursor: "pointer" })
             .padding({ all: 7 })
@@ -27,10 +29,20 @@ export class Button extends Control {
     }
 
     body () {
-        var { label } = this.options
+        var { label: _label } = this.options
 
         var vNode = super.body()
         vNode.tag = "button"
+        var label = _label instanceof Function ? _label() : _label
+
+        if (!(label instanceof Function || label instanceof View)) {
+            if (_label instanceof Function) {
+                throw new Error("Getter of button label returned unexpected value. Expected view or virtual DOM node")
+            } else {
+                throw new Error("Unexpected button label passed. Expected view, virtual DOM node or getter")
+            }
+        }
+
         vNode.body = [ label ]
         vNode.attributes.type = "button"
         

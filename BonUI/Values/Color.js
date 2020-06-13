@@ -80,7 +80,7 @@ const lightTheme = {
     secondaryLabel: new Color({ red: 0x33, green: 0x33, blue: 0x33 }),
     tertiaryLabel: new Color({ red: 0x55, green: 0x55, blue: 0x55 }),
     quaternaryLabel: new Color({ red: 0x88, green: 0x88, blue: 0x88 }),
-    separator: new Color({ red: 0xE5, green: 0xE5, blue: 0xE5 })
+    separator: new Color({ red: 0xDE, green: 0xDE, blue: 0xDE })
 }
 
 /**
