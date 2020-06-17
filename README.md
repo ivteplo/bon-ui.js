@@ -30,7 +30,6 @@
 - [Installation](#installation)
     * [Using Package Manager](#using-package-manager)
     * [Using CDN](#using-cdn)
-    * [Using Github Releases](#using-github-releases)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Important notes](#important-notes)
@@ -131,8 +130,6 @@ You can download the ES6 or CommonJS module using `curl` or `wget`:
 `$ wget https://unpkg.com/@teplovs/bon-ui/Node/Dist/BonUI.esm.js --output-file BonUI.js`
 
 (here you can replace URL with any of specified before)
-### Using Github Releases
-Inside the [repository releases section](https://github.com/teplovs/bon-ui/releases) you can find Bon UI releases. Here are some bundles with different module types like CommonJS, UMD and ES6.
 
 ## Documentation
 You can find the API documentation by visiting [this](https://teplovs.github.io/bon-ui-docs) website (documentation here is only for the latest published version of Bon UI).

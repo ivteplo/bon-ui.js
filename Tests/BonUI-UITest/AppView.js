@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { View, FitType, Media, TextBox, Image, Separator, Text, VStack, HStack, ZStack, List, ScrollView, Colors, Fonts, Positioning, Alignment, Axis, percents, parentFontSize } from "../BonUI/BonUI.js"
+import { View, Button, FitType, Media, TextBox, Image, Separator, Text, VStack, HStack, ZStack, List, ScrollView, Colors, Fonts, Positioning, Alignment, Axis, percents, parentFontSize } from "../../Sources/BonUI/BonUI.js"
 
 var colors = Object.keys(Colors)
 
@@ -18,7 +18,30 @@ class Example extends View {
                 new Text(this.options.title)
                     .font(Fonts.title),
                 this.options.contents
+            ]).cloneViewProperties(this)
+        )
+    }
+}
+
+class ColorView extends View {
+    constructor (colorName, colorValue, textSameColor = false) {
+        super({ colorName, colorValue, textSameColor })
+    }
+    
+    body () {
+        return (
+            new HStack([
+                new Text(this.options.colorName)
+                    .foreground({ color: this.options.textSameColor ? this.options.colorValue : null }),
+
+                new View()
+                    .size({ width: 50, height: 50 })
+                    .background({ color: this.options.colorValue })
             ])
+            .alignment({ 
+                horizontal: Alignment.spaceBetween, 
+                vertical: Alignment.center 
+            })
         )
     }
 }
@@ -117,18 +140,23 @@ export class AppView extends View {
 
                     new Separator(),
 
+                    new Example("Buttons", [
+                        new Button(
+                            new Text("Hello world!")
+                        )
+                    ]),
+
+                    new Separator(),
+
+                    new Example("Theme colors", (
+                        new List(Object.keys(Colors.theme), color => (
+                            new ColorView(color, Colors.theme[color], true)
+                        ))
+                    )).offset({ bottom: 21 }),
+
                     new Example("Colors list", (
-                        new List(colors, color => (
-                            new HStack([
-                                new Text(color),
-                                new View()
-                                    .size({ width: 50, height: 50 })
-                                    .background({ color: Colors[color] })
-                            ])
-                            .alignment({ 
-                                horizontal: Alignment.spaceBetween, 
-                                vertical: Alignment.center 
-                            })
+                        new List(colors, color => color === "theme" ? null : (
+                            new ColorView(color, Colors[color])
                         ))
                     ))
                 ])
@@ -139,6 +167,7 @@ export class AppView extends View {
             .size({ width: percents(100) })
             .padding({ all: 20 })
             .alignment({ horizontal: Alignment.center })
+            .font(Fonts.default)
         )
     }
 }

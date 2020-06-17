@@ -32,7 +32,7 @@ export class Text extends View {
         super({ text: String(text) })
 
         this.selectable(defaultSelectable)
-            .offset({ all: 0, bottom: 10 })
+            .offset({ all: 0 })
             .padding({ all: 0 })
     }
 
@@ -71,7 +71,7 @@ export class Text extends View {
         vNode.body = body
 
         if (!this._styles.color) {
-            let color = Colors.theme.quaternaryLabel
+            let color = "inherit"
             switch (tag) {
                 case "h1":
                     color = Colors.theme.label
@@ -81,8 +81,6 @@ export class Text extends View {
                     break
                 case "h3":
                     color = Colors.theme.tertiaryLabel
-                    break
-                default:
                     break
             }
 

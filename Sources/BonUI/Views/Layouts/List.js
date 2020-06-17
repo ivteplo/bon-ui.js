@@ -34,16 +34,23 @@ export class List extends View {
     body () {
         const result = (
             new VStack([
-                this.options.data.map((item, index) => 
-                    new VNode({
-                        tag: "div",
-                        body: [
-                            this.options.childGetter(item, index)
-                        ],
-                        styles: {
-                            borderBottom: "1px solid " + Colors.theme.separator
-                        }
-                    }))
+                this.options.data.map((item, index) => {
+                    const child = this.options.childGetter(item, index)
+
+                    if (child == null) {
+                        return null
+                    }
+                    
+                    return (
+                        new VNode({
+                            tag: "div",
+                            body: [ child ],
+                            styles: {
+                                borderBottom: "1px solid " + Colors.theme.separator
+                            }
+                        })
+                    )
+                })
             ])
             .applyCSS(this._styles)
             .setAttributes(this._attributes)

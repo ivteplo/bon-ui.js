@@ -3,9 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { expect } from "chai"
+import chai from "chai"
 import browserEnv from "browser-env"
-import { View, Text, VStack } from "../../BonUI/BonUI.js"
+import { View, Text, VStack } from "../../Sources/BonUI/BonUI.js"
+
+const { expect } = chai
 
 browserEnv()
 
@@ -97,7 +99,7 @@ describe("Server side rendering", () => {
     const result = content.toString()
 
     it("must correctly render to HTML string", () => {
-        expect(result).to.equal(`<p style='user-select:none;margin:0px;padding:0px;'>Hello world!</p>`)
+        expect(result).to.equal(`<p style='box-sizing:border-box;user-select:none;margin:0px;padding:0px;color:inherit;'>Hello world!</p>`)
     })
     
     it("must not update state when rendering from server, and not set isMounted to true", () => {

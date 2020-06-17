@@ -20,11 +20,11 @@ export class TextBox extends Control {
     constructor ({ placeholder = "", multiline = false } = {}) {
         super({ placeholder, multiline })
 
-        this.outline({ all: 1, color: Colors.lightGray, style: OutlineStyle.solid, radius: 7 })
+        this.outline({ all: 1, color: Colors.theme.separator, style: OutlineStyle.solid, radius: 7 })
             .padding({ all: 7 })
             .font(Fonts.inherit)
-            .background({ color: Colors.white })
-            .foreground({ color: Colors.black })
+            .background({ color: Colors.theme.background })
+            .foreground({ color: Colors.theme.label })
             .applyCSS({ resize: "none", outline: "none" })
             .setAttributes({ placeholder: this.options.placeholder })
     }

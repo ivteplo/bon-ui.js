@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { State } from "../State.js"
+import { State } from "../Values/State.js"
 
 /**
  * A class to represent the color
@@ -49,81 +49,43 @@ export class Color {
     }
 }
 
-const darkTheme = {
-    blue: new Color({ red: 10, green: 132, blue: 255 }),
-    green: new Color({ red: 48, green: 209, blue: 88 }),
-    indigo: new Color({ red: 94, green: 92, blue: 230 }),
-    orange: new Color({ red: 255, green: 159, blue: 10 }),
-    pink: new Color({ red: 255, green: 55, blue: 95 }),
-    purple: new Color({ red: 191, green: 90, blue: 242 }),
-    red: new Color({ red: 255, green: 69, blue: 58 }),
-    teal: new Color({ red: 100, green: 210, blue: 255 }),
-    yellow: new Color({ red: 255, green: 214, blue: 10 }),
+export const darkTheme = {
+    blue: new Color({ red: 81, green: 168, blue: 225 }),
+    green: new Color({ red: 54, green: 200, blue: 57 }),
+    indigo: new Color({ red: 106, green: 104, blue: 212 }),
+    orange: new Color({ red: 225, green: 130, blue: 55 }),
+    pink: new Color({ red: 237, green: 80, blue: 135 }),
+    purple: new Color({ red: 200, green: 95, blue: 255 }),
+    red: new Color({ red: 225, green: 73, blue: 73 }),
+    teal: new Color({ red: 81, green: 200, blue: 217 }),
+    yellow: new Color({ red: 225, green: 210, blue: 39 }),
     label: new Color({ red: 0xFF, green: 0xFF, blue: 0xFF }),
     secondaryLabel: new Color({ red: 0xEE, green: 0xEE, blue: 0xEE }),
     tertiaryLabel: new Color({ red: 0xBB, green: 0xBB, blue: 0xBB }),
     quaternaryLabel: new Color({ red: 0x88, green: 0x88, blue: 0x88 }),
-    separator: new Color({ red: 0x33, green: 0x33, blue: 0x33 })
+    separator: new Color({ red: 0x33, green: 0x33, blue: 0x33 }),
+    background: new Color({ red: 0, green: 0, blue: 0 })
 }
 
-const lightTheme = {
-    blue: new Color({ red: 0, green: 122, blue: 255 }),
-    green: new Color({ red: 52, green: 199, blue: 89 }),
-    indigo: new Color({ red: 88, green: 86, blue: 214 }),
-    orange: new Color({ red: 255, green: 149, blue: 0 }),
-    pink: new Color({ red: 255, green: 45, blue: 85 }),
-    purple: new Color({ red: 175, green: 82, blue: 222 }),
-    red: new Color({ red: 255, green: 59, blue: 48 }),
-    teal: new Color({ red: 90, green: 200, blue: 250 }),
-    yellow: new Color({ red: 255, green: 204, blue: 0 }),
+export const lightTheme = {
+    blue: new Color({ red: 24, green: 131, blue: 219 }),
+    green: new Color({ red: 54, green: 199, blue: 68 }),
+    indigo: new Color({ red: 80, green: 77, blue: 227 }),
+    orange: new Color({ red: 235, green: 118, blue: 35 }),
+    pink: new Color({ red: 237, green: 69, blue: 125 }),
+    purple: new Color({ red: 169, green: 45, blue: 207 }),
+    red: new Color({ red: 217, green: 33, blue: 33 }),
+    teal: new Color({ red: 81, green: 209, blue: 237 }),
+    yellow: new Color({ red: 235, green: 200, blue: 39 }),
     label: new Color({ red: 0, green: 0, blue: 0 }),
     secondaryLabel: new Color({ red: 0x33, green: 0x33, blue: 0x33 }),
     tertiaryLabel: new Color({ red: 0x55, green: 0x55, blue: 0x55 }),
     quaternaryLabel: new Color({ red: 0x88, green: 0x88, blue: 0x88 }),
-    separator: new Color({ red: 0xDE, green: 0xDE, blue: 0xDE })
+    separator: new Color({ red: 0xDE, green: 0xDE, blue: 0xDE }),
+    background: new Color({ red: 255, green: 255, blue: 255 })
 }
 
-/**
- * The list of handpicked colors
- */
 export const Colors = {
-    // blue colors
-    aero: new Color({ red: 0x78, green: 0xC0, blue: 0xE0 }),
-    ultramarineBlue: new Color({ red: 0x4D, green: 0x6C, blue: 0xFA }),
-    persianBlue: new Color({ red: 0x19, green: 0x2B, blue: 0xC2 }),
-    // it's overriden by CSS color
-    midnightBlue: new Color({ red: 0x15, green: 0x05, blue: 0x78 }),
-    spaceCadet: new Color({ red: 0x0E, green: 0x0E, blue: 0x52 }),
-
-    // yellow and orange and brown colors
-    mellowYellow: new Color({ red: 0xF3, green: 0xE3, blue: 0x7C }),
-    deepSaffron: new Color({ red: 0xF1, green: 0x9A, blue: 0x3E }),
-    vividOrangePeel: new Color({ red: 0xF0, green: 0xA2, blue: 0x02 }),
-    princetonOrange: new Color({ red: 0xFE, green: 0x7F, blue: 0x2D }),
-    ruddyBrown: new Color({ red: 0xBA, green: 0x56, blue: 0x24 }),
-
-    // green colors
-    mediumSeaGreen: new Color({ red: 0x38, green: 0xAF, blue: 0x68 }),
-    kellyGreen: new Color({ red: 0x4C, green: 0xC1, blue: 0x3F }),
-    northTexasGreen: new Color({ red: 0x11, green: 0x89, blue: 0x2F }),
-    bottleGreen: new Color({ red: 0x04, green: 0x72, blue: 0x4D }),
-    darkSlateGray: new Color({ red: 0x27, green: 0x56, blue: 0x4D }),
-    
-    // red and brown and pink colors
-    paradisePink: new Color({ red: 0xEB, green: 0x51, blue: 0x60 }),
-    pantoneRed: new Color({ red: 0xF2, green: 0x29, blue: 0x3D }),
-    rossoCorsa: new Color({ red: 0xDB, green: 0x02, blue: 0x05 }),
-    rosewood: new Color({ red: 0x59, green: 0x00, blue: 0x04 }),
-    blackBean: new Color({ red: 0x30, green: 0x0E, blue: 0x01 }),
-
-    // violet and purple and blue colors
-    // these two are also overriden by CSS colors
-    mediumPurple: new Color({ red: 0x83, green: 0x72, blue: 0xDB }),
-    slateBlue: new Color({ red: 0x72, green: 0x5A, blue: 0xC1 }),
-    darkLavender: new Color({ red: 0x60, green: 0x4D, blue: 0x9E }),
-    rebeccaPurple: new Color({ red: 0x66, green: 0x2E, blue: 0x96 }),
-    deepViolet: new Color({ red: 0x36, green: 0x05, blue: 0x68 }),
-
     // CSS colors
     aliceBlue : new Color({ red: 240, green: 248, blue: 255}),
     antiqueWhite : new Color({ red: 250, green: 235, blue: 215}),
@@ -272,6 +234,7 @@ export const Colors = {
     whiteSmoke : new Color({ red: 245, green: 245, blue: 245}),
     yellow : new Color({ red: 255, green: 255, blue: 0}),
     yellowGreen : new Color({ red: 154, green: 205, blue: 50}),
+    transparent: new Color({ alpha: 0 }),
     theme: lightTheme
 }
 

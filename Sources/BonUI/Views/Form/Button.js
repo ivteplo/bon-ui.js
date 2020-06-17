@@ -3,9 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { VNode } from "../../VirtualDOM/VNode.js"
 import { Control } from "../Generic/Control.js"
 import { Colors } from "../../Values/Color.js"
 import { Fonts } from "../../Values/Font.js"
+import { View } from "../View.js"
 
 /**
  * A view that represents the button
@@ -19,13 +21,11 @@ export class Button extends Control {
     constructor (label) {
         super({ label })
 
-
         this.outline({ all: 0 })
             .applyCSS({ cursor: "pointer" })
-            .padding({ all: 7 })
             .font(Fonts.inherit)
-            .background({ color: Colors.white })
-            .foreground({ color: Colors.ultramarineBlue })
+            .background({ color: Colors.transparent })
+            .foreground({ color: Colors.theme.blue })
     }
 
     body () {
@@ -35,7 +35,7 @@ export class Button extends Control {
         vNode.tag = "button"
         var label = _label instanceof Function ? _label() : _label
 
-        if (!(label instanceof Function || label instanceof View)) {
+        if (!(label instanceof Function || label instanceof View || label instanceof VNode)) {
             if (_label instanceof Function) {
                 throw new Error("Getter of button label returned unexpected value. Expected view or virtual DOM node")
             } else {
@@ -49,3 +49,4 @@ export class Button extends Control {
         return vNode
     }
 }
+

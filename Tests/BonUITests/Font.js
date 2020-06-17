@@ -3,9 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { expect } from "chai"
+import chai from "chai"
 import browserEnv from "browser-env"
-import { Font } from "../../BonUI/BonUI.js"
+import { Font } from "../../Sources/BonUI/BonUI.js"
+
+const { expect } = chai
 
 browserEnv()
 
