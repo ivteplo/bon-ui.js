@@ -3,23 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            overflow: hidden;
-            height: 100vh;
-        }
-    </style>
 </head>
 <body>
     <script type="module">
         import { AppView } from "./AppView.js"
-        const view = new AppView()
-        view.mountTo(document.body)
+        import * as BonUI from "../../Sources/BonUI/BonUI.js"
+        
+        class AppDelegate extends BonUI.ApplicationDelegate {
+            applicationWillLoad (application) {
+                console.log("Application will load", application)
+            }
+
+            applicationStarted (application) {
+                window.addEventListener("click", () => {
+                    application.view.state.set({
+                        counter: application.view.state.current.counter + 1
+                    })
+                })
+                console.log("Application started", application)
+            }
+        }
+
+        const application = new BonUI.Application()
+        application.setView(new AppView())
+        application.setDelegate(new AppDelegate())
+        application.main()
+
+        window.application = application
+        window.BonUI = BonUI
     </script>
 </body>
 </html>

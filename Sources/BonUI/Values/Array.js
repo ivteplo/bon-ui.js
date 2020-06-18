@@ -3,6 +3,8 @@
 // Licensed under the Apache License, version 2.0
 //
 
+// This file contains helpers for working with arrays
+
 export function flattenArray (array) {
     var _array = []
     for (let i of array) {
@@ -10,4 +12,3 @@ export function flattenArray (array) {
     }
     return _array
 }
-
