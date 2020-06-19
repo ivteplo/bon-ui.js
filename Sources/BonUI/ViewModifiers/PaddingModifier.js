@@ -4,8 +4,8 @@
 //
 
 import { Edge } from "../Values/Edge.js"
+import { Length } from "../Values/Length.js"
 import { ViewModifier } from "./ViewModifier.js"
-import { Length, pixels } from "../Values/Length.js"
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 
