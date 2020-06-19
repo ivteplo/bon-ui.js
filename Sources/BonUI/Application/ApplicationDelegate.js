@@ -9,4 +9,5 @@ export class ApplicationDelegate {
     applicationLostFocus (application) {}
     applicationGotFocus (application) {}
     applicationWillClose (application) {}
+    applicationIsClosing (application) {}
 }

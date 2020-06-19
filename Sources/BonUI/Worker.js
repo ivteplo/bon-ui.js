@@ -3,6 +3,8 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { InvalidValueException } from "./Values/Exceptions.js"
+
 const workQueue = []
 
 function performWork (deadline) {
@@ -18,7 +20,7 @@ function performWork (deadline) {
 function requestDoingWork () {
     if (!("requestIdleCallback" in window && typeof window.requestIdleCallback === "function")) {
         // eslint-disable-next-line no-unused-vars
-        window.requestIdleCallback = function requestIdleCallback (work, { timeout }) {
+        window.requestIdleCallback = function requestIdleCallback (work, { timeout } = {}) {
             work({
                 didTimeout: true,
                 timeRemaining: () => 0
@@ -39,10 +41,11 @@ export class Worker {
      * @param {Function} func Function that will be called when the browser is not busy
      */
     static addUnitOfWork (func) {
-        if (typeof func === "function") {
-            workQueue.push(func)
-            requestDoingWork()
-            return workQueue[workQueue.length - 1]
+        if (typeof func !== "function") {
+            throw new InvalidValueException(`Expected function to call, got ${typeof func}`)
         }
+
+        workQueue.push(func)
+        requestDoingWork()
     }
 }

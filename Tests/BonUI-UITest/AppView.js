@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { View, Text } from "../../Sources/BonUI/BonUI.js"
+import { View, Text, Edge, pixels } from "../../Sources/BonUI/BonUI.js"
 
 export class AppView extends View {
     initialState () {
@@ -11,6 +11,9 @@ export class AppView extends View {
     }
 
     body () {
-        return new Text("Counter: " + this.state.current.counter)
+        return (
+            new Text("Counter: " + this.state.current.counter)
+                .padding(Edge.bottom, pixels(10))
+        )
     }
 }

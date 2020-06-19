@@ -89,5 +89,40 @@ export class Application {
         if (this.delegate) {
             this.delegate.applicationStarted(this)
         }
+
+        // adding event handlers to the window that will call
+        // some of the ApplicationDelegate methods
+
+        var hidden, visibilityChange
+        if (typeof document.hidden !== "undefined") {
+            hidden = "hidden"
+            visibilityChange = "visibilitychange"
+        } else if (typeof document.msHidden !== "undefined") {
+            hidden = "msHidden"
+            visibilityChange = "msvisibilitychange"
+        } else if (typeof document.webkitHidden !== "undefined") {
+            hidden = "webkitHidden"
+            visibilityChange = "webkitvisibilitychange"
+        }
+
+        if (this.delegate) {
+            document.addEventListener(visibilityChange, () => {
+                if (document[hidden]) {
+                    this.delegate.applicationLostFocus(this)
+                } else {
+                    this.delegate.applicationGotFocus(this)
+                }
+            })
+
+            window.addEventListener("beforeunload", event => {
+                const returnValue = this.delegate.applicationWillClose(this)
+                event.returnValue = returnValue || ""
+                return returnValue
+            })
+
+            window.addEventListener("unload", event => {
+                this.delegate.applicationIsClosing(this)
+            })
+        }
     }
 }

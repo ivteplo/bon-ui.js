@@ -3,11 +3,16 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { PaddingModifier } from "../ViewModifiers/PaddingModifier.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { ViewModifier } from "../ViewModifiers/ViewModifier.js"
 import { flattenArray } from "../Values/Array.js"
 import { Protocol } from "../Values/Protocol.js"
 import { VNode } from "../VirtualDOM/VNode.js"
+import { pixels } from "../Values/Length.js"
 import { State } from "../Values/State.js"
+import { Edge } from "../Values/Edge.js"
+import { Worker } from "../Worker.js"
 
 const ViewProtocol = Protocol.createClass({
     requiredMethods: [ "body" ]
@@ -24,8 +29,8 @@ const ViewProtocol = Protocol.createClass({
 export class View extends ViewProtocol {
     constructor () {
         super()
-        this._prefersForceInvalidation = false
         this.lastRender = null
+        this.modifiers = []
 
         this.state = new State((state = this.initialState(), action) => {
             switch (action.type) {
@@ -37,7 +42,9 @@ export class View extends ViewProtocol {
         })
 
         this.state.subscribe(() => {
-            this.invalidate()
+            this.invalidate({
+                useIdleCallback: true
+            })
         })
 
         this.state.set = (keys) => {
@@ -53,16 +60,27 @@ export class View extends ViewProtocol {
         return {}
     }
 
-    /** @todo */
-    invalidate () {
-        if (this.lastRender === null) {
-            return
-        }
+    /**
+     * Method to invalidate (update) the view
+     * @param {*}       [options] 
+     * @param {Boolean} [options.useIdleCallback] if true then invalidation will be called when the browser is not busy
+     */
+    invalidate ({ useIdleCallback = false } = {}) {
+        const invalidate = () => {
+            if (this.lastRender === null) {
+                return
+            }
 
-        const render = View.renderToVirtualDomNode(this)
-        // debugger
-        render.updateDomNode(this.lastRender, this.lastRender.dom)
-        this.lastRender = render
+            const render = View.renderToVirtualDomNode(this)
+            render.updateDomNode(this.lastRender, this.lastRender.dom)
+            this.lastRender = render
+        }
+        
+        if (useIdleCallback) {
+            Worker.addUnitOfWork(invalidate)
+        } else {
+            invalidate()
+        }
     }
 
     /**
@@ -75,9 +93,22 @@ export class View extends ViewProtocol {
         var result = view
         var views = []
 
+        // don't use `_view` as the latest view rendering result
+        // because it's used for loop and becomes 
+        var _view = view
+
         while (result instanceof View) {
-            views.push(view)
+            views.push(_view)
             result = result.body()
+            
+            // applying modifiers
+            if ("modifiers" in _view && Array.isArray(_view.modifiers)) {
+                for (let modifier of _view.modifiers) {
+                    result = modifier.body(result)
+                }
+            }
+            
+            _view = result
         }
 
         if (!(result instanceof VNode)) {
@@ -111,5 +142,28 @@ export class View extends ViewProtocol {
         }
         
         return result
+    }
+
+    // View modifiers section
+
+    /**
+     * Method to add view modifier
+     * @param {ViewModifier} modifier 
+     */
+    modifier (modifier) {
+        if (!(modifier instanceof ViewModifier)) {
+            throw new InvalidValueException(`Unexpected modifier passed (expected ViewModifier instance, got ${modifier.constructor.name})`)
+        }
+
+        this.modifiers.push(modifier)
+        return this
+    }
+
+    /**
+     * Method to apply padding modifier
+     */
+    padding (edge = Edge.all, size = pixels(10)) {
+        this.modifiers.push(new PaddingModifier(edge, size))
+        return this
     }
 }

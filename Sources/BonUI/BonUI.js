@@ -3,32 +3,34 @@
 // Licensed under the Apache License, version 2.0
 //
 
-//// Views
+// Views
 export * from "./Views/View.js"
 
-// Generic
+// - Generic
 export * from "./Views/Generic/Text.js"
 
 
-//// View Modifiers
+// View Modifier
 export * from "./ViewModifiers/ViewModifier.js"
 
 
-//// Virtual DOM
+// Virtual DOM
 export * from "./VirtualDOM/TextVNode.js"
 export * from "./VirtualDOM/ContainerVNode.js"
 
 
-//// Application
+// Application
 export * from "./Application/Application.js"
 export * from "./Application/ApplicationDelegate.js"
 
 
-//// Workers
+// Workers
 export * from "./Worker.js"
 
 
-//// Values
+// Values
+export * from "./Values/Edge.js"
 export * from "./Values/Event.js"
 export * from "./Values/State.js"
+export * from "./Values/Length.js"
 export * from "./Values/Exceptions.js"

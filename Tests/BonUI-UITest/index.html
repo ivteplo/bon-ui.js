@@ -7,22 +7,8 @@
 <body>
     <script type="module">
         import { AppView } from "./AppView.js"
+        import { AppDelegate } from "./AppDelegate.js"
         import * as BonUI from "../../Sources/BonUI/BonUI.js"
-        
-        class AppDelegate extends BonUI.ApplicationDelegate {
-            applicationWillLoad (application) {
-                console.log("Application will load", application)
-            }
-
-            applicationStarted (application) {
-                window.addEventListener("click", () => {
-                    application.view.state.set({
-                        counter: application.view.state.current.counter + 1
-                    })
-                })
-                console.log("Application started", application)
-            }
-        }
 
         const application = new BonUI.Application()
         application.setView(new AppView())
