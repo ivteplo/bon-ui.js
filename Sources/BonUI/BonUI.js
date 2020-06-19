@@ -5,9 +5,11 @@
 
 // Views
 export * from "./Views/View.js"
-
-// - Generic
+// -> Generic
 export * from "./Views/Generic/Text.js"
+// -> Layouts
+export * from "./Views/Layouts/Row.js"
+export * from "./Views/Layouts/Column.js"
 
 
 // View Modifier
@@ -30,7 +32,9 @@ export * from "./Worker.js"
 
 // Values
 export * from "./Values/Edge.js"
+export * from "./Values/Font.js"
 export * from "./Values/Event.js"
 export * from "./Values/State.js"
 export * from "./Values/Length.js"
+export * from "./Values/Alignment.js"
 export * from "./Values/Exceptions.js"

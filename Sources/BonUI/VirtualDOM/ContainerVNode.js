@@ -176,7 +176,7 @@ export class ContainerVNode extends VNode {
                     body[i].toDomNode({ save: true })
                     
                     if (i > 0) {
-                        body[i].dom.parentNode.insertBefore(body[i].dom, body[i - 1].dom.nextSibling)
+                        body[i - 1].dom.parentNode.insertBefore(body[i].dom, body[i - 1].dom.nextSibling)
                     } else {
                         dom.prepend(body[i].dom)
                     }

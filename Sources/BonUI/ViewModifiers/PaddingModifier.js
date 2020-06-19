@@ -11,7 +11,6 @@ import { InvalidValueException } from "../Values/Exceptions.js"
 
 export class PaddingModifier extends ViewModifier {
     /**
-     * 
      * @param {Symbol}        edge item of Edge enum
      * @param {Length|Number} size size of padding
      */
@@ -50,12 +49,22 @@ export class PaddingModifier extends ViewModifier {
                 break
         }
 
-        return (
-            new ContainerVNode({
-                component: "div",
-                body: content,
-                styles
-            })
-        )
+        if (content instanceof ContainerVNode) {
+            var _styles = Object.assign(content.styles, styles)
+            return (
+                new ContainerVNode({
+                    ...content,
+                    styles: _styles
+                })
+            )
+        } else {
+            return (
+                new ContainerVNode({
+                    component: "div",
+                    body: content,
+                    styles
+                })
+            )
+        }
     }
 }

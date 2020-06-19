@@ -10,10 +10,27 @@
     <strong>A framework with declarative syntax for developing UI for web apps</strong>
 </div>
 
+---
+
 ## Table of contents
+- [Installation](#installation)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [Important notes](#important-notes)
 - [Special thanks](#special-thanks)
+
+---
+
+## Installation
+You can install Bon UI using the npm or yarn package manager:
+```bash
+npm install @teplovs/bon-ui
+# or:
+yarn add @teplovs/bon-ui
+```
+
+## Documentation
+You can find documentation for the latest published version of Bon UI [here](https://teplovs.github.io/bon-ui-docs)
 
 ## Contributing
 To get started with contributing read [this](CONTRIBUTING.md)

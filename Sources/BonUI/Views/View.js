@@ -5,6 +5,7 @@
 
 import { PaddingModifier } from "../ViewModifiers/PaddingModifier.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { FontModifier } from "../ViewModifiers/FontModifier.js"
 import { ViewModifier } from "../ViewModifiers/ViewModifier.js"
 import { flattenArray } from "../Values/Array.js"
 import { Protocol } from "../Values/Protocol.js"
@@ -13,15 +14,11 @@ import { pixels } from "../Values/Length.js"
 import { State } from "../Values/State.js"
 import { Edge } from "../Values/Edge.js"
 import { Worker } from "../Worker.js"
+import { Font } from "../Values/Font.js"
 
 const ViewProtocol = Protocol.createClass({
     requiredMethods: [ "body" ]
 })
-
-/** 
- * @todo think about how to update 
- * the styles/attributes/handlers when 
- * used a modifier */
 
 /**
  * A class to respresent the UI item
@@ -42,9 +39,11 @@ export class View extends ViewProtocol {
         })
 
         this.state.subscribe(() => {
-            this.invalidate({
-                useIdleCallback: true
-            })
+            if (this.lastRender && this.lastRender.dom) {
+                this.invalidate({
+                    useIdleCallback: true
+                })
+            }
         })
 
         this.state.set = (keys) => {
@@ -156,14 +155,28 @@ export class View extends ViewProtocol {
         }
 
         this.modifiers.push(modifier)
+
+        if (this.lastRender && this.lastRender.dom) {
+            this.invalidate({ useIdleCallback: true })
+        }
+
         return this
     }
 
     /**
-     * Method to apply padding modifier
+     * Method to add padding to the view (using padding modifier)
      */
     padding (edge = Edge.all, size = pixels(10)) {
-        this.modifiers.push(new PaddingModifier(edge, size))
+        this.modifier(new PaddingModifier(edge, size))
+        return this
+    }
+
+    /**
+     * Method to set the font of the view (using font modifier)
+     * @param {Font} font 
+     */
+    font (font) {
+        this.modifier(new FontModifier(font))
         return this
     }
 }

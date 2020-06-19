@@ -3,17 +3,22 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { View, Text, Edge, pixels } from "../../Sources/BonUI/BonUI.js"
+import { View, Text, Edge, Font, Row, Column, Alignment, pixels } from "../../Sources/BonUI/BonUI.js"
 
 export class AppView extends View {
     initialState () {
-        return { counter: 0 }
+        return { counter: 16 }
     }
 
     body () {
         return (
-            new Text("Counter: " + this.state.current.counter)
-                .padding(Edge.bottom, pixels(10))
+            new Column([
+                new Text("Counter: ")
+                    .font(Font.title),
+                new Text(this.state.current.counter.toString())
+                    .font(Font.default.with({ size: pixels(this.state.current.counter) }))
+            ], { alignment: Alignment.center })
+            .padding()
         )
     }
 }
