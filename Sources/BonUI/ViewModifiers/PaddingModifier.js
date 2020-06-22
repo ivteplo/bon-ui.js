@@ -3,11 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Edge } from "../Values/Edge.js"
-import { Length } from "../Values/Length.js"
-import { ViewModifier } from "./ViewModifier.js"
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { ViewModifier } from "./ViewModifier.js"
+import { Length } from "../Values/Length.js"
+import { Edge } from "../Values/Edge.js"
 
 export class PaddingModifier extends ViewModifier {
     /**

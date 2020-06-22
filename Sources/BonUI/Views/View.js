@@ -3,6 +3,8 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { DOMEventListenerModifier } from "../ViewModifiers/DOMEventListenerModifier.js"
+import { ForegroundModifier } from "../ViewModifiers/ForegroundModifier.js"
 import { PaddingModifier } from "../ViewModifiers/PaddingModifier.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { FontModifier } from "../ViewModifiers/FontModifier.js"
@@ -11,6 +13,7 @@ import { flattenArray } from "../Values/Array.js"
 import { Protocol } from "../Values/Protocol.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { pixels } from "../Values/Length.js"
+import { Color } from "../Values/Color.js"
 import { State } from "../Values/State.js"
 import { Edge } from "../Values/Edge.js"
 import { Worker } from "../Worker.js"
@@ -89,6 +92,7 @@ export class View extends ViewProtocol {
      * @param {Boolean} [options.save]  save the value to the view.lastRender or node
      */
     static renderToVirtualDomNode (view, { save = false } = {}) {
+        var modifiers = []
         var result = view
         var views = []
 
@@ -102,9 +106,7 @@ export class View extends ViewProtocol {
             
             // applying modifiers
             if ("modifiers" in _view && Array.isArray(_view.modifiers)) {
-                for (let modifier of _view.modifiers) {
-                    result = modifier.body(result)
-                }
+                modifiers = modifiers.concat(_view.modifiers)
             }
             
             _view = result
@@ -134,6 +136,10 @@ export class View extends ViewProtocol {
             }
         }
 
+        for (let modifier of modifiers) {
+            result = modifier.body(result)
+        }
+
         if (save) {
             for (let i in views) {
                 views[i].lastRender = result
@@ -156,9 +162,9 @@ export class View extends ViewProtocol {
 
         this.modifiers.push(modifier)
 
-        if (this.lastRender && this.lastRender.dom) {
-            this.invalidate({ useIdleCallback: true })
-        }
+        // if (this.lastRender && this.lastRender.dom) {
+        //     this.invalidate({ useIdleCallback: true })
+        // }
 
         return this
     }
@@ -177,6 +183,15 @@ export class View extends ViewProtocol {
      */
     font (font) {
         this.modifier(new FontModifier(font))
+        return this
+    }
+
+    /**
+     * Method to set the foreground color
+     * @param {Color} color 
+     */
+    foregroundColor (color) {
+        this.modifier(new ForegroundModifier(color))
         return this
     }
 }

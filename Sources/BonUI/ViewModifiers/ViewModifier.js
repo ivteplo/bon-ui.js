@@ -5,8 +5,6 @@
 
 import { Protocol } from "../Values/Protocol.js"
 
-/** @todo think about how view modifiers will work */
-
 const ViewModifierProtocol = Protocol.createClass({
     requiredMethods: [ "body" ]
 })

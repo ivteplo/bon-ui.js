@@ -3,10 +3,10 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Font, textStyleToTagName } from "../Values/Font.js"
-import { ViewModifier } from "./ViewModifier.js"
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { Font, textStyleToTagName } from "../Values/Font.js"
+import { ViewModifier } from "./ViewModifier.js"
 
 export class FontModifier extends ViewModifier {
     /**
