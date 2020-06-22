@@ -3,39 +3,40 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Enum } from "./Enum.js"
 import { Length, pixels, parentFontSize } from "./Length.js"
+import { InvalidValueException } from "./Exceptions.js"
+import { Enum } from "./Enum.js"
 
 /**
- * @enum
- * @property {Symbol} default       Default text style
- * @property {Symbol} largeTitle    Main heading of the page style
- * @property {Symbol} title         Secondary-level heading of the page
- * @property {Symbol} subheading    Third-level heading of the page
- * @property {Symbol} monospace     Text style for code
+ * @enum     {Symbol}
+ * @property {Symbol} default       default text style
+ * @property {Symbol} largeTitle    main heading of the page style
+ * @property {Symbol} title         secondary-level heading of the page
+ * @property {Symbol} subheading    third-level heading of the page
+ * @property {Symbol} monospace     text style for code
  */
 export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "monospace")
 
 /**
- * @enum
- * @property {Symbol} regular       Default text weight
- * @property {Symbol} ultraLight    Very light text weight
- * @property {Symbol} extraLight    Very light text weight. The same as ultraLight
- * @property {Symbol} light         Light text weight
- * @property {Symbol} thin          Thin text weight
- * @property {Symbol} medium        Medium text weight
- * @property {Symbol} semibold      Semibold text weight
- * @property {Symbol} bold          Bold text weight
- * @property {Symbol} heavy         Heavy text weight
- * @property {Symbol} black         Black text weight
+ * @enum     {Symbol}
+ * @property {Symbol} regular       default text weight
+ * @property {Symbol} ultraLight    very light text weight
+ * @property {Symbol} extraLight    very light text weight. The same as ultraLight
+ * @property {Symbol} light         light text weight
+ * @property {Symbol} thin          thin text weight
+ * @property {Symbol} medium        medium text weight
+ * @property {Symbol} semibold      semibold text weight
+ * @property {Symbol} bold          bold text weight
+ * @property {Symbol} heavy         heavy text weight
+ * @property {Symbol} black         black text weight
  */
 export const Weight = new Enum("regular", "ultraLight", "extraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
 
 /**
- * @enum
- * @property {Symbol} normal        Default font style
- * @property {Symbol} italic        Italic font style
- * @property {Symbol} oblique       Oblique font style
+ * @enum     {Symbol}
+ * @property {Symbol} normal        default font style
+ * @property {Symbol} italic        italic font style
+ * @property {Symbol} oblique       oblique font style
  */
 export const FontStyle = new Enum("normal", "italic", "oblique")
 
@@ -51,8 +52,12 @@ export class Font {
      * @param {Symbol}          [options.weight]        Weight of a font
      * @param {Symbol}          [options.fontStyle]     Style of a font
      */
-    constructor ({ name = null, textStyle = null, size = null, weight = null, fontStyle = null  }) {
-        this.name = String(name)
+    constructor ({ name = null, textStyle = null, size = null, weight = null, fontStyle = null  } = {}) {
+        if (!name && !textStyle && !size && !weight && !fontStyle) {
+            throw new InvalidValueException(`Information about font is not specified`)
+        }
+
+        this.name = name
         this.textStyle = TextStyle.contains(textStyle) ? textStyle : TextStyle.default
         this.weight = Weight.contains(weight) ? weight : null
         this.fontStyle = FontStyle.contains(fontStyle) ? fontStyle : null
@@ -73,7 +78,7 @@ export class Font {
      * @param {Symbol}          [options.weight]        Weight of a font
      * @param {Symbol}          [options.fontStyle]     Style of a font
      */
-    with ({ name, textStyle, size, weight, fontStyle }) {
+    with ({ name, textStyle, size, weight, fontStyle } = {}) {
         var clone = Object.assign({}, this)
         
         if (typeof name === "string" || name instanceof String) {

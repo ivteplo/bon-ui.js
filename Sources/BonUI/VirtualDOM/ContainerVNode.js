@@ -22,7 +22,20 @@ const camelCaseToHyphen = v => {
 
 const replaceDoubleQuotes = v => v.replace(/"/g, "\\\"")
 
+/**
+ * Virtual DOM node that represents container (block) 
+ */
 export class ContainerVNode extends VNode {
+    /**
+     * @typedef {function|[VNode]} Body
+     * 
+     * @param {*}       options
+     * @param {string}  [options.component]     tag of the block
+     * @param {*}       [options.attributes]    attributes of the block
+     * @param {*}       [options.styles]        styles of the block
+     * @param {*}       [options.handlers]      handlers (event listeners) of the block
+     * @param {Body}    [options.body]          children or getter
+     */
     constructor ({ component = "div", attributes = {}, styles = {}, handlers = {}, body = [] } = {}) {
         super()
 
@@ -64,6 +77,11 @@ export class ContainerVNode extends VNode {
         return `<${this.component}${attributes ? ` ${attributes}` : ""}${styles ? ` style="${styles}"` : ""}>${body}</${this.component}>`
     }
 
+    /**
+     * Method to convert virtual DOM node to real DOM node
+     * @param {*}       options
+     * @param {boolean} [options.save] save the DOM node to the virtual DOM node or not (`false` by default)
+     */
     toDomNode ({ save = false } = {}) {
         if (typeof document !== "object") {
             throw new InvalidValueException(`Expected "document" to be object, got ${typeof document}`)
@@ -107,6 +125,11 @@ export class ContainerVNode extends VNode {
         return result
     }
 
+    /**
+     * Method to update the DOM of the node
+     * @param {VNode}   oldNode previous virtual DOM node
+     * @param {Node}    dom     current DOM
+     */
     updateDomNode (oldNode, dom) {
         if (oldNode instanceof ContainerVNode && oldNode.component === this.component) {
             for (let property in oldNode.styles) {

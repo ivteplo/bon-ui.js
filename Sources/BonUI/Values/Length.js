@@ -3,10 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Enum } from "./Enum.js"
 import { InvalidValueException } from "./Exceptions.js"
+import { Enum } from "./Enum.js"
 
 /**
+ * @enum     {Sumbol}
  * @property {Symbol} pixels
  * @property {Symbol} points
  * @property {Symbol} fontSize
@@ -38,7 +39,14 @@ function measureToString (measure) {
     }
 }
 
+/**
+ * Class to represent the length
+ */
 export class Length {
+    /**
+     * @param {number} value length
+     * @param {Symbol} units item of Measure enum
+     */
     constructor (value, units) {
         if (typeof value !== "number") {
             throw new InvalidValueException(`Expected number as a value, got ${typeof value}`)
@@ -57,30 +65,65 @@ export class Length {
     }
 }
 
+/**
+ * Method to create new Length instance that uses pixels for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function pixels (value) {
     return new Length(value, Measure.pixels)
 }
 
+/**
+ * Method to create new Length instance that uses points (pt) for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function points (value) {
     return new Length(value, Measure.points)
 }
 
+/**
+ * Method to create new Length instance that uses percents for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function percents (value) {
     return new Length(value, Measure.percents)
 }
 
+/**
+ * Method to create new Length instance that uses viewport width (vw) for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function viewportWidth (value) {
     return new Length(value, Measure.viewportWidth)
 }
 
+/**
+ * Method to create new Length instance that uses viewport height (vh) for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function viewportHeight (value) {
     return new Length(value, Measure.viewportHeight)
 }
 
+/**
+ * Method to create new Length instance that uses font size (rem) for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function fontSize (value) {
     return new Length(value, Measure.fontSize)
 }
 
+/**
+ * Method to create new Length instance that uses parent font size (em) for measuring 
+ * @param {number} value 
+ * @returns {Length}
+ */
 export function parentFontSize (value) {
     return new Length(value, Measure.parentFontSize)
 }

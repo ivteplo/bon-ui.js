@@ -12,9 +12,10 @@ import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
  */
 export class Row extends View {
     /**
-     * @param {(View|VNode)[]|View|VNode|function} children             child or children or getter
-     * @param {*}                                  [options]
-     * @param {Symbol}                             [options.alignment]  alignment type (item of Alignment enum)
+     * @typedef {(View|VNode)[]|View|VNode|function} Children
+     * @param {Children} children             child or children or getter
+     * @param {*}        [options]
+     * @param {Symbol}   [options.alignment]  alignment type (item of Alignment enum)
      */
     constructor (children, { alignment } = {}) {
         super()

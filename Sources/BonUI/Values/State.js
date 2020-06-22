@@ -23,7 +23,7 @@ export class State {
     }
 
     /**
-     * Method to call an action
+     * Method to call an action on the state
      * @param {object} action Information about an action
      */
     dispatch (action) {

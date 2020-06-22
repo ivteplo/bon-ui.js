@@ -32,13 +32,13 @@ function requestDoingWork () {
 }
 
 /**
- * A class that is used to schedule work 
+ * Class that is used to schedule work 
  * @class
  */
 export class Worker {
     /**
-     * A method to schedule a call of the function
-     * @param {Function} func Function that will be called when the browser is not busy
+     * Method to schedule a call of the function
+     * @param {Function} func function that will be called when the browser is not busy
      */
     static addUnitOfWork (func) {
         if (typeof func !== "function") {

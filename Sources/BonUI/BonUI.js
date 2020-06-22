@@ -26,7 +26,7 @@ export * from "./Application/Application.js"
 export * from "./Application/ApplicationDelegate.js"
 
 
-// Workers
+// Worker
 export * from "./Worker.js"
 
 

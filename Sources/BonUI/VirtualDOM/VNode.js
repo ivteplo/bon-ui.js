@@ -9,6 +9,10 @@ const VNodeProtocol = Protocol.createClass({
     requiredMethods: [ "toString", "toDomNode", "updateDomNode" ]
 })
 
+/**
+ * @interface
+ * Virtual DOM node protocol (interface)
+ */
 export class VNode extends VNodeProtocol {
     constructor () {
         super()

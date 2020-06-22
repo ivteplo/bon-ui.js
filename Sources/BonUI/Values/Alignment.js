@@ -6,7 +6,7 @@
 import { Enum } from "./Enum.js"
 
 /**
- * @enum
+ * @enum     {Symbol}
  * @property {Symbol} start
  * @property {Symbol} center
  * @property {Symbol} end
