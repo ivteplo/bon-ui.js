@@ -6,6 +6,9 @@
   "license": "Apache-2.0",
   "type": "module",
   "main": "Sources/BonUI/BonUI.js",
+  "files": [
+    "Sources/**/*"
+  ],
   "keywords": [
     "Teplovs",
     "UI",
