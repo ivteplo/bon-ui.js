@@ -2,6 +2,7 @@
 
 ## 1.0.0-alpha
 - Started refactoring the code
+- Created `Application`, `Scene`, `ViewBuilder` and `ViewController`
 
 ## 0.2.0-alpha
 - Renamed most of the methods of views to make the syntax better

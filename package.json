@@ -22,7 +22,7 @@
   "private": false,
   "scripts": {
     "test": "mocha 'Tests/BonUITests/*.js'",
-    "lint": "eslint 'Sources/**/*.js' 'Tests/**/*.js' 'UITest/**/*.js'",
+    "lint": "eslint 'Sources/**/*.js' 'Tests/**/*.js'",
     "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/BonUITests/*.js' --inspect-brk --require esm"
   },
   "devDependencies": {
