@@ -7,5 +7,5 @@ __This test can run without building Bon UI!__
 python3 -m http.server 3000
 ```
 2. This will start the server at `localhost:3000`.
-3. Open `http://localhost:3000/BonUI-UITest/index.html` in your browser.
+3. Open `http://localhost:3000/Tests/UITest/index.html` in your browser.
 4. Check if everything works correctly

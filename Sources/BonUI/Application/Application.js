@@ -1,128 +1,110 @@
 //
 // Copyright (c) 2020 Teplovs
 // Licensed under the Apache License, version 2.0
-//
+// 
 
-import { View } from "../Views/View.js"
-import { ApplicationDelegate } from "./ApplicationDelegate.js"
-import { InvalidValueException } from "../Values/Exceptions.js"
-
-/**
- * 
- * @param {View}    view                view to mount
- * @param {Node}    parent              parent 
- * @param {*}       param2              optional parameters
- * @param {Boolean} [param2.prepend]    prepend or append child to the parent
- */
-function mountView (view, parent, { prepend = false } = {}) {
-    View.renderToVirtualDomNode(view, { save: true })
-    view.lastRender.toDomNode({ save: true })
-
-    if (prepend) {
-        parent.prepend(view.lastRender.dom)
-    } else {
-        parent.appendChild(view.lastRender.dom)
-    }
-}
+import { EmptyView } from "../Views/Generic/EmptyView.js"
+import { Scene } from "./Scene.js"
+import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
+import { TextVNode } from "../VirtualDOM/TextVNode.js"
+import { VNode } from "../VirtualDOM/VNode.js"
 
 export class Application {
-    constructor () {
-        this.view = null
-        this.delegate = null
+    body () {
+        return [
+            new Scene("main", new EmptyView())
+        ]
     }
 
-    setView (view) {
-        if (!(view instanceof View)) {
-            throw new InvalidValueException(`Expected View instance as an argument`)
-        }
+    launch () {
+        const container = this.constructor.createApplicationContainer([
+            this.constructor.createStylesContainer()
+        ])
 
-        this.view = view
-    }
+        container.toDomNode({ save: true })
 
-    setDelegate (delegate) {
-        if (!(delegate instanceof ApplicationDelegate)) {
-            throw new InvalidValueException(`Expected ApplicationDelegate instance`)
-        }
+        const body = this.body()
+        var scene = null
 
-        this.delegate = delegate
-    }
-
-    main ({ serverSideRenderedView = null } = {}) {
-        // running delegate's event handler
-        if (this.delegate) {
-            this.delegate.applicationWillLoad(this)
-        }
-
-        // initializing styles
-        if (typeof document !== "object") {
-            throw new InvalidValueException(`Expected "document" to be object, got ${typeof document}`)
-        }
-
-        const styles = document.createElement("style")
-        styles.innerHTML = (
-            `* {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+        for (let i in body) {
+            if (body[i] instanceof Scene && body[i].name === "main") {
+                scene = body[i]
+                break
             }
-            
-            body {
-                overflow: hidden;
-                height: 100vh;
-                width: 100vw;
-                font-family: sans-serif;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }`
+        }
+
+        if (scene === null) {
+            throw new SceneNotFoundException(`Couldn't find scene "main"`)
+        }
+
+        scene.load(container.dom)
+        document.body.appendChild(container.dom)
+    }
+
+    /**
+     * Application main
+     */
+    static main () {
+        const App = this
+        const application = new App()
+        application.launch()
+    }
+
+    /**
+     * Default app styles
+     */
+    static defaultStyles = (
+        `* {
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            font-family: sans-serif;
+            font-size: 12pt;
+            user-select: none;
+        }`
+    )
+
+    /**
+     * Function that creates container for an app
+     * @param {function|VNode[]} body 
+     * @returns {ContainerVNode}
+     */
+    static createApplicationContainer (body = []) {
+        return (
+            new ContainerVNode({
+                component: "div",
+                styles: {
+                    overflow: "hidden",
+                    width: "100%",
+                    height: "100%"
+                },
+                attributes: {
+                    id: "application"
+                },
+                body
+            })
         )
-        styles.className = "bon-ui-styles"
-        document.head.appendChild(styles)
+    }
 
-        // mounting the view
-        if (this.view) {
-            /** @todo server side rendering support */
-            mountView(this.view, document.body, { prepend: true })
-        }
-
-        // running delegate's event handler
-        if (this.delegate) {
-            this.delegate.applicationStarted(this)
-        }
-
-        // adding event handlers to the window that will call
-        // some of the ApplicationDelegate methods
-
-        var hidden, visibilityChange
-        if (typeof document.hidden !== "undefined") {
-            hidden = "hidden"
-            visibilityChange = "visibilitychange"
-        } else if (typeof document.msHidden !== "undefined") {
-            hidden = "msHidden"
-            visibilityChange = "msvisibilitychange"
-        } else if (typeof document.webkitHidden !== "undefined") {
-            hidden = "webkitHidden"
-            visibilityChange = "webkitvisibilitychange"
-        }
-
-        if (this.delegate) {
-            document.addEventListener(visibilityChange, () => {
-                if (document[hidden]) {
-                    this.delegate.applicationLostFocus(this)
-                } else {
-                    this.delegate.applicationGotFocus(this)
-                }
+    /**
+     * Function that returns container for application styles
+     * @returns {ContainerVNode}
+     */
+    static createStylesContainer () {
+        return (
+            new ContainerVNode({
+                component: "style",
+                attributes: {
+                    id: "application-default-styles"
+                },
+                body: new TextVNode(this.defaultStyles)
             })
-
-            window.addEventListener("beforeunload", event => {
-                const returnValue = this.delegate.applicationWillClose(this)
-                event.returnValue = returnValue || ""
-                return returnValue
-            })
-
-            window.addEventListener("unload", event => {
-                this.delegate.applicationIsClosing(this)
-            })
-        }
+        )
     }
 }

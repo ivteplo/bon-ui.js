@@ -52,6 +52,10 @@ export class ContainerVNode extends VNode {
         this.styles = obj(styles)
         this.body = typeof body === "function" || Array.isArray(body) ? body : [ body ]
         this.lastBody = null
+        this.nodeHandlers = {
+            mount: [],
+            update: []
+        }
     }
     
     get currentBody () {
@@ -66,6 +70,16 @@ export class ContainerVNode extends VNode {
 
         body = flattenArray(body).filter(v => v != null)
         return body
+    }
+
+    onMount (handler) {
+        this.nodeHandlers.mount.push(handler)
+        return this
+    }
+
+    onUpdate (handler) {
+        this.nodeHandlers.update.push(handler)
+        return this
     }
 
     toString () {
@@ -112,14 +126,17 @@ export class ContainerVNode extends VNode {
             if (!(body[i] instanceof VNode)) {
                 throw new InvalidValueException(`Expected virtual DOM node as a child, got ${body[i].constructor.name}`)
             }
-
-            const childResult = body[i].toDomNode({ save })
-            result.appendChild(childResult)
+            
+            result.appendChild(body[i].toDomNode({ save }))
         }
 
         if (save) {
             this.dom = result
             this.lastBody = body
+            
+            for (let handler of this.nodeHandlers.mount) {
+                handler()
+            }
         }
 
         return result
@@ -211,6 +228,10 @@ export class ContainerVNode extends VNode {
         } else {
             const newDom = this.toDomNode({ save: true })
             dom.replaceWith(newDom)
+        }
+
+        for (let handler of this.nodeHandlers.update) {
+            handler()
         }
     }
 }

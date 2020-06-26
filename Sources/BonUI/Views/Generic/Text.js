@@ -8,7 +8,7 @@ import { TextVNode } from "../../VirtualDOM/TextVNode.js"
 import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
 
 /**
- * A class that is used to represent the text
+ * Class that represents text
  */
 export class Text extends View {
     /**
@@ -20,15 +20,12 @@ export class Text extends View {
     }
 
     body () {
-        return (
-            new ContainerVNode({
-                component: "span",
-                body: new TextVNode(this.text),
-                styles: {
-                    userSelect: "none"
-                }
-            })
-        )
+        return new ContainerVNode({ 
+            component: "span",
+            body: [
+                new TextVNode(this.text)
+            ]
+        })
     }
 }
 

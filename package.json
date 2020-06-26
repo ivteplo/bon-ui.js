@@ -27,7 +27,6 @@
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "eslint": "^7.1.0",
-    "esm": "^3.2.25",
     "mocha": "^7.1.1"
   },
   "repository": {

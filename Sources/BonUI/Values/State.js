@@ -15,11 +15,10 @@ export class State {
         this._listeners = []
         this._currentState = reducer(undefined, {})
         this._reducer = reducer
+    }
 
-        Object.defineProperty(this, "current", {
-            get: () => this._currentState,
-            set: () => {}
-        })
+    get current () {
+        return this._currentState
     }
 
     /**
