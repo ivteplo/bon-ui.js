@@ -43,11 +43,15 @@ export class ViewController {
         this.lastViewRender.updateDomNode(lastViewRender, lastViewRender.dom)
     }
 
-    viewWillMount () {}
+    viewWillAppear () {}
 
-    viewDidMount () {}
+    viewDidAppear () {}
 
     viewWillUpdate () {}
 
     viewDidUpdate () {}
+
+    viewWillDisappear () {}
+
+    viewDidDisappear () {}
 }

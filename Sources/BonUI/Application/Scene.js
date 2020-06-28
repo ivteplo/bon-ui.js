@@ -4,7 +4,7 @@
 // 
 
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
-import { InvalidValueException } from "../Values/Exceptions.js"
+import { InvalidValueException, SceneNotLoadedException } from "../Values/Exceptions.js"
 import { flattenArray } from "../Values/Array.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { ViewBuilder } from "./ViewBuilder.js"
@@ -19,6 +19,7 @@ export class Scene {
     constructor (name, body) {
         this.name = String(name)
         this.children = body
+        this.dom = null
     }
 
     body () {
@@ -52,7 +53,8 @@ export class Scene {
         const wrapper = new ContainerVNode({
             component: "div",
             attributes: {
-                id: `scene-${this.name}`
+                id: `${this.name}-scene`,
+                class: "application-scene"
             },
             styles: {
                 display: "flex",
@@ -66,5 +68,15 @@ export class Scene {
 
         wrapper.toDomNode({ save: true })
         parent.appendChild(wrapper.dom)
+
+        this.dom = wrapper.dom
+    }
+
+    close () {
+        if (!(this.dom && this.dom instanceof Node)) {
+            throw new SceneNotLoadedException(`Scene "${this.name}" is not loaded`)
+        }
+
+        this.dom.parentNode.removeChild(this.dom)
     }
 }

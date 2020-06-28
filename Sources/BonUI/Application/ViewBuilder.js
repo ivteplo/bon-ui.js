@@ -3,6 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { InvalidValueException } from "../Values/Exceptions.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
 
@@ -20,10 +21,8 @@ export class ViewBuilder {
      * @returns {VNode}
      */
     static build (view, { action = "mount", save = true } = {}) {
-        if (action === "mount") {
-            view.controller.viewWillMount()
-        } else if (action === "update") {
-            view.controller.viewWillUpdate()
+        if (!(view instanceof View)) {
+            throw new InvalidValueException(`Expected View instance, got ${typeof view === "object" ? view.constructor.name : typeof view}`)
         }
 
         var result = view.body()
@@ -37,14 +36,30 @@ export class ViewBuilder {
         }
 
         if (action === "mount") {
-            result.onMount(() => {
-                view.controller.viewDidMount()
-            })
+            result
+                .onBeforeMount(() => {
+                    view.controller.viewWillAppear()
+                })
+                .onMount(() => {
+                    view.controller.viewDidAppear()
+                })
         } else if (action === "update") {
-            result.onUpdate(() => {
-                view.controller.viewDidUpdate()
-            })
+            result
+                .onBeforeUpdate(() => {
+                    view.controller.viewWillUpdate()
+                })
+                .onUpdate(() => {
+                    view.controller.viewDidUpdate()
+                })
         }
+
+        result
+            .onBeforeUnmount(() => {
+                view.controller.viewWillDisappear()
+            })
+            .onUnmount(() => {
+                view.controller.viewDidDisappear()
+            })
 
         return result
     }

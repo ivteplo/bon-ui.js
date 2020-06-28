@@ -3,14 +3,11 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { View, Text } from "../../Sources/BonUI/BonUI.js"
+import { View, Text, Button, Column, Row, Spacer } from "../../Sources/BonUI/BonUI.js"
 
 export class ContentView extends View {
     constructor () {
         super()
-        window.addEventListener("click", () => {
-            this.state.set({ counter: this.state.current.counter + 1 })
-        })
     }
 
     initialState () {
@@ -19,7 +16,24 @@ export class ContentView extends View {
 
     body () {
         return (
-            new Text(this.state.current.counter)
+            new Row([
+                new Text("Random text"),
+
+                new Spacer(),
+                
+                new Column([
+                    new Text("Counter: " + this.state.current.counter),
+                
+                    new Button(
+                        new Text("Increment"),
+                        () => {
+                            this.state.set({
+                                counter: this.state.current.counter + 1
+                            })
+                        }
+                    )
+                ])
+            ])
         )
     }
 }

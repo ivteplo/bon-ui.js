@@ -27,6 +27,8 @@ export class TextVNode extends VNode {
      * @param {boolean} [options.save] save the DOM node to the virtual DOM node or not (`false` by default)
      */
     toDomNode ({ save = false } = {}) {
+        this.handleBeforeMount()
+
         if (typeof document !== "object") {
             throw new InvalidValueException(`Expected "document" to be object, got ${typeof document}`)
         }
@@ -35,6 +37,7 @@ export class TextVNode extends VNode {
 
         if (save) {
             this.dom = result
+            this.handleMount()
         }
 
         return result
@@ -43,14 +46,19 @@ export class TextVNode extends VNode {
     /**
      * Method to update the DOM of the node
      * @param {VNode}   oldNode previous virtual DOM node
-     * @param {Node}    dom     current DOM
      */
-    updateDomNode (oldNode, dom) {
+    updateDomNode (oldNode) {
+        const { dom } = oldNode
+        
         if (oldNode instanceof TextVNode) {
+            oldNode.handleBeforeUpdate()
             dom.textContent = this.text
+            oldNode.handleUpdate()
         } else {
+            oldNode.handleBeforeUnmount()
             const newDom = this.toDomNode({ save: true })
             dom.replaceWith(newDom)
+            oldNode.handleUnmount()
         }
     }
 }

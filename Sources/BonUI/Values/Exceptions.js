@@ -14,3 +14,4 @@ export class NotImplementedException extends CustomError {}
 export class InvalidValueException extends CustomError {}
 export class ViewControllerException extends CustomError {}
 export class SceneNotFoundException extends CustomError {}
+export class SceneNotLoadedException extends CustomError {}

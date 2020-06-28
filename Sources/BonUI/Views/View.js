@@ -40,15 +40,17 @@ export class View extends ViewProtocol {
             }
         })
 
-        this.state.subscribe(() => {
-            Worker.addUnitOfWork(() => {
-                this.controller.updateView()
-            })
-        })
+        this.state.subscribe(this.update.bind(this))
 
         this.state.set = (keys) => {
             this.state.dispatch({ type: "set", value: keys })
         }
+    }
+
+    update () {
+        Worker.addUnitOfWork(() => {
+            this.controller.updateView()
+        })
     }
 
     /**

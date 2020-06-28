@@ -7,7 +7,14 @@
 export * from "./Views/View.js"
 // -> Generic
 export * from "./Views/Generic/Text.js"
+export * from "./Views/Generic/Spacer.js"
 export * from "./Views/Generic/EmptyView.js"
+// -> Controls
+export * from "./Views/Controls/Control.js"
+export * from "./Views/Controls/Button.js"
+// -> Layouts
+export * from "./Views/Layouts/Row.js"
+export * from "./Views/Layouts/Column.js"
 
 
 // View Modifier

@@ -6,6 +6,8 @@
 import { VNode } from "./VNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { flattenArray } from "../Values/Array.js"
+import { View } from "../Views/View.js"
+import { ViewBuilder } from "../Application/ViewBuilder.js"
 
 const camelCaseToHyphen = v => {
     var result = v.replace(/[A-Z]/g, letter => "-" + letter.toLowerCase())
@@ -52,13 +54,9 @@ export class ContainerVNode extends VNode {
         this.styles = obj(styles)
         this.body = typeof body === "function" || Array.isArray(body) ? body : [ body ]
         this.lastBody = null
-        this.nodeHandlers = {
-            mount: [],
-            update: []
-        }
     }
     
-    get currentBody () {
+    getCurrentBody (builderConfig) {
         var body = this.body
         if (typeof body === "function") {
             body = body()
@@ -69,17 +67,14 @@ export class ContainerVNode extends VNode {
         }
 
         body = flattenArray(body).filter(v => v != null)
+
+        for (let i in body) {
+            if (body[i] instanceof View) {
+                body[i] = ViewBuilder.build(body[i], builderConfig)
+            }
+        }
+
         return body
-    }
-
-    onMount (handler) {
-        this.nodeHandlers.mount.push(handler)
-        return this
-    }
-
-    onUpdate (handler) {
-        this.nodeHandlers.update.push(handler)
-        return this
     }
 
     toString () {
@@ -97,6 +92,7 @@ export class ContainerVNode extends VNode {
      * @param {boolean} [options.save] save the DOM node to the virtual DOM node or not (`false` by default)
      */
     toDomNode ({ save = false } = {}) {
+        this.handleBeforeMount()
         if (typeof document !== "object") {
             throw new InvalidValueException(`Expected "document" to be object, got ${typeof document}`)
         }
@@ -120,7 +116,7 @@ export class ContainerVNode extends VNode {
             }
         }
 
-        const body = this.currentBody
+        const body = this.getCurrentBody({ action: "mount", save })
 
         for (let i in body) {
             if (!(body[i] instanceof VNode)) {
@@ -133,10 +129,7 @@ export class ContainerVNode extends VNode {
         if (save) {
             this.dom = result
             this.lastBody = body
-            
-            for (let handler of this.nodeHandlers.mount) {
-                handler()
-            }
+            this.handleMount()
         }
 
         return result
@@ -145,10 +138,13 @@ export class ContainerVNode extends VNode {
     /**
      * Method to update the DOM of the node
      * @param {VNode}   oldNode previous virtual DOM node
-     * @param {Node}    dom     current DOM
      */
-    updateDomNode (oldNode, dom) {
+    updateDomNode (oldNode) {
+        const { dom } = oldNode
+
         if (oldNode instanceof ContainerVNode && oldNode.component === this.component) {
+            oldNode.handleBeforeUpdate()
+            
             for (let property in oldNode.styles) {
                 if (!(property in this.styles)) {
                     dom.style[property] = ""
@@ -188,7 +184,7 @@ export class ContainerVNode extends VNode {
             }
 
             const keysUpdated = []
-            const body = this.currentBody
+            const body = this.getCurrentBody({ action: "update", save: true })
             const oldBody = oldNode.lastBody
 
             // updating children that have key specified
@@ -199,14 +195,16 @@ export class ContainerVNode extends VNode {
                         if ("key" in oldBody[i] && body[j].key === oldBody[i].key) {
                             keyFound = true
                             keysUpdated.push(body[j].key)
-                            body[j].updateDomNode(oldBody[i], oldBody[i].dom)
+                            body[j].updateDomNode(oldBody[i])
                             break
                         }
                     }
                 }
 
                 if (!keyFound) {
+                    oldBody[i].handleBeforeUnmount()
                     oldBody[i].dom.parentNode.removeChild(oldBody[i].dom)
+                    oldBody[i].handleUnmount()
                 }
             }
 
@@ -225,13 +223,14 @@ export class ContainerVNode extends VNode {
 
             this.lastBody = body
             this.dom = dom
+            oldNode.handleUpdate()
         } else {
+            oldNode.handleBeforeUnmount()
+            this.handleBeforeMount()
             const newDom = this.toDomNode({ save: true })
             dom.replaceWith(newDom)
-        }
-
-        for (let handler of this.nodeHandlers.update) {
-            handler()
+            oldNode.handleUnmount()
+            this.handleMount()
         }
     }
 }

@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import chai from "chai"
+import {} from "../../Sources/BonUI/BonUI.js"
 import browserEnv from "browser-env"
-import { View, Text } from "../../Sources/BonUI/BonUI.js"
+import chai from "chai"
 
 const { expect } = chai
 

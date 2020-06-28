@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { View } from "../View.js"
-import { TextVNode } from "../../VirtualDOM/TextVNode.js"
 import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
+import { TextVNode } from "../../VirtualDOM/TextVNode.js"
+import { View } from "../View.js"
 
 /**
  * Class that represents text
