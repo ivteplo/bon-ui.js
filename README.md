@@ -24,7 +24,7 @@
 ## Installation
 You can install Bon UI using the npm or yarn package manager:
 ```bash
-npm install @teplovs/bon-ui
+npm install @teplovs/bon-ui --save
 # or:
 yarn add @teplovs/bon-ui
 ```

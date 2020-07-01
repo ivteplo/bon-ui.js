@@ -36,11 +36,11 @@ Our team is monitoring for pull requests. We will review your pull request and e
 
 __Before submitting a pull request__, please make sure the following is done:
 1. Fork the repository and create your branch from `master`.
-2. Run `npm install` in the repository root.
+2. Run `yarn install` in the repository root.
 3. If you've fixed a bug or added code that should be tested, add tests!
-4. You can debug tests using `npm run debug:tests`.
-4. Ensure the test suite passes (`npm run test`).
-5. Make sure your code lints (`npm run lint`).
+4. You can debug tests using `yarn debug:tests`.
+4. Ensure the test suite passes (`yarn test`).
+5. Make sure your code lints (`yarn lint`).
 
 ## License
 

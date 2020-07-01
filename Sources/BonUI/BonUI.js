@@ -7,10 +7,6 @@
 import { View } from "./Views/View.js"
 import { BackgroundModifier } from "./ViewModifiers/BackgroundModifier.js"
 
-/**
- * Method to set background of the view
- * @param {View|Color} background background of the view
- */
 View.prototype.background = function (background) {
     return this.modifier(new BackgroundModifier(background))
 }

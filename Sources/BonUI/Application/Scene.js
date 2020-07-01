@@ -7,14 +7,14 @@ import { InvalidValueException, SceneNotLoadedException } from "../Values/Except
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { getClass } from "../Values/Helpers.js"
 import { ViewBuilder } from "./ViewBuilder.js"
-import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
+import "../jsdoc.js"
 
 export class Scene {
     /**
-     * @typedef {function|View|VNode} Body
-     * @param {string}  name scene name
-     * @param {Body}    body scene contents
+     * 
+     * @param {string}      name scene name
+     * @param {BodyOneItem} body scene contents
      */
     constructor (name, body) {
         this.name = String(name)

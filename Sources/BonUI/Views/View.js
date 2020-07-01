@@ -37,6 +37,7 @@ const ViewProtocol = Protocol.createClass({
 
 /**
  * Class that respresents UI item
+ * @interface
  */
 export class View extends ViewProtocol {
     constructor () {
@@ -222,4 +223,12 @@ export class View extends ViewProtocol {
     upperCase () {
         return this.modifier(new CSSModifier({ textTransform: "uppercase" }))
     }
+
+    /**
+     * Method to set background of the view
+     * @param {View|Color} background background of the view
+     */
+    // implemented in /Sources/BonUI/BonUI.js
+    // because of circular dependency
+    background (background) {}
 }
