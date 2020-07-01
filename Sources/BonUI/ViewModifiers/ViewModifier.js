@@ -10,5 +10,12 @@ const ViewModifierProtocol = Protocol.createClass({
 })
 
 export class ViewModifier extends ViewModifierProtocol {
-    
+    /**
+     * Method that returns the modified view
+     * @param   {View} content view to modify
+     * @returns {View} modified view
+     */
+    body (content) {
+        return super.body(content)
+    }
 }

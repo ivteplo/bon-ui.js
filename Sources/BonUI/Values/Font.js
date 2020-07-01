@@ -13,9 +13,11 @@ import { Enum } from "./Enum.js"
  * @property {Symbol} largeTitle    main heading of the page style
  * @property {Symbol} title         secondary-level heading of the page
  * @property {Symbol} subheading    third-level heading of the page
+ * @property {Symbol} sectionTitle  fourth-level heading of the page
+ * @property {Symbol} caption       text style for captions
  * @property {Symbol} monospace     text style for code
  */
-export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "monospace")
+export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "sectionTitle", "caption", "monospace")
 
 /**
  * @enum     {Symbol}
@@ -135,7 +137,7 @@ export class Font {
         name: "sans-serif", 
         size: pixels(18), 
         textStyle: TextStyle.default, 
-        weight: Weight.regular 
+        weight: Weight.regular
     })
     
     static title = this.default.with({ 
@@ -154,11 +156,22 @@ export class Font {
         size: pixels(22),
         textStyle: TextStyle.subheading
     })
+
+    static sectionTitle = this.subheading.with({
+        size: pixels(14),
+        textStyle: TextStyle.sectionTitle
+    })
     
     static monospace = this.default.with({
         name: "monospace",
         textStyle: TextStyle.monospace,
         size: pixels(16)
+    })
+
+    static caption = this.default.with({
+        textStyle: TextStyle.caption,
+        size: pixels(14),
+        weight: Weight.light
     })
 }
 
@@ -181,6 +194,10 @@ export function textStyleToTagName (style) {
             return "h2"
         case TextStyle.subheading:
             return "h3"
+        case TextStyle.sectionTitle:
+            return "h4"
+        case TextStyle.caption:
+            return "caption"
         case TextStyle.monospace:
             return "code"
         default:

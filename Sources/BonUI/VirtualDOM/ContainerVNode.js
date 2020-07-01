@@ -3,34 +3,19 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { VNode } from "./VNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
-import { flattenArray } from "../Values/Array.js"
-import { View } from "../Views/View.js"
 import { ViewBuilder } from "../Application/ViewBuilder.js"
+import { convertToViewBody, getClass, addSlashBeforeDoubleQuotes, camelCaseToHyphen, convertToViewBodyItem } from "../Values/Helpers.js"
+import { View } from "../Views/View.js"
+import { VNode } from "./VNode.js"
+import "../jsdoc.js"
 
-const camelCaseToHyphen = v => {
-    var result = v.replace(/[A-Z]/g, letter => "-" + letter.toLowerCase())
-    while (result.length > 0 && result[0] === "-") {
-        result = result.substr(1)
-    } 
-    
-    while (result.length > 0 && result[result.length - 1] === "-") {
-        result = result.slice(0, -1)
-    }
-
-    return result
-}
-
-const replaceDoubleQuotes = v => v.replace(/"/g, "\\\"")
 
 /**
  * Virtual DOM node that represents container (block) 
  */
 export class ContainerVNode extends VNode {
     /**
-     * @typedef {function|[VNode]} Body
-     * 
      * @param {*}       options
      * @param {string}  [options.component]     tag of the block
      * @param {*}       [options.attributes]    attributes of the block
@@ -42,7 +27,7 @@ export class ContainerVNode extends VNode {
         super()
 
         if (typeof component !== "string") {
-            throw InvalidValueException(`"component" has to be string, ${typeof component} given.`)
+            throw InvalidValueException(`"component" has to be string, ${getClass(component)} given.`)
         }
 
         this.component = component
@@ -52,25 +37,24 @@ export class ContainerVNode extends VNode {
         this.attributes = obj(attributes)
         this.handlers = obj(handlers)
         this.styles = obj(styles)
-        this.body = typeof body === "function" || Array.isArray(body) ? body : [ body ]
         this.lastBody = null
+        this.body = body
     }
     
+    /**
+     * Method that returns body for current building
+     * @param {*} builderConfig configuration to pass to the view builder
+     */
     getCurrentBody (builderConfig) {
-        var body = this.body
-        if (typeof body === "function") {
-            body = body()
-        }
-
-        if (!Array.isArray(body)) {
-            body = [ body ]
-        }
-
-        body = flattenArray(body).filter(v => v != null)
+        var body = convertToViewBody(this.body)
 
         for (let i in body) {
             if (body[i] instanceof View) {
                 body[i] = ViewBuilder.build(body[i], builderConfig)
+                
+                if (body[i] instanceof ContainerVNode) {
+                    body[i].body = body[i].getCurrentBody(builderConfig)
+                }
             }
         }
 
@@ -78,11 +62,24 @@ export class ContainerVNode extends VNode {
     }
 
     toString () {
-        const attributes = Object.keys(this.attributes).map(attr => `${attr}="${replaceDoubleQuotes(this.attributes[attr])}"`).join(" ")
-        const styles = Object.keys(this.styles).map(prop => `${camelCaseToHyphen(prop)}: ${replaceDoubleQuotes(this.styles[prop])}`).join(";")
-        var body = typeof this.body === "function" ? this.body() : this.body
-        body = Array.isArray(body) ? body : [ body ]
-        body = body.map(v => String(v)).join("")
+        const attributes = (
+            Object.keys(this.attributes)
+                .map(attr => `${attr}="${addSlashBeforeDoubleQuotes(this.attributes[attr])}"`)
+                .join(" ")
+        )
+
+        const styles = (
+            Object.keys(this.styles)
+                .map(prop => `${camelCaseToHyphen(prop)}: ${addSlashBeforeDoubleQuotes(this.styles[prop])}`)
+                .join("; ")
+        )
+
+        const body = (
+            convertToViewBodyItem(this.body)
+                .map(v => String(v))
+                .join("")
+        )
+        
         return `<${this.component}${attributes ? ` ${attributes}` : ""}${styles ? ` style="${styles}"` : ""}>${body}</${this.component}>`
     }
 
@@ -177,47 +174,55 @@ export class ContainerVNode extends VNode {
 
             for (let event in this.handlers) {
                 if (Array.isArray(this.handlers[event])) {
-                    dom.addEventListener(event, this.handlers[event][i])
+                    for (let i in this.handlers[event]) {
+                        dom.addEventListener(event, this.handlers[event][i])
+                    }
                 } else {
                     dom.addEventListener(event, this.handlers[event])
                 }
             }
 
-            const keysUpdated = []
+            const idsUpdated = []
             const body = this.getCurrentBody({ action: "update", save: true })
             const oldBody = oldNode.lastBody
 
-            // updating children that have key specified
-            for (let i in oldBody) {
-                let keyFound = false
-                if ("key" in oldBody[i]) {
-                    for (let j in body) {
-                        if ("key" in oldBody[i] && body[j].key === oldBody[i].key) {
-                            keyFound = true
-                            keysUpdated.push(body[j].key)
-                            body[j].updateDomNode(oldBody[i])
-                            break
+            if (oldBody.length !== body.length) {
+                // updating children that have key specified
+                for (let i in oldBody) {
+                    let idFound = false
+                    if ("id" in oldBody[i]) {
+                        for (let j in body) {
+                            if ("id" in oldBody[i] && body[j].id === oldBody[i].id) {
+                                idFound = true
+                                idsUpdated.push(body[j].id)
+                                body[j].updateDomNode(oldBody[i])
+                                break
+                            }
+                        }
+                    }
+
+                    if (!idFound) {
+                        oldBody[i].handleBeforeUnmount()
+                        oldBody[i].dom.parentNode.removeChild(oldBody[i].dom)
+                        oldBody[i].handleUnmount()
+                    }
+                }
+
+                // adding new children that haven't been mounted before
+                for (let i in body) {
+                    if (!("id" in body[i]) || ("id" in body[i] && idsUpdated.indexOf(body[i].id) < 0)) {
+                        body[i].toDomNode({ save: true })
+                        
+                        if (i > 0) {
+                            body[i - 1].dom.parentNode.insertBefore(body[i].dom, body[i - 1].dom.nextSibling)
+                        } else {
+                            dom.prepend(body[i].dom)
                         }
                     }
                 }
-
-                if (!keyFound) {
-                    oldBody[i].handleBeforeUnmount()
-                    oldBody[i].dom.parentNode.removeChild(oldBody[i].dom)
-                    oldBody[i].handleUnmount()
-                }
-            }
-
-            // adding new children that haven't been mounted before
-            for (let i in body) {
-                if (!("key" in body[i]) || ("key" in body[i] && keysUpdated.indexOf(body[i].key) < 0)) {
-                    body[i].toDomNode({ save: true })
-                    
-                    if (i > 0) {
-                        body[i - 1].dom.parentNode.insertBefore(body[i].dom, body[i - 1].dom.nextSibling)
-                    } else {
-                        dom.prepend(body[i].dom)
-                    }
+            } else {
+                for (let i in body) {
+                    body[i].updateDomNode(oldBody[i])
                 }
             }
 

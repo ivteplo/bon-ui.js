@@ -3,14 +3,17 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { Application, Scene, Text } from "../../Sources/BonUI/BonUI.js"
-import { ContentView } from "./ContentView.js"
+import { Application, Scene } from "../../Sources/BonUI/BonUI.js"
+import { Content } from "./Views/Content.js"
 
 export class App extends Application {
+    initialize () {
+        this.setTitle("Bon UI")
+    }
+
     body () {
         return [
-            new Scene("main", new ContentView()),
-            new Scene("not-main", new Text("Not main scene"))
+            new Scene("main", new Content())
         ]
     }
 }

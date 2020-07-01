@@ -4,6 +4,7 @@
 // 
 
 import { InvalidValueException, ViewControllerException } from "../Values/Exceptions.js"
+import { getClass } from "../Values/Helpers.js"
 import { ViewBuilder } from "./ViewBuilder.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
@@ -11,11 +12,14 @@ import { View } from "../Views/View.js"
 export class ViewController {
     constructor (view) {
         if (!(view instanceof View)) {
-            throw new InvalidValueException(`Expected view, got ${typeof view === "object" ? view.constructor.name : typeof view}`)
+            throw new InvalidValueException(`Expected view, got ${getClass(view)}`)
         }
 
         this.view = view
         this.view.controller = this
+        /**
+         * @type {VNode}
+         */
         this.lastViewRender = null
     }
 

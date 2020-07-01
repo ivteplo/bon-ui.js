@@ -65,6 +65,8 @@ export class Length {
     }
 }
 
+Length.defaultPadding = pixels(10)
+
 /**
  * Method to create new Length instance that uses pixels for measuring 
  * @param {number} value 

@@ -3,17 +3,20 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { EmptyView } from "../Views/Generic/EmptyView.js"
-import { Scene } from "./Scene.js"
+import { createColorSchemeState, Color } from "../Values/Color.js"
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
+import { EmptyView } from "../Views/Generic/EmptyView.js"
 import { TextVNode } from "../VirtualDOM/TextVNode.js"
 import { VNode } from "../VirtualDOM/VNode.js"
+import { Font } from "../Values/Font.js"
+import { Scene } from "./Scene.js"
 
 export class Application {
     constructor () {
         this.container = null
         this.sceneContainer = null
         this.currentScene = null
+        this.title = ""
     }
 
     /**
@@ -23,6 +26,18 @@ export class Application {
         return [
             new Scene("main", new EmptyView())
         ]
+    }
+
+    /**
+     * Method to set title of the app
+     * @param {string} title title of the app
+     */
+    setTitle (title) {
+        this.title = title
+
+        if (typeof document === "object") {
+            document.title = title
+        }
     }
 
     /**
@@ -41,6 +56,10 @@ export class Application {
         document.body.appendChild(this.container.dom)
     }
 
+    /**
+     * Method to load new scene
+     * @param {string} sceneName name of the scene to load
+     */
     loadScene (sceneName) {
         const oldScene = this.currentScene
         const body = this.body()
@@ -66,43 +85,77 @@ export class Application {
     }
 
     /**
-     * Application main
+     * Application main function
      */
     static main () {
         const App = this
         const application = new App()
         Application.shared = application
         this.shared = application
+
+        const colorSchemeState = createColorSchemeState()
+        colorSchemeState.subscribe(() => {
+            application.container.dom.style.backgroundColor = Color.background
+            application.container.dom.style.color = Color.text
+            application.currentScene.updateLastBody()
+        })
+        
         application.launch()
     }
 
     /**
+     * @type {Application}
      * Application instance (it's set in main function)
      */
     static shared = null
 
     /**
+     * @type {string}
      * Main scene name
      */
     static mainSceneName = "main"
 
     /**
+     * @type {string}
      * Default app styles
      */
     static defaultStyles = (
         `* {
             margin: 0;
             padding: 0;
-        }
-        
-        html, body {
-            height: 100%;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
         }
         
         body {
-            font-family: sans-serif;
-            font-size: 12pt;
+            font: ${Font.default.toString()};
             user-select: none;
+        }
+
+        button {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: inherit;
+            cursor: pointer;
+        }
+
+        caption {
+            display: block;
+            text-align: initial;
+        }
+        
+        input, input::placeholder,
+        textarea, textarea::placeholder {
+            font: inherit;
+        }
+        
+        textarea, input {
+            font-size: 1em;
+            width: 100%;
+            outline: none;
+            border: none;
+            resize: none;
         }`
     )
 
@@ -116,9 +169,8 @@ export class Application {
             new ContainerVNode({
                 component: "div",
                 styles: {
-                    overflow: "hidden",
-                    width: "100%",
-                    height: "100%"
+                    backgroundColor: Color.background,
+                    color: Color.text
                 },
                 attributes: {
                     id: "application"
@@ -152,12 +204,15 @@ export class Application {
         return (
             new ContainerVNode({
                 component: "div",
+                styles: {
+                    position: "relative",
+                    backgroundColor: "inherit",
+                    overflow: "hidden",
+                    width: "100%",
+                    height: "100vh"
+                },
                 attributes: {
                     id: "scene-container"
-                },
-                styles: {
-                    width: "100%",
-                    height: "100%"
                 }
             })
         )

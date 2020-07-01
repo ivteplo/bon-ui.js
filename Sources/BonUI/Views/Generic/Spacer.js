@@ -4,29 +4,30 @@
 // 
 
 import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
-import { InvalidValueException } from "../../Values/Exceptions.js"
-import { Length, pixels } from "../../Values/Length.js"
 import { View } from "../View.js"
+import { SizeModifier } from "../../ViewModifiers/SizeModifier.js"
 
 export class Spacer extends View {
-    constructor (minSize = pixels(10)) {
-        if (!(minSize instanceof Length)) {
-            throw new InvalidValueException(`Unexpected value passed as the minimum size of Spacer. Expected Length instance, got ${
-                typeof minSize === "object" ? minSize.constructor.name : typeof minSize}`)
+    body () {
+        var hasSizeModifier = false
+        for (let modifier of this._vNodeModifiers) {
+            if (modifier instanceof SizeModifier && (modifier.cssStyles.width || modifier.cssStyles.height)) {
+                hasSizeModifier = true
+                break
+            }
         }
 
-        super()
-        this.minSize = minSize
-    }
+        const styles = {
+            flexShrink: "0"
+        }
 
-    body () {
+        if (!hasSizeModifier) {
+            styles.flexGrow = "1"
+        }
+
         return new ContainerVNode({
             component: "div",
-            styles: {
-                margin: "auto",
-                flexBasis: this.minSize.toString(),
-                flexShrink: "0"
-            }
+            styles
         })
     }
 }

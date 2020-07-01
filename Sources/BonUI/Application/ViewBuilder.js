@@ -4,6 +4,7 @@
 // 
 
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { getClass } from "../Values/Helpers.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
 
@@ -22,13 +23,17 @@ export class ViewBuilder {
      */
     static build (view, { action = "mount", save = true } = {}) {
         if (!(view instanceof View)) {
-            throw new InvalidValueException(`Expected View instance, got ${typeof view === "object" ? view.constructor.name : typeof view}`)
+            throw new InvalidValueException(`Expected View instance, got ${getClass(view)}`)
         }
 
         var result = view.body()
         
         if (!(result instanceof VNode)) {
             result = ViewBuilder.build(result, { action, save })
+        }
+
+        for (let modifier of view._vNodeModifiers) {
+            result = modifier.body(result, view)
         }
 
         if (save) {

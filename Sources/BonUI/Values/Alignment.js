@@ -7,23 +7,42 @@ import { Enum } from "./Enum.js"
 
 /**
  * @enum     {Symbol}
- * @property {Symbol} start
+ * @property {Symbol} topLeading
+ * @property {Symbol} top
+ * @property {Symbol} topTrailing
+ * @property {Symbol} leading
  * @property {Symbol} center
- * @property {Symbol} end
+ * @property {Symbol} trailing
+ * @property {Symbol} bottomLeading
+ * @property {Symbol} bottom
+ * @property {Symbol} bottomTrailing
  */
-export const Alignment = new Enum("start", "center", "end")
+export const Alignment = new Enum(
+    "topLeading", "top", "topTrailing", 
+    "leading", "center", "trailing", 
+    "bottomLeading", "bottom", "bottomTrailing"
+)
 
 /**
- * Method to convert `Alignment` enum item to CSS flexbox `justify-content`/`align-items` value
- * @param {Symbol} alignment `Alignment` enum item
+ * @enum     {Symbol}
+ * @property {Symbol} top
+ * @property {Symbol} center
+ * @property {Symbol} bottom
  */
-export function alignmentToCSSFlexBoxAlignment (alignment) {
-    switch (alignment) {
-        case Alignment.start:
-            return "flex-start"
-        case Alignment.center:
-            return "center"
-        case Alignment.end:
-            return "flex-end"
-    }
-}
+export const HorizontalAlignment = new Enum(
+    "top",
+    "center",
+    "bottom"
+)
+
+/**
+ * @enum     {Symbol}
+ * @property {Symbol} leading
+ * @property {Symbol} center
+ * @property {Symbol} trailing
+ */
+export const VerticalAlignment = new Enum(
+    "leading",
+    "center",
+    "trailing"
+)

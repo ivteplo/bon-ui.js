@@ -4,20 +4,27 @@
 // 
 
 import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
-import { InvalidValueException } from "../../Values/Exceptions.js"
+import { convertToViewBodyItem } from "../../Values/Helpers.js"
+import { FocusableControl } from "./FocusableControl.js"
 import { Color } from "../../Values/Color.js"
-import { Control } from "./Control.js"
-import { View } from "../View.js"
+import "../../jsdoc.js"
 
-export class Button extends Control {
+export class Button extends FocusableControl {
+    /**
+     * 
+     * @param {BodyOneItem} label 
+     * @param {function}    action 
+     */
     constructor (label, action = () => {}) {
         super()
         this.label = label
         this.action = typeof action === "function" ? action : () => {}
+        this.onClick(this.action)
     }
 
     body () {
-        var { label } = this
+        var label = convertToViewBodyItem(this.label)
+
         var attributes = {
             type: "button"
         }
@@ -26,28 +33,11 @@ export class Button extends Control {
             attributes.disabled = "disabled"
         }
 
-        if (typeof label === "function") {
-            label = label()
-        }
-
-        if (!(label instanceof View)) {
-            throw new InvalidValueException(`Expected view as a label, got ${
-                typeof label === "object" ? label.constructor.name : typeof label}`)
-        }
-
         return new ContainerVNode({
             component: "button",
             attributes,
             styles: {
-                background: "none",
-                color: !attributes.disabled ? "cornflowerblue" : Color.gray,
-                outline: "none",
-                border: "0",
-                fontSize: "1em",
-                cursor: "pointer"
-            },
-            handlers: {
-                click: [ this.action ]
+                color: !attributes.disabled ? Color.blue : Color.gray
             },
             body: [ label ]
         })

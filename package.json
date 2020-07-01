@@ -7,7 +7,7 @@
   "type": "module",
   "main": "Sources/BonUI/BonUI.js",
   "files": [
-    "Sources/**/*"
+    "Sources/BonUI/**/*"
   ],
   "keywords": [
     "Teplovs",

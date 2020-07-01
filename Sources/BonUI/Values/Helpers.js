@@ -1,0 +1,160 @@
+//
+// Copyright (c) 2020 Teplovs
+// Licensed under the Apache License, version 2.0
+//
+
+import { Alignment, VerticalAlignment, HorizontalAlignment } from "./Alignment.js"
+import { InvalidValueException } from "./Exceptions.js"
+import { VNode } from "../VirtualDOM/VNode.js"
+import { View } from "../Views/View.js"
+
+
+export const camelCaseToHyphen = v => {
+    var result = v.replace(/[A-Z]/g, letter => "-" + letter.toLowerCase())
+    while (result.length > 0 && result[0] === "-") {
+        result = result.substr(1)
+    } 
+    
+    while (result.length > 0 && result[result.length - 1] === "-") {
+        result = result.slice(0, -1)
+    }
+
+    return result
+}
+
+export const addSlashBeforeDoubleQuotes = v => v.replace(/"/g, "\\\"")
+
+
+export const flattenArray = array => {
+    var result = array.map(i => Array.isArray(i) ? flattenArray(i) : [i])
+    
+    if (result.length > 0) {
+        result = result.reduce((prev, curr) => prev.concat(curr))
+    }
+
+    return result
+}
+
+
+export const getClass = variable => (typeof variable === "object" ? variable.constructor.name : typeof variable)
+
+
+export function convertToViewBodyItem (body) {
+    var result = body
+
+    if (typeof result === "function") {
+        result = result()
+    }
+
+    if (Array.isArray(result)) {
+        if (result.length > 1) {
+            throw new InvalidValueException(`Expected body item (View or VNode), not an array of body items`)
+        }
+
+        result = result[0]
+    }
+
+    if (!(result instanceof View || result instanceof VNode)) {
+        throw new InvalidValueException(`Expected View or VNode, got ${getClass(result)}`)
+    }
+
+    return result
+}
+
+
+export function convertToViewBody (items) {
+    var result = items
+
+    if (typeof result === "function") {
+        result = result()
+    }
+
+    if (!Array.isArray(result)) {
+        result = [ result ]
+    }
+
+    result = flattenArray(result).filter(v => Boolean(v))
+
+    for (let i in result) {
+        if (!(result[i] instanceof View || result[i] instanceof VNode)) {
+            throw new InvalidValueException(`Expected View or VNode instance as body item, got ${getClass(result[i])}`)
+        }
+    }
+
+    return result
+}
+
+
+export function horizontalAlignmentToJustifyContent (alignment) {
+    switch (alignment) {
+        case HorizontalAlignment.topLeading:
+        case HorizontalAlignment.leading:
+        case HorizontalAlignment.bottomLeading:
+            return "flex-start"
+        case HorizontalAlignment.top:
+        case HorizontalAlignment.center:
+        case HorizontalAlignment.bottom:
+            return "center"
+        case HorizontalAlignment.topTrailing:
+        case HorizontalAlignment.trailing:
+        case HorizontalAlignment.bottomTrailing:
+            return "flex-end"
+    }
+}
+
+export function verticalAlignmentToJustifyContent (alignment) {
+    switch (alignment) {
+        case VerticalAlignment.topLeading:
+        case VerticalAlignment.top:
+        case VerticalAlignment.topTrailing:
+            return "flex-start"
+        case VerticalAlignment.leading:
+        case VerticalAlignment.center:
+        case VerticalAlignment.trailing:
+            return "center"
+        case VerticalAlignment.bottomLeading:
+        case VerticalAlignment.bottom:
+        case VerticalAlignment.bottomTrailing:
+            return "flex-end"
+    }
+}
+
+
+export const alignmentToTextAlignmentProperties = (alignment) => ({
+    textAlign: alignmentToHorizontalTextAlignment(alignment),
+    verticalAlign: alignmentToVerticalTextAlignment(alignment)  
+})
+
+function alignmentToHorizontalTextAlignment (alignment) {
+    switch (alignment) {
+        case Alignment.topLeading:
+        case Alignment.leading:
+        case Alignment.bottomLeading:
+            return "left"
+        case Alignment.top:
+        case Alignment.center:
+        case Alignment.bottom:
+            return "center"
+        case Alignment.topTrailing:
+        case Alignment.trailing:
+        case Alignment.bottomTrailing:
+            return "right"
+    }
+}
+
+function alignmentToVerticalTextAlignment (alignment) {
+    switch (alignment) {
+        case Alignment.topLeading:
+        case Alignment.top:
+        case Alignment.topTrailing:
+            return "top"
+        case Alignment.leading:
+        case Alignment.center:
+        case Alignment.trailing:
+            return "middle"
+        case Alignment.bottomLeading:
+        case Alignment.bottom:
+        case Alignment.bottomTrailing:
+            return "bottom"
+    }
+}

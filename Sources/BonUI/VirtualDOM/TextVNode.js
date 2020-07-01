@@ -51,14 +51,18 @@ export class TextVNode extends VNode {
         const { dom } = oldNode
         
         if (oldNode instanceof TextVNode) {
-            oldNode.handleBeforeUpdate()
-            dom.textContent = this.text
-            oldNode.handleUpdate()
+            if (oldNode.text !== this.text) {
+                oldNode.handleBeforeUpdate()
+                dom.textContent = this.text
+                oldNode.handleUpdate()
+            }
         } else {
             oldNode.handleBeforeUnmount()
             const newDom = this.toDomNode({ save: true })
             dom.replaceWith(newDom)
             oldNode.handleUnmount()
         }
+
+        this.dom = dom
     }
 }
