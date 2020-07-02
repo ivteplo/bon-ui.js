@@ -40,7 +40,7 @@ export class NavigationView extends View {
      * @param {View} view view to navigate to
      * @todo
      */
-    navigateToView (view) {
+    navigateTo (view) {
         
     }
 
