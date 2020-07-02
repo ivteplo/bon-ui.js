@@ -20,6 +20,7 @@ import { ViewController } from "../Application/ViewController.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { ClickInfo } from "../Values/ClickInfo.js"
 import { Protocol } from "../Values/Protocol.js"
+import { getClass } from "../Values/Helpers.js"
 import { Length } from "../Values/Length.js"
 import { State } from "../Values/State.js"
 import { Color } from "../Values/Color.js"
@@ -33,6 +34,11 @@ const ViewProtocol = Protocol.createClass({
  * @callback ClickHandler
  * @param {ClickInfo}   clickInfo   information about click
  * @param {View}        view        view
+ */
+
+/**
+ * @callback ViewLifecycleHandler
+ * @param {View} view view for which the handler was added
  */
 
 /**
@@ -77,6 +83,11 @@ export class View extends ViewProtocol {
         this.state.set = (keys) => {
             this.state.dispatch({ type: "set", value: keys })
         }
+
+        /**
+         * @type {View}
+         */
+        this._navigationBarTitle = null
     }
 
     /**
@@ -106,6 +117,75 @@ export class View extends ViewProtocol {
         }
 
         this.id = id
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view will appear" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onWillAppear (handler) {
+        this.controller.addOnViewWillAppearHandler(handler)
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view appeared" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onDidAppear (handler) {
+        this.controller.addOnViewDidAppearHandler(handler)
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view will update" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onWillUpdate (handler) {
+        this.controller.addOnViewWillUpdateHandler(handler)
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view updated" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onDidUpdate (handler) {
+        this.controller.addOnViewDidUpdateHandler(handler)
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view will disappear" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onWillDisappear (handler) {
+        this.controller.addOnViewWillDisappearHandler(handler)
+        return this
+    }
+
+    /**
+     * Method to add a handler for "view disappeared" event
+     * @param {ViewLifecycleHandler} handler method that will be called
+     */
+    onDidDisappear (handler) {
+        this.controller.addOnViewDidDisappearHandler(handler)
+        return this
+    }
+
+    // Navigation methods
+
+    /**
+     * Method to set the navigation bar title
+     * @param {View} title title to show in navigation bar
+     */
+    navigationBarTitle (title) {
+        if (!(title instanceof View)) {
+            throw new InvalidValueException(`Unexpected title passed. Expected navigation bar title to be an instance of View, got ${getClass(title)}`)
+        }
+
+        this._navigationBarTitle = title
         return this
     }
 

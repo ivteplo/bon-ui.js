@@ -4,6 +4,7 @@
 // 
 
 import { InvalidValueException } from "../../Values/Exceptions.js"
+import { NavigationView } from "./NavigationView.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
@@ -18,17 +19,33 @@ export class NavigationLink extends View {
         super()
         
         /**
-         * @var
          * @type {View}
          * Destination view
          */
         this.destination = destination
         
         /**
-         * @var
          * @type {BodyOneChild}
          */
         this.item = body
+
+        this.onClick(() => {
+            var { parent } = this
+
+            while (parent && !(parent instanceof NavigationView)) {
+                if (parent instanceof VNode) {
+                    parent = parent.parentView || parent.parentNode
+                } else {
+                    parent = parent.parent
+                }
+            }
+
+            if (!(parent instanceof NavigationView)) {
+                return
+            }
+
+            parent.navigateToView(this.destination)
+        })
     }
 
     body () {

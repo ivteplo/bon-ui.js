@@ -5,7 +5,7 @@
 
 import { InvalidValueException, SceneNotLoadedException } from "../Values/Exceptions.js"
 import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
-import { getClass } from "../Values/Helpers.js"
+import { getClass, convertToViewBodyItem } from "../Values/Helpers.js"
 import { ViewBuilder } from "./ViewBuilder.js"
 import { View } from "../Views/View.js"
 import "../jsdoc.js"
@@ -13,8 +13,8 @@ import "../jsdoc.js"
 export class Scene {
     /**
      * 
-     * @param {string}      name scene name
-     * @param {BodyOneItem} body scene contents
+     * @param {string}       name scene name
+     * @param {BodyOneChild} body scene contents
      */
     constructor (name, body) {
         this.name = String(name)
@@ -27,18 +27,10 @@ export class Scene {
      * Method that returns scene view
      */
     body () {
-        var body = this.child
+        var body = convertToViewBodyItem(this.child)
 
-        if (typeof body === "function") {
-            body = body()
-        }
-
-        if (Array.isArray(body)) {
-            if (body.length > 1) {
-                throw new InvalidValueException(`Scene can contain only one root view`)
-            }
-
-            body = body[0]
+        if (!(body instanceof View)) {
+            throw new InvalidValueException(`Expected only view in a scene body, got ${getClass(body)}`)
         }
 
         return body
@@ -50,12 +42,11 @@ export class Scene {
      */
     load (parent = document.body) {
         const body = this.body()
-
-        if (!(body instanceof View)) {
-            throw new InvalidValueException(`Expected only view in a scene body, got ${getClass(body[i])}`)
-        }
-
-        var bodyVNode = ViewBuilder.build(body)
+        
+        var bodyVNode = ViewBuilder.build(body, {
+            action: "mount",
+            save: true
+        })
 
         const wrapper = new ContainerVNode({
             component: "div",

@@ -8,6 +8,7 @@ import { FontModifier } from "../../ViewModifiers/FontModifier.js"
 import { VerticalAlignment } from "../../Values/Alignment.js"
 import { getClass } from "../../Values/Helpers.js"
 import { percents } from "../../Values/Length.js"
+import { VNode } from "../../VirtualDOM/VNode.js"
 import { Column } from "../Layouts/Column.js"
 import { Font } from "../../Values/Font.js"
 import { Row } from "../Layouts/Row.js"
@@ -17,53 +18,53 @@ import "../../jsdoc.js"
 export class NavigationView extends View {
     /**
      * 
-     * @param {Body} items 
+     * @param {BodyOneChild} item
      */
-    constructor (items) {
+    constructor (item) {
         super()
 
         /**
-         * @type {Body}
+         * @type {BodyOneChild}
          */
-        this.items = items
+        this.item = item
 
         /**
-         * @private @type {View}
-         * Title in the navigation bar
+         * @type {View|VNode}
+         * Parent view or virtual DOM node
          */
-        this._navigationBarTitle = null
+        this.parent = null
     }
 
-    navigationBarTitle (title) {
-        if (!(title instanceof View)) {
-            throw new InvalidValueException(`Expected View instance as navigation bar title, got ${getClass(title)}`)
-        }
-
-        this._navigationBarTitle = title
-
-        this._navigationBarTitle._vNodeModifiers.unshift(
-            new FontModifier(Font.largeTitle)
-        )
-
-        return this
+    /**
+     * Method to navigate to another view
+     * @param {View} view view to navigate to
+     * @todo
+     */
+    navigateToView (view) {
+        
     }
 
     body () {
+        var navigationBarTitle = null
+
+        if (this.item instanceof View && this.item._navigationBarTitle instanceof View) {
+            let { _navigationBarTitle: title } = this.item
+            navigationBarTitle = title
+        }
+
+        navigationBarTitle._vNodeModifiers.unshift(
+            new FontModifier(Font.largeTitle)
+        )
+
         return (
             new Column([
-
                 new Row([
                     /** @todo */
-
-
                 ]).size({ width: percents(100), height: 45 }),
 
-                this._navigationBarTitle,
+                navigationBarTitle,
                 
-                new Column([
-                    this.items
-                ])
-                
+                this.item
             ], { alignment: VerticalAlignment.topLeading })
                 .padding(20)
                 .size({ width: percents(100) })

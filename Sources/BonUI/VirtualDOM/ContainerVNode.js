@@ -50,11 +50,14 @@ export class ContainerVNode extends VNode {
 
         for (let i in body) {
             if (body[i] instanceof View) {
+                body[i].parent = this.parentView || this
                 body[i] = ViewBuilder.build(body[i], builderConfig)
                 
                 if (body[i] instanceof ContainerVNode) {
                     body[i].body = body[i].getCurrentBody(builderConfig)
                 }
+            } else if (body[i] instanceof VNode) {
+                body[i].parentNode = this
             }
         }
 

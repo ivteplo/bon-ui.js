@@ -16,7 +16,18 @@ const VNodeProtocol = Protocol.createClass({
 export class VNode extends VNodeProtocol {
     constructor () {
         super()
+        /**
+         * @type {Node|Text}
+         */
         this.dom = null
+        /**
+         * @type {View?}
+         */
+        this.parentView = null
+        /**
+         * @type {VNode?}
+         */
+        this.parentNode = null
         this.vNodeHandlers = {
             mount: [],
             update: [],

@@ -3,10 +3,9 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, pixels } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, pixels, NavigationLink } from "../../../Sources/BonUI/BonUI.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
-
 
 export class Content extends View {
     constructor () {
@@ -41,33 +40,41 @@ export class Content extends View {
 
     body () {
         return (
-            new NavigationView([
-                new Section(
-                    new Text("What's next?"),
+            new NavigationView(
+                new Column([
+                    new Section(
+                        new Text("What's next?"),
 
-                    new Row([
-                        new TextField({ placeholder: "Do the homework" }, this.onUserInput.bind(this)),
+                        new Row([
+                            new TextField({ placeholder: "Do the homework" }, this.onUserInput.bind(this)),
 
-                        new Button(new Text("+"), this.addButtonClicked.bind(this))
-                            .size({ width: pixels(40) })
-                            .padding()
-                            .font(Font.default.with({
-                                size: pixels(25)
-                            }))
-                            .foregroundColor(Color.orange)
-                    ])
-                ),
+                            new Button(new Text("+"), this.addButtonClicked.bind(this))
+                                .size({ width: pixels(40) })
+                                .padding()
+                                .font(Font.default.with({
+                                    size: pixels(25)
+                                }))
+                                .foregroundColor(Color.orange)
+                        ])
+                    ),
 
-                new Section(
-                    new Text("Notes"),
+                    new NavigationLink(
+                        new Button(
+                            new Text("Go to somewhere")
+                        )
+                    , { destination: new Note({ id: 0, title: "hello", date: Date.now() }) }),
 
-                    new Column(
-                        mainState.current.notes
-                            .map(note => new Note(note))
+                    new Section(
+                        new Text("Notes"),
+
+                        new Column(
+                            mainState.current.notes
+                                .map(note => new Note(note))
+                        )
                     )
-                )
-            ])
-            .navigationBarTitle(new Text("Bon UI Notes"))
+                ])
+                .navigationBarTitle(new Text("Bon UI Notes"))
+            )
         )
     }
 }

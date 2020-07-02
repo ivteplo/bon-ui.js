@@ -12,8 +12,8 @@ import "../../jsdoc.js"
 export class Button extends FocusableControl {
     /**
      * 
-     * @param {BodyOneItem} label 
-     * @param {function}    action 
+     * @param {BodyOneChild} label 
+     * @param {function}     action 
      */
     constructor (label, action = () => {}) {
         super()

@@ -9,8 +9,8 @@ import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
 
 /**
- * @class
  * Class that contains methods to build the view
+ * @class
  */
 export class ViewBuilder {
     /**
@@ -27,6 +27,12 @@ export class ViewBuilder {
         }
 
         var result = view.body()
+
+        if (result instanceof View) {
+            result.parent = view
+        } else if (result instanceof VNode) {
+            result.parentView = view
+        }
         
         if (!(result instanceof VNode)) {
             result = ViewBuilder.build(result, { action, save })
