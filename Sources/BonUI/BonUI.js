@@ -12,19 +12,20 @@ View.prototype.background = function (background) {
 }
 
 
-
 // Views
 export { View }
 // -> Generic
 export * from "./Views/Generic/Text.js"
+export * from "./Views/Generic/Image.js"
 export * from "./Views/Generic/Spacer.js"
 export * from "./Views/Generic/Divider.js"
 export * from "./Views/Generic/EmptyView.js"
 // -> Controls
-export * from "./Views/Controls/Control.js"
-export * from "./Views/Controls/FocusableControl.js"
 export * from "./Views/Controls/Button.js"
+export * from "./Views/Controls/Control.js"
 export * from "./Views/Controls/TextField.js"
+export * from "./Views/Controls/SecureField.js"
+export * from "./Views/Controls/FocusableControl.js"
 // -> Layouts
 export * from "./Views/Layouts/Row.js"
 export * from "./Views/Layouts/Column.js"

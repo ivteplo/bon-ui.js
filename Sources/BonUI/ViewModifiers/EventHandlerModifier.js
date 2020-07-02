@@ -24,10 +24,11 @@ export class EventHandlerModifier extends ViewVNodeModifier {
     }
 
     body (content) {
-        const handlers = {}
-        handlers[this.event] = this.handler
         
         if (!(content instanceof ContainerVNode)) {
+            const handlers = {}
+            handlers[this.event] = this.handler
+
             return (
                 new ContainerVNode({
                     component: "div",
@@ -36,7 +37,11 @@ export class EventHandlerModifier extends ViewVNodeModifier {
                 })
             )
         } else {
-            content.handlers = handlers
+            if (!content.handlers[this.event]) {
+                content.handlers[this.event] = []
+            }
+
+            content.handlers[this.event].push(this.handler)
             return content
         }
     }
