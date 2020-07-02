@@ -58,11 +58,11 @@ export class Content extends View {
                         ])
                     ),
 
-                    new NavigationLink(
-                        new Button(
-                            new Text("Go to somewhere")
-                        )
-                    , { destination: new Note({ id: 0, title: "hello", date: Date.now() }) }),
+                    // new NavigationLink(
+                    //     new Button(
+                    //         new Text("Go to somewhere")
+                    //     )
+                    // , { destination: new Note({ id: 0, title: "hello", date: Date.now() }) }),
 
                     new Section(
                         new Text("Notes"),

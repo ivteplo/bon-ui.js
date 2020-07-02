@@ -4,8 +4,8 @@
 // 
 
 import { InvalidValueException, SceneNotLoadedException } from "../Values/Exceptions.js"
-import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { getClass, convertToViewBodyItem } from "../Values/Helpers.js"
+import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { ViewBuilder } from "./ViewBuilder.js"
 import { View } from "../Views/View.js"
 import "../jsdoc.js"
@@ -13,37 +13,25 @@ import "../jsdoc.js"
 export class Scene {
     /**
      * 
-     * @param {string}       name scene name
-     * @param {BodyOneChild} body scene contents
+     * @param {string} name scene name
+     * @param {View}   view scene contents
      */
-    constructor (name, body) {
+    constructor (name, view) {
         this.name = String(name)
-        this.child = body
         this.dom = null
-        this.lastBody = null
-    }
 
-    /**
-     * Method that returns scene view
-     */
-    body () {
-        var body = convertToViewBodyItem(this.child)
-
-        if (!(body instanceof View)) {
-            throw new InvalidValueException(`Expected only view in a scene body, got ${getClass(body)}`)
+        this.view = convertToViewBodyItem(view)
+        if (!(this.view instanceof View)) {
+            throw new InvalidValueException(`Expected only view in a scene body, got ${getClass(this.view)}`)
         }
-
-        return body
     }
 
     /**
      * Method to load the scene
      * @param {Node} parent parent of the scene
      */
-    load (parent = document.body) {
-        const body = this.body()
-        
-        var bodyVNode = ViewBuilder.build(body, {
+    load (parent = document.body) {        
+        var bodyVNode = ViewBuilder.build(this.view, {
             action: "mount",
             save: true
         })
@@ -68,18 +56,17 @@ export class Scene {
         parent.appendChild(wrapper.dom)
 
         this.dom = wrapper.dom
-        this.lastBody = body
     }
 
     /**
-     * Method to update last body (view that was rendered last time)
+     * Method to update the view
      */
-    updateLastBody () {
+    updateView () {
         if (!(this.dom && this.dom instanceof Node)) {
             throw new SceneNotLoadedException(`Scene "${this.name}" is not loaded`)
         }
 
-        this.lastBody.controller.updateView()
+        this.view.update()
     }
 
     /**
@@ -99,8 +86,8 @@ export class Scene {
             throw new SceneNotLoadedException(`Scene "${this.name}" is not loaded`)
         }
 
+        /** @todo add view controller handlers calls */
         this.dom.parentNode.removeChild(this.dom)
         this.dom = null
-        this.lastBody = null
     }
 }

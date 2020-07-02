@@ -82,30 +82,35 @@ export class Color {
     static caption = this.sectionTitle
     static text = Color.gray
     static divider = new Color({ red: 0xBB, green: 0xBB, blue: 0xBB })
-}
 
-const darkThemeColors = {
-    indigo: new Color({ red: 94, green: 92, blue: 230 }),
-    purple: new Color({ red: 191, green: 90, blue: 242 }),
-    blue: new Color({ red: 10, green: 132, blue: 255 }),
-    teal: new Color({ red: 100, green: 210, blue: 255 }),
-    
-    brown: new Color({ red: 0xAC, green: 0x3C, blue: 0x3C }),
-    red: new Color({ red: 255, green: 69, blue: 58 }),
-    pink: new Color({ red: 0xE8, green: 0x48, blue: 0xA0 }),
+    static themes = {
+        dark: {
+            indigo: new Color({ red: 94, green: 92, blue: 230 }),
+            purple: new Color({ red: 191, green: 90, blue: 242 }),
+            blue: new Color({ red: 10, green: 132, blue: 255 }),
+            teal: new Color({ red: 100, green: 210, blue: 255 }),
+            
+            brown: new Color({ red: 0xAC, green: 0x3C, blue: 0x3C }),
+            red: new Color({ red: 255, green: 69, blue: 58 }),
+            pink: new Color({ red: 0xE8, green: 0x48, blue: 0xA0 }),
 
-    orange: new Color({ red: 255, green: 159, blue: 10 }),
-    yellow: new Color({ red: 255, green: 214, blue: 10 }),
-    green: new Color({ red: 48, green: 209, blue: 88 }),
-    
-    background: Color.black,
-    largeTitle: Color.white,
-    title: Color.white,
-    subheading: Color.lightGray,
-    sectionTitle: Color.lightGray,
-    caption: Color.lightGray,
-    text: Color.gray,
-    divider: new Color({ red: 0x5E, green: 0x5E, blue: 0x5E })
+            orange: new Color({ red: 255, green: 159, blue: 10 }),
+            yellow: new Color({ red: 255, green: 214, blue: 10 }),
+            green: new Color({ red: 48, green: 209, blue: 88 }),
+            
+            background: Color.black,
+            largeTitle: Color.white,
+            title: Color.white,
+            subheading: Color.lightGray,
+            sectionTitle: Color.lightGray,
+            caption: Color.lightGray,
+            text: Color.gray,
+            divider: new Color({ red: 0x5E, green: 0x5E, blue: 0x5E })
+        },
+        light: {
+
+        }
+    }
 }
 
 export function createColorSchemeState () {
@@ -123,9 +128,11 @@ export function createColorSchemeState () {
 
     const lightThemeColors = {}
 
-    for (let i in darkThemeColors) {
+    for (let i in Color.themes.dark) {
         lightThemeColors[i] = Color[i]
     }
+
+    Color.themes.light = lightThemeColors
 
     const theme = new State((state = defaultState, action) => {
         switch (action.type) {
@@ -148,9 +155,9 @@ export function createColorSchemeState () {
     function handler () {
         var themeColors
         if (theme.current.mode === "dark") {
-            themeColors = darkThemeColors
+            themeColors = Color.themes.dark
         } else {
-            themeColors = lightThemeColors
+            themeColors = Color.themes.light
         }
 
         for (let i in themeColors) {
@@ -158,6 +165,7 @@ export function createColorSchemeState () {
         }
     }
 
+    handler()
     theme.subscribe(handler)
     return theme
 }

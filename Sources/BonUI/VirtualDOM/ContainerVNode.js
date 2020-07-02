@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { getClass, addSlashBeforeDoubleQuotes, camelCaseToHyphen, convertToViewBody } from "../Values/Helpers.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { ViewBuilder } from "../Application/ViewBuilder.js"
-import { convertToViewBody, getClass, addSlashBeforeDoubleQuotes, camelCaseToHyphen, convertToViewBodyItem } from "../Values/Helpers.js"
 import { View } from "../Views/View.js"
 import { VNode } from "./VNode.js"
 import "../jsdoc.js"
@@ -78,7 +78,7 @@ export class ContainerVNode extends VNode {
         )
 
         const body = (
-            convertToViewBodyItem(this.body)
+            this.getCurrentBody({ save: false })
                 .map(v => String(v))
                 .join("")
         )
@@ -116,7 +116,7 @@ export class ContainerVNode extends VNode {
             }
         }
 
-        const body = this.getCurrentBody({ action: "mount", save })
+        const body = this.getCurrentBody({ save })
 
         for (let i in body) {
             if (!(body[i] instanceof VNode)) {
@@ -186,7 +186,7 @@ export class ContainerVNode extends VNode {
             }
 
             const idsUpdated = []
-            const body = this.getCurrentBody({ action: "update", save: true })
+            const body = this.getCurrentBody({ save: true })
             const oldBody = oldNode.lastBody
 
             if (oldBody.length !== body.length) {

@@ -95,9 +95,7 @@ export class Application {
 
         const colorSchemeState = createColorSchemeState()
         colorSchemeState.subscribe(() => {
-            application.container.dom.style.backgroundColor = Color.background
-            application.container.dom.style.color = Color.text
-            application.currentScene.updateLastBody()
+            application.currentScene.updateView()
         })
         
         application.launch()
@@ -130,6 +128,15 @@ export class Application {
         body {
             font: ${Font.default.toString()};
             user-select: none;
+            background: ${Color.background};
+            color: ${Color.text};
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: ${Color.themes.dark.background};
+                color: ${Color.themes.dark.text}
+            }
         }
 
         button {
@@ -156,6 +163,7 @@ export class Application {
             outline: none;
             border: none;
             resize: none;
+            background: none;
         }`
     )
 
@@ -168,10 +176,6 @@ export class Application {
         return (
             new ContainerVNode({
                 component: "div",
-                styles: {
-                    backgroundColor: Color.background,
-                    color: Color.text
-                },
                 attributes: {
                     id: "application"
                 },

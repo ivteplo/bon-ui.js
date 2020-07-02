@@ -16,12 +16,11 @@ export class ViewBuilder {
     /**
      * Method to build a view
      * @param {View}    view                view to build
-     * @param {*}       [options]       
-     * @param {boolean} [options.action]    `"update"` / `"mount"`
+     * @param {*}       [options]
      * @param {boolean} [options.save]      save view renderer or not
      * @returns {VNode}
      */
-    static build (view, { action = "mount", save = true } = {}) {
+    static build (view, { save = true } = {}) {
         if (!(view instanceof View)) {
             throw new InvalidValueException(`Expected View instance, got ${getClass(view)}`)
         }
@@ -35,7 +34,7 @@ export class ViewBuilder {
         }
         
         if (!(result instanceof VNode)) {
-            result = ViewBuilder.build(result, { action, save })
+            result = ViewBuilder.build(result, { save })
         }
 
         for (let modifier of view._vNodeModifiers) {
@@ -46,25 +45,19 @@ export class ViewBuilder {
             view.controller.lastViewRender = result
         }
 
-        if (action === "mount") {
-            result
-                .onBeforeMount(() => {
-                    view.controller.viewWillAppear()
-                })
-                .onMount(() => {
-                    view.controller.viewDidAppear()
-                })
-        } else if (action === "update") {
-            result
-                .onBeforeUpdate(() => {
-                    view.controller.viewWillUpdate()
-                })
-                .onUpdate(() => {
-                    view.controller.viewDidUpdate()
-                })
-        }
-
         result
+            .onBeforeMount(() => {
+                view.controller.viewWillAppear()
+            })
+            .onMount(() => {
+                view.controller.viewDidAppear()
+            })
+            .onBeforeUpdate(() => {
+                view.controller.viewWillUpdate()
+            })
+            .onUpdate(() => {
+                view.controller.viewDidUpdate()
+            })
             .onBeforeUnmount(() => {
                 view.controller.viewWillDisappear()
             })

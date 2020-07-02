@@ -59,10 +59,11 @@ export class ViewController {
 
     /**
      * Method to build the view with options passed
-     * @param {*} options ViewBuilder options. See {@link ViewBuilder}
+     * @param   {*}     options ViewBuilder options. See {@link ViewBuilder}
+     * @returns {VNode} built view
      */
     buildView (options = {}) {
-        ViewBuilder.build(this.view, options)
+        return ViewBuilder.build(this.view, options)
     }
 
     /**
@@ -74,7 +75,7 @@ export class ViewController {
         }
 
         const { lastViewRender } = this
-        this.buildView({ action: "update" })
+        this.buildView()
         this.lastViewRender.updateDomNode(lastViewRender, lastViewRender.dom)
     }
 

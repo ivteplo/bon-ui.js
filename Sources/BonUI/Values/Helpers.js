@@ -22,7 +22,7 @@ export const camelCaseToHyphen = v => {
     return result
 }
 
-export const addSlashBeforeDoubleQuotes = v => v.replace(/"/g, "\\\"")
+export const addSlashBeforeDoubleQuotes = v => String(v).replace(/"/g, "\\\"")
 
 
 export const flattenArray = array => {

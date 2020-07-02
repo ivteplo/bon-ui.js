@@ -174,6 +174,11 @@ export class View extends ViewProtocol {
         return this
     }
 
+    toString () {
+        const vNode = this.controller.buildView({ save: false })
+        return vNode.toString()
+    }
+
     // Navigation methods
 
     /**
