@@ -3,14 +3,11 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-// importing modifiers
-import { PositionModifier } from "./PositionModifier.js"
-import { OffsetModifier } from "./OffsetModifier.js"
-import { SizeModifier } from "./SizeModifier.js"
-
+import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { Rectangle } from "../Views/Shapes/Rectangle.js"
 import { ZStack } from "../Views/Layouts/ZStack.js"
+import { SizeModifier } from "./SizeModifier.js"
 import { Position } from "../Values/Position.js"
 import { ViewModifier } from "./ViewModifier.js"
 import { getClass } from "../Values/Helpers.js"
@@ -39,15 +36,27 @@ export class BackgroundModifier extends ViewModifier {
         )
         
         this.background._vNodeModifiers.unshift(
-            new OffsetModifier({ x: 0, y: 0 }),
-            new SizeModifier({ width: percents(100), height: percents(100) }),
-            new PositionModifier(Position.absolute)
+            new SizeModifier({ width: percents(100), height: percents(100) })
         )
     }
 
     body (content) {
         return new ZStack([
-            this.background,
+            new ContainerVNode({
+                component: "div",
+                body: [
+                    this.background
+                ],
+                styles: {
+                    position: "absolute",
+                    top: "0",
+                    left: "0",
+                    width: "100%",
+                    height: "100%",
+                    padding: "inherit",
+                    overflow: "hidden"
+                }
+            }),
 
             content
                 .position(Position.relative)
