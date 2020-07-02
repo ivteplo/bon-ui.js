@@ -10,7 +10,6 @@ import { View } from "../Views/View.js"
 import { VNode } from "./VNode.js"
 import "../jsdoc.js"
 
-
 /**
  * Virtual DOM node that represents container (block) 
  */
@@ -43,7 +42,7 @@ export class ContainerVNode extends VNode {
     
     /**
      * Method that returns body for current building
-     * @param {*} builderConfig configuration to pass to the view builder
+     * @param {*} builderConfig configuration to pass to the view builder. See {@link ViewBuilder}
      */
     getCurrentBody (builderConfig) {
         var body = convertToViewBody(this.body)
@@ -79,11 +78,17 @@ export class ContainerVNode extends VNode {
 
         const body = (
             this.getCurrentBody({ save: false })
-                .map(v => String(v))
-                .join("")
+                .map(v => String(v).replace(/\n/g, "\n\t"))
+                .join("\n\t")
         )
+
+        var result = ""
+
+        result += `<${this.component}${attributes ? ` ${attributes}` : ""}${styles ? ` style="${styles}"` : ""}>`
+        result += body ? `\n\t${body}\n` : ""
+        result += `</${this.component}>`
         
-        return `<${this.component}${attributes ? ` ${attributes}` : ""}${styles ? ` style="${styles}"` : ""}>${body}</${this.component}>`
+        return result
     }
 
     /**

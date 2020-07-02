@@ -35,7 +35,7 @@ export class Application {
     setTitle (title) {
         this.title = title
 
-        if (typeof document === "object") {
+        if (typeof document === "object" && this.container) {
             document.title = title
         }
     }
@@ -44,6 +44,15 @@ export class Application {
      * Method to launch an app
      */
     launch () {
+        document.title = this.title
+
+        this.createContainer()
+        this.container.toDomNode({ save: true })
+        this.loadScene(this.constructor.mainSceneName)
+        document.body.appendChild(this.container.dom)
+    }
+
+    createContainer () {
         this.sceneContainer = this.constructor.createSceneContainer()
 
         this.container = this.constructor.createApplicationContainer([
@@ -51,17 +60,34 @@ export class Application {
             this.sceneContainer
         ])
 
-        this.container.toDomNode({ save: true })
-        this.loadScene(this.constructor.mainSceneName)
-        document.body.appendChild(this.container.dom)
+        return this.container
     }
 
     /**
-     * Method to load new scene
-     * @param {string} sceneName name of the scene to load
+     * Method to get the html code of the app (for server-side rendering)
      */
-    loadScene (sceneName) {
-        const oldScene = this.currentScene
+    toString () {
+        const sceneContainer = this.constructor.createSceneContainer()
+        const scene = this.getScene(this.constructor.mainSceneName)
+        const sceneVNode = scene.toVirtualDOMNode()
+
+        sceneContainer.body = sceneContainer.getCurrentBody({ save: false })
+        sceneContainer.body.push(sceneVNode)
+
+        const container = this.constructor.createApplicationContainer([
+            this.constructor.createStylesContainer(),
+            sceneContainer
+        ])
+
+        container.body = container.getCurrentBody({ save: false })
+        return container.toString()
+    }
+
+    /**
+     * Method to get the scene with specified name
+     * @param {string} sceneName name of the scene
+     */
+    getScene (sceneName) {
         const body = this.body()
         var scene = null
 
@@ -75,6 +101,17 @@ export class Application {
         if (scene === null) {
             throw new SceneNotFoundException(`Couldn't find scene "${sceneName}"`)
         }
+
+        return scene
+    }
+
+    /**
+     * Method to load new scene
+     * @param {string} sceneName name of the scene to load
+     */
+    loadScene (sceneName) {
+        const oldScene = this.currentScene
+        const scene = this.getScene(sceneName)
 
         scene.load(this.sceneContainer.dom)
         this.currentScene = scene
@@ -117,8 +154,8 @@ export class Application {
      * @type {string}
      * Default app styles
      */
-    static defaultStyles = (
-        `* {
+    static defaultStyles = (`
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -164,8 +201,8 @@ export class Application {
             border: none;
             resize: none;
             background: none;
-        }`
-    )
+        }
+    `)
 
     /**
      * Function that creates container for an app

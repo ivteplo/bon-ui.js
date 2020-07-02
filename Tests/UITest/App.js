@@ -7,7 +7,9 @@ import { Application, Scene } from "../../Sources/BonUI/BonUI.js"
 import { Content } from "./Views/Content.js"
 
 export class App extends Application {
-    initialize () {
+    constructor () {
+        super()
+
         this.setTitle("Bon UI")
     }
 

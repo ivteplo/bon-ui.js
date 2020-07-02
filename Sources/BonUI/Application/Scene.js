@@ -31,10 +31,19 @@ export class Scene {
      * @param {Node} parent parent of the scene
      */
     load (parent = document.body) {        
-        var bodyVNode = ViewBuilder.build(this.view, {
-            action: "mount",
-            save: true
-        })
+        const wrapper = this.toVirtualDOMNode()
+
+        wrapper.toDomNode({ save: true })
+        parent.appendChild(wrapper.dom)
+
+        this.dom = wrapper.dom
+    }
+
+    /**
+     * Method to convert scene to virtual DOM node
+     */
+    toVirtualDOMNode () {
+        var bodyVNode = ViewBuilder.build(this.view, { save: true })
 
         const wrapper = new ContainerVNode({
             component: "div",
@@ -52,10 +61,7 @@ export class Scene {
             ]
         })
 
-        wrapper.toDomNode({ save: true })
-        parent.appendChild(wrapper.dom)
-
-        this.dom = wrapper.dom
+        return wrapper
     }
 
     /**
