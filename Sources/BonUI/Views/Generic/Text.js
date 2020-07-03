@@ -3,11 +3,8 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { TextAlignmentModifier } from "../../ViewModifiers/TextAlignmentModifier.js"
 import { textStyleToTagName, TextStyle } from "../../Values/Font.js"
-import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
-import { FontModifier } from "../../ViewModifiers/FontModifier.js"
-import { TextVNode } from "../../VirtualDOM/TextVNode.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
 /**
@@ -26,29 +23,28 @@ export class Text extends View {
         var component = "p"
         const styles = {}
 
-        for (let modifier of this._vNodeModifiers) {
-            if (modifier instanceof FontModifier) {
-                component = textStyleToTagName(modifier.font.textStyle)
+        // for (let modifier of this._vNodeModifiers) {
+        //     if (modifier instanceof FontModifier) {
+        //         component = textStyleToTagName(modifier.font.textStyle)
 
-                if (modifier.font.textStyle !== TextStyle.default) {
-                    styles.width = "100%"
-                }
-            }
-        }
+        //         if (modifier.font.textStyle !== TextStyle.default) {
+        //             styles.width = "100%"
+        //         }
+        //     }
+        // }
 
-        return new ContainerVNode({ 
-            body: [ new TextVNode(this.text) ],
-            component,
+        return new VNode(component, {
+            body: [ this.text ],
             styles
         })
     }
 
-    /**
-     * Method to set text alignment
-     * @param {Symbol} alignment `Alignment` enum item
-     */
-    alignment (alignment) {
-        return this.modifier(new TextAlignmentModifier(alignment))
-    }
+    // /**
+    //  * Method to set text alignment
+    //  * @param {Symbol} alignment `Alignment` enum item
+    //  */
+    // alignment (alignment) {
+    //     return this.modifier(new TextAlignmentModifier(alignment))
+    // }
 }
 

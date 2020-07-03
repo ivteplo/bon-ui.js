@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { VNode } from "./VirtualDOM/VNode.js"
+import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "./Views/View.js"
 
 /**

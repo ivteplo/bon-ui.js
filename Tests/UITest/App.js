@@ -3,14 +3,13 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { Application, Scene } from "../../Sources/BonUI/BonUI.js"
+import { Application, Scene, DOMRenderer } from "../../mod.js"
 import { Content } from "./Views/Content.js"
 
 export class App extends Application {
     constructor () {
         super()
-
-        this.setTitle("Bon UI")
+        this.renderer = DOMRenderer
     }
 
     body () {

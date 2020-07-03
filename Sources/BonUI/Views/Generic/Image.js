@@ -3,8 +3,8 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../../Values/Exceptions.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { getClass } from "../../Values/Helpers.js"
 import { View } from "../View.js"
 
@@ -22,8 +22,7 @@ export class Image extends View {
 
     body () {
         return (
-            new ContainerVNode({
-                component: "img",
+            new VNode("img", {
                 attributes: {
                     src: this.path,
                     alt: this.description

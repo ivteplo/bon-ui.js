@@ -3,28 +3,24 @@
 // Licensed under the Apache License, version 2.0
 //
 
-// importing modifiers
-import { ForegroundColorModifier } from "../ViewModifiers/ForegroundColorModifier.js"
-import { EventHandlerModifier } from "../ViewModifiers/EventHandlerModifier.js"
-import { ViewVNodeModifier } from "../ViewModifiers/ViewVNodeModifier.js"
-import { PositionModifier } from "../ViewModifiers/PositionModifier.js"
-import { PaddingModifier } from "../ViewModifiers/PaddingModifier.js"
-import { ZIndexModifier } from "../ViewModifiers/ZIndexModifier.js"
-import { OffsetModifier } from "../ViewModifiers/OffsetModifier.js"
-import { FontModifier } from "../ViewModifiers/FontModifier.js"
-import { ViewModifier } from "../ViewModifiers/ViewModifier.js"
-import { SizeModifier } from "../ViewModifiers/SizeModifier.js"
-import { CSSModifier } from "../ViewModifiers/CSSModifier.js"
+import { ViewVNodeModifier } from "../Modifiers/ViewVNodeModifier.js"
+import { PaddingModifier } from "../Modifiers/PaddingModifier.js"
+import { SizeModifier } from "../Modifiers/SizeModifier.js"
+import { FontModifier } from "../Modifiers/FontModifier.js"
+import { ViewModifier } from "../Modifiers/ViewModifier.js"
+import { CSSModifier } from "../Modifiers/CSSModifier.js"
 
-import { ViewController } from "../Application/ViewController.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
-import { ClickInfo } from "../Values/ClickInfo.js"
+import { pixels, Length } from "../Values/Length.js"
+import { ViewController } from "./ViewController.js"
 import { Protocol } from "../Values/Protocol.js"
 import { getClass } from "../Values/Helpers.js"
-import { Length } from "../Values/Length.js"
 import { State } from "../Values/State.js"
 import { Color } from "../Values/Color.js"
+import { Font } from "../Values/Font.js"
 import { Worker } from "../Worker.js"
+import { EventHandlerModifier } from "../Modifiers/EventHandlerModifier.js"
+import { ClickInfo } from "../Values/ClickInfo.js"
 
 const ViewProtocol = Protocol.createClass({
     requiredMethods: [ "body" ]
@@ -56,12 +52,6 @@ export class View extends ViewProtocol {
         this.id = null
 
         /**
-         * @private
-         * Virtual DOM node modifiers
-         */
-        this._vNodeModifiers = []
-
-        /**
          * @type {ViewController}
          */
         this.controller = new ViewController(this)
@@ -88,6 +78,8 @@ export class View extends ViewProtocol {
          * @type {View}
          */
         this._navigationBarTitle = null
+
+        this._vNodeModifiers = []
     }
 
     /**
@@ -202,7 +194,7 @@ export class View extends ViewProtocol {
      */
     modifier (modifier) {
         if (!(modifier instanceof ViewModifier)) {
-            throw new InvalidValueException(`Unexpected modifier passed (expected ViewModifier instance, got ${modifier.constructor.name})`)
+            throw new InvalidValueException(`Unexpected modifier passed (expected ViewModifier instance, got ${getClass(modifier)})`)
         }
 
         if (modifier instanceof ViewVNodeModifier) {
@@ -214,11 +206,36 @@ export class View extends ViewProtocol {
     }
 
     /**
+     * Method to set handler for "click" event
+     * @param {ClickHandler} handler function that is called when user clicks
+     */
+    onClick (handler) {
+        return this.modifier(new EventHandlerModifier("click", event => handler(ClickInfo.fromMouseEvent(event), this)))
+    }
+
+    /**
+     * Method to add view VNode modifier as the first modifier
+     * @param {ViewVNodeModifier} modifier 
+     */
+    prependVNodeModifier (modifier) {
+        if (!(modifier instanceof ViewVNodeModifier)) {
+            throw new InvalidValueException(`Unexpected modifier passed (expected ViewVNodeModifier instance, got ${getClass(modifier)})`)
+        }
+
+        this._vNodeModifiers.unshift(modifier)
+        return this
+    }
+
+    /**
      * Method to set foreground color
-     * @param {Color} color color to set as the foreground color
+     * @param {Color} color 
      */
     foregroundColor (color) {
-        return this.modifier(new ForegroundColorModifier(color))
+        if (!(color instanceof Color)) {
+            throw new InvalidValueException(`Expected Color instance as foreground color, got ${getClass(color)}`)
+        }
+
+        return this.modifier(new CSSModifier({ color }))
     }
 
     /**
@@ -231,16 +248,8 @@ export class View extends ViewProtocol {
     }
 
     /**
-     * Method to set handler for "click" event
-     * @param {ClickHandler} handler function that is called when user clicks
-     */
-    onClick (handler) {
-        return this.modifier(new EventHandlerModifier("click", event => handler(ClickInfo.fromMouseEvent(event), this)))
-    }
-
-    /**
-     * Method to set font for the view
-     * @param {Font} font font to use
+     * Method to set font
+     * @param {Font} font 
      */
     font (font) {
         return this.modifier(new FontModifier(font))
@@ -281,15 +290,13 @@ export class View extends ViewProtocol {
      * @param {number} value index
      */
     zIndex (value) {
-        return this.modifier(new ZIndexModifier(value))
-    }
+        if (!(typeof value === "number")) {
+            throw new InvalidValueException(`Expected z-index number, got ${getClass(value)}`)
+        }
 
-    /**
-     * Method to set position of the view
-     * @param {Symbol} position item of `Position` enum
-     */
-    position (position) {
-        return this.modifier(new PositionModifier(position))
+        return this.modifier(new CSSModifier({
+            zIndex: Math.floor(value)
+        }))
     }
 
     /**
@@ -299,21 +306,30 @@ export class View extends ViewProtocol {
      * @param {Length|number} [options.y] y offset
      */
     offset ({ x, y } = {}) {
-        return this.modifier(new OffsetModifier({ x, y }))
-    }
+        const styles = {}
 
-    /**
-     * Method to make text in the view written in upper case
-     */
-    upperCase () {
-        return this.modifier(new CSSModifier({ textTransform: "uppercase" }))
-    }
+        if (x instanceof Length || typeof x === "number") {
+            styles.left = x instanceof Length ? x : pixels(x)
+        }
 
-    /**
-     * Method to set background of the view
-     * @param {View|Color} background background of the view
-     */
-    // implemented in /Sources/BonUI/BonUI.js
-    // because of circular dependency
-    background (background) {}
+        if (y instanceof Length || typeof y === "number") {
+            styles.top = y instanceof Length ? y : pixels(y)
+        }
+
+        return this.modifier(new CSSModifier(styles))
+    }
 }
+
+//
+// Some modifiers
+//
+// P.S: have to put them here to avoid circular dependencies
+//
+// The best way would be to add methods to View.prototype
+// in files of view modifiers (e.g if we have BackgroundModifier,
+// it'd be better to add method View#background in the file of modifier.
+// But JavaScript doesn't have `extension`s like in Swift.)
+//
+// (It can be a good idea to test if Kotlin can add methods
+// to class which is in another file)
+//

@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, Row, Button, Color, Column, Font, Weight, Spacer } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, Row, Button, Color, Column, Font, Weight, Spacer, HorizontalAlignment } from "../../../mod.js"
 import { mainState } from "../MainState.js"
 
 export class Note extends View {
@@ -32,9 +32,9 @@ export class Note extends View {
                         }))
                         .foregroundColor(Color.title),
 
-                        new Text(dateString)
-                            .font(Font.caption)
-                ]),
+                    new Text(dateString)
+                        .font(Font.caption)
+                ], { alignment: HorizontalAlignment.leading }),
 
                 new Spacer(),
                     

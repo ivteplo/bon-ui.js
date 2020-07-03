@@ -29,7 +29,7 @@ export const Alignment = new Enum(
  * @property {Symbol} center
  * @property {Symbol} bottom
  */
-export const HorizontalAlignment = new Enum(
+export const VerticalAlignment = new Enum(
     "top",
     "center",
     "bottom"
@@ -41,7 +41,7 @@ export const HorizontalAlignment = new Enum(
  * @property {Symbol} center
  * @property {Symbol} trailing
  */
-export const VerticalAlignment = new Enum(
+export const HorizontalAlignment = new Enum(
     "leading",
     "center",
     "trailing"

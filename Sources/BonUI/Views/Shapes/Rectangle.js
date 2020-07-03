@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { NSElementVNode } from "../../VirtualDOM/NSElementVNode.js"
 import { InvalidValueException } from "../../Values/Exceptions.js"
 import { Length, pixels, percents } from "../../Values/Length.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { getClass } from "../../Values/Helpers.js"
 import { svgXmlNamespace } from "../../Config.js"
 import { Color } from "../../Values/Color.js"
@@ -52,11 +52,9 @@ export class Rectangle extends View {
         
         const coordinates = this._strokeWidth.toString()
         
-        return new NSElementVNode({
-            component: "svg",
+        return new VNode("svg", {
             body: [
-                new NSElementVNode({
-                    component: "rect",
+                new VNode("rect", {
                     attributes: {
                         x: coordinates,
                         y: coordinates,
@@ -67,9 +65,11 @@ export class Rectangle extends View {
                         fill: "currentColor",
                         "stroke-width": this._strokeWidth.toString(),
                         stroke: this._strokeColor.toString()
-                    }
-                }, svgXmlNamespace)
-            ]
-        }, svgXmlNamespace)
+                    },
+                    xmlNamespace: svgXmlNamespace
+                })
+            ],
+            xmlNamespace: svgXmlNamespace
+        })
     }
 }

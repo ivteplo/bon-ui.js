@@ -4,9 +4,9 @@
 // 
 
 import { InvalidValueException } from "../Values/Exceptions.js"
+import { VNode } from "../../VirtualDOM/VNode.js"
 import { getClass } from "../Values/Helpers.js"
-import { VNode } from "../VirtualDOM/VNode.js"
-import { View } from "../Views/View.js"
+import { View } from "./View.js"
 
 /**
  * Class that contains methods to build the view
@@ -29,41 +29,25 @@ export class ViewBuilder {
 
         if (result instanceof View) {
             result.parent = view
-        } else if (result instanceof VNode) {
-            result.parentView = view
         }
         
         if (!(result instanceof VNode)) {
-            result = ViewBuilder.build(result, { save })
+            result = this.build(result, { save })
+        }
+
+        for (let i in result.body) {
+            if (result.body[i] instanceof View) {
+                result.body[i] = this.build(result.body[i], { save })
+            }
         }
 
         for (let modifier of view._vNodeModifiers) {
-            result = modifier.body(result, view)
+            result = modifier.body(result)
         }
 
         if (save) {
-            view.controller.lastViewRender = result
+            view.controller.vNode = result
         }
-
-        result
-            .onBeforeMount(() => {
-                view.controller.viewWillAppear()
-            })
-            .onMount(() => {
-                view.controller.viewDidAppear()
-            })
-            .onBeforeUpdate(() => {
-                view.controller.viewWillUpdate()
-            })
-            .onUpdate(() => {
-                view.controller.viewDidUpdate()
-            })
-            .onBeforeUnmount(() => {
-                view.controller.viewWillDisappear()
-            })
-            .onUnmount(() => {
-                view.controller.viewDidDisappear()
-            })
 
         return result
     }

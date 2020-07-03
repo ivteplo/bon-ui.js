@@ -3,13 +3,13 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { EventHandlerModifier } from "../../ViewModifiers/EventHandlerModifier.js"
-import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
+import { InvalidValueException } from "../../Values/Exceptions.js"
 import { FocusableControl } from "./FocusableControl.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
+import { Length } from "../../Values/Length.js"
 import { Color } from "../../Values/Color.js"
 import "../../jsdoc.js"
-import { Length } from "../../Values/Length.js"
-import { InvalidValueException } from "../../Values/Exceptions.js"
+import { EventHandlerModifier } from "../../Modifiers/EventHandlerModifier.js"
 
 /**
  * @callback TextFieldAction
@@ -46,11 +46,11 @@ export class TextField extends FocusableControl {
     resetValue () {
         this.value = this.initialValue
 
-        if (!(this.controller.lastViewRender && this.controller.lastViewRender.dom)) {
+        if (!(this.controller.vNode && this.controller.vNode.built)) {
             return this
         }
 
-        this.controller.lastViewRender.dom.value = this.initialValue
+        this.controller.vNode.built.value = this.initialValue
         return this
     }
 
@@ -63,8 +63,7 @@ export class TextField extends FocusableControl {
     }
 
     body () {
-        return new ContainerVNode({
-            component: this.multiline ? "textarea" : "input",
+        return new VNode(this.multiline ? "textarea" : "input", {
             attributes: {
                 type: "text",
                 value: this.initialValue,

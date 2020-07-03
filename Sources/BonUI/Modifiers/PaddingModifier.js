@@ -1,12 +1,12 @@
 //
 // Copyright (c) 2020 Teplovs
 // Licensed under the Apache License, version 2.0
-// 
+//
 
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { Length, pixels } from "../Values/Length.js"
+import { Edge } from "../Values/Enums/Edge.js"
 import { CSSModifier } from "./CSSModifier.js"
-import { Edge } from "../Values/Edge.js"
 
 export class PaddingModifier extends CSSModifier {
     /**

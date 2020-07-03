@@ -3,12 +3,10 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { InvalidValueException } from "../../Values/Exceptions.js"
-import { FontModifier } from "../../ViewModifiers/FontModifier.js"
-import { VerticalAlignment } from "../../Values/Alignment.js"
-import { getClass } from "../../Values/Helpers.js"
+import { HorizontalAlignment } from "../../Values/Enums/Alignment.js"
+import { FontModifier } from "../../Modifiers/FontModifier.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { percents } from "../../Values/Length.js"
-import { VNode } from "../../VirtualDOM/VNode.js"
 import { Column } from "../Layouts/Column.js"
 import { Font } from "../../Values/Font.js"
 import { Row } from "../Layouts/Row.js"
@@ -52,22 +50,20 @@ export class NavigationView extends View {
             navigationBarTitle = title
         }
 
-        navigationBarTitle._vNodeModifiers.unshift(
-            new FontModifier(Font.largeTitle)
-        )
+        navigationBarTitle.prependVNodeModifier(new FontModifier(Font.largeTitle))
 
         return (
             new Column([
                 new Row([
                     /** @todo */
-                ]).size({ width: percents(100), height: 45 }),
+                ])
+                .size({ width: percents(100), height: 45 }),
 
                 navigationBarTitle,
                 
                 this.item
-            ], { alignment: VerticalAlignment.topLeading })
+            ], { alignment: HorizontalAlignment.leading })
                 .padding(20)
-                .size({ width: percents(100) })
         )
     }
 }

@@ -4,10 +4,10 @@
 // 
 
 import { InvalidValueException, ViewControllerException } from "../Values/Exceptions.js"
+import { ViewBuilder } from "../Views/ViewBuilder.js"
+import { VNode } from "../../VirtualDOM/VNode.js"
 import { getClass } from "../Values/Helpers.js"
-import { ViewBuilder } from "./ViewBuilder.js"
-import { VNode } from "../VirtualDOM/VNode.js"
-import { View } from "../Views/View.js"
+import { View } from "./View.js"
 
 export class ViewController {
     /**
@@ -23,7 +23,7 @@ export class ViewController {
         /**
          * @type {VNode}
          */
-        this.lastViewRender = null
+        this.vNode = null
 
         this.viewHandlers = {
             willAppear: [],
@@ -36,47 +36,33 @@ export class ViewController {
 
         if (this.view.controller instanceof ViewController) {
             this.viewHandlers = this.view.controller.viewHandlers
-            this.lastViewRender = this.view.controller.lastViewRender
+            this.vNode = this.view.controller.vNode
         }
 
         this.view.controller = this
     }
 
     /**
-     * Method to load the view into the real DOM node
-     * @param {*}    [options]
-     * @param {Node} [options.to] parent node 
-     */
-    loadView ({ to: parent = document.body } = {}) {
-        if (this.lastViewRender instanceof VNode) {
-            throw new ViewControllerException(`View ${this.view.constructor.name} is already mounted`)
-        }
-
-        this.buildView()
-        this.lastViewRender.toDomNode({ save: true })
-        parent.appendChild(this.lastViewRender.dom)
-    }
-
-    /**
-     * Method to build the view with options passed
-     * @param   {*}     options ViewBuilder options. See {@link ViewBuilder}
-     * @returns {VNode} built view
-     */
-    buildView (options = {}) {
-        return ViewBuilder.build(this.view, options)
-    }
-
-    /**
      * Method to update the view
      */
     updateView () {
-        if (!(this.lastViewRender instanceof VNode)) {
+        if (!this.vNode.built) {
+            return
+        }
+
+        const { vNode } = this
+
+        if (!(vNode instanceof VNode)) {
             throw new ViewControllerException(`View ${this.view.constructor.name} is not mounted`)
         }
 
-        const { lastViewRender } = this
-        this.buildView()
-        this.lastViewRender.updateDomNode(lastViewRender, lastViewRender.dom)
+        this.viewWillUpdate()
+
+        ViewBuilder.build(this.view, { save: true })
+        const renderer = vNode.renderer
+        renderer.update(this.vNode, vNode, vNode.built)
+
+        this.viewDidUpdate()
     }
 
     viewWillAppear () {

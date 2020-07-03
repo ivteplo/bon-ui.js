@@ -3,17 +3,10 @@
 // Licensed under the Apache License, version 2.0
 //
 
-// Background modifier is added here because of circular dependencies
-import { View } from "./Views/View.js"
-import { BackgroundModifier } from "./ViewModifiers/BackgroundModifier.js"
-
-View.prototype.background = function (background) {
-    return this.modifier(new BackgroundModifier(background))
-}
-
-
 // Views
-export { View }
+export * from "./Views/View.js"
+export * from "./Views/ViewBuilder.js"
+export * from "./Views/ViewController.js"
 // -> Generic
 export * from "./Views/Generic/Text.js"
 export * from "./Views/Generic/Image.js"
@@ -37,29 +30,26 @@ export * from "./Views/Navigation/NavigationLink.js"
 // -> Shapes
 export * from "./Views/Shapes/Rectangle.js"
 
-// View Modifier
-export * from "./ViewModifiers/ViewModifier.js"
-
-// Virtual DOM
-export * from "./VirtualDOM/TextVNode.js"
-export * from "./VirtualDOM/ContainerVNode.js"
-export * from "./VirtualDOM/NSElementVNode.js"
+// View Modifiers
+export * from "./Modifiers/ViewModifier.js"
+export * from "./Modifiers/ViewVNodeModifier.js"
 
 // Application
 export * from "./Application/Scene.js"
 export * from "./Application/Application.js"
-export * from "./Application/ViewBuilder.js"
-export * from "./Application/ViewController.js"
 
 // Worker
 export * from "./Worker.js"
 
+// Enums
+export * from "./Values/Enums/Edge.js"
+export * from "./Values/Enums/Alignment.js"
+export * from "./Values/Enums/Position.js"
+
 // Values
-export * from "./Values/Edge.js"
 export * from "./Values/Font.js"
 export * from "./Values/State.js"
 export * from "./Values/Color.js"
 export * from "./Values/Length.js"
-export * from "./Values/Alignment.js"
 export * from "./Values/ClickInfo.js"
 export * from "./Values/Exceptions.js"

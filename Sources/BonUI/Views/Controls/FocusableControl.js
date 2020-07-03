@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { EventHandlerModifier } from "../../ViewModifiers/EventHandlerModifier.js"
+import { EventHandlerModifier } from "../../Modifiers/EventHandlerModifier.js"
 import { Control } from "./Control.js"
 
 export class FocusableControl extends Control {

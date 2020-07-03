@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Alignment, VerticalAlignment, HorizontalAlignment } from "./Alignment.js"
+import { Alignment, VerticalAlignment, HorizontalAlignment } from "./Enums/Alignment.js"
 import { InvalidValueException } from "./Exceptions.js"
-import { VNode } from "../VirtualDOM/VNode.js"
+import { VNode } from "../../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
 
 
@@ -85,36 +85,24 @@ export function convertToViewBody (items) {
 }
 
 
-export function horizontalAlignmentToJustifyContent (alignment) {
+export function horizontalAlignmentToAlignItems (alignment) {
     switch (alignment) {
-        case HorizontalAlignment.topLeading:
         case HorizontalAlignment.leading:
-        case HorizontalAlignment.bottomLeading:
             return "flex-start"
-        case HorizontalAlignment.top:
         case HorizontalAlignment.center:
-        case HorizontalAlignment.bottom:
             return "center"
-        case HorizontalAlignment.topTrailing:
         case HorizontalAlignment.trailing:
-        case HorizontalAlignment.bottomTrailing:
             return "flex-end"
     }
 }
 
-export function verticalAlignmentToJustifyContent (alignment) {
+export function verticalAlignmentToAlignItems (alignment) {
     switch (alignment) {
-        case VerticalAlignment.topLeading:
         case VerticalAlignment.top:
-        case VerticalAlignment.topTrailing:
             return "flex-start"
-        case VerticalAlignment.leading:
         case VerticalAlignment.center:
-        case VerticalAlignment.trailing:
             return "center"
-        case VerticalAlignment.bottomLeading:
         case VerticalAlignment.bottom:
-        case VerticalAlignment.bottomTrailing:
             return "flex-end"
     }
 }

@@ -4,7 +4,7 @@
 //
 
 import { InvalidValueException } from "./Exceptions.js"
-import { Enum } from "./Enum.js"
+import { Enum } from "./Enums/Enum.js"
 
 /**
  * @enum     {Sumbol}

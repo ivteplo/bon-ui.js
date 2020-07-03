@@ -5,7 +5,7 @@
 
 import { InvalidValueException } from "../../Values/Exceptions.js"
 import { NavigationView } from "./NavigationView.js"
-import { VNode } from "../../VirtualDOM/VNode.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 

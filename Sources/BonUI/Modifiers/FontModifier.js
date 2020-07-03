@@ -1,9 +1,8 @@
 //
 // Copyright (c) 2020 Teplovs
 // Licensed under the Apache License, version 2.0
-// 
+//
 
-import { ContainerVNode } from "../VirtualDOM/ContainerVNode.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { ViewVNodeModifier } from "./ViewVNodeModifier.js"
 import { Font, TextStyle } from "../Values/Font.js"
@@ -35,15 +34,7 @@ export class FontModifier extends ViewVNodeModifier {
             optionalStyles.color = Color[textStyleString]
         }
 
-        if (!(content instanceof ContainerVNode)) {
-            return new ContainerVNode({
-                component: "div",
-                styles: Object.assign(optionalStyles, styles),
-                body: [ content ],
-            })
-        } else {
-            content.styles = Object.assign(optionalStyles, content.styles, styles)
-            return content
-        }
+        content.styles = Object.assign(optionalStyles, content.styles, styles)
+        return content
     }
 }

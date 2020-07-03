@@ -3,9 +3,9 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { ContainerVNode } from "../../VirtualDOM/ContainerVNode.js"
 import { convertToViewBodyItem } from "../../Values/Helpers.js"
 import { FocusableControl } from "./FocusableControl.js"
+import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Color } from "../../Values/Color.js"
 import "../../jsdoc.js"
 
@@ -33,13 +33,14 @@ export class Button extends FocusableControl {
             attributes.disabled = "disabled"
         }
 
-        return new ContainerVNode({
-            component: "button",
+        return new VNode("button", {
             attributes,
             styles: {
                 color: !attributes.disabled ? Color.blue : Color.gray
             },
-            body: [ label ]
+            body: [
+                label
+            ]
         })
     }
 }
