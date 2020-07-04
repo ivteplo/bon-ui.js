@@ -46,13 +46,10 @@ export class Row extends Column {
             )
         }
 
-        return new VNode("div", {
+        return new VNode("bon-ui-row", {
             body: items,
             styles: {
                 alignItems: verticalAlignmentToAlignItems(this.alignment)
-            },
-            attributes: {
-                class: "bon-ui-row"
             }
         })
     }

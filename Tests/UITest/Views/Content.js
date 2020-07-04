@@ -51,7 +51,7 @@ export class Content extends View {
                             new Button(new Text("+"), this.addButtonClicked.bind(this))
                                 .size({ width: 40 })
                                 .padding()
-                                .font(Font.default.with({ size: 25 }))
+                                .font(Font.text.with({ size: 25 }))
                                 .foregroundColor(Color.orange)
                         ])
                     ),

@@ -9,6 +9,7 @@ import { InvalidValueException } from "../../Values/Exceptions.js"
 import { FontModifier } from "../../Modifiers/FontModifier.js"
 import { CSSModifier } from "../../Modifiers/CSSModifier.js"
 import { getClass } from "../../Values/Helpers.js"
+import { percents } from "../../Values/Length.js"
 import { Divider } from "../Generic/Divider.js"
 import { Font } from "../../Values/Font.js"
 import { Column } from "./Column.js"
@@ -44,6 +45,7 @@ export class Section extends View {
                 new Column(this.items, { alignment: HorizontalAlignment.topLeading })
                     .padding()
             ], { alignment: HorizontalAlignment.leading, spacing: 0 })
+                .size({ width: percents(100) })
         )
     }
 }

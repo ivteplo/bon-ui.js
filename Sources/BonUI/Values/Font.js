@@ -133,14 +133,14 @@ export class Font {
         return result.trim()
     }
 
-    static default = new Font({ 
+    static text = new Font({ 
         name: "sans-serif", 
         size: pixels(18), 
         textStyle: TextStyle.default, 
         weight: Weight.regular
     })
     
-    static title = this.default.with({ 
+    static title = this.text.with({ 
         size: pixels(30), 
         textStyle: TextStyle.title, 
         weight: Weight.medium 
@@ -162,13 +162,13 @@ export class Font {
         textStyle: TextStyle.sectionTitle
     })
     
-    static monospace = this.default.with({
+    static monospace = this.text.with({
         name: "monospace",
         textStyle: TextStyle.monospace,
         size: pixels(16)
     })
 
-    static caption = this.default.with({
+    static caption = this.text.with({
         textStyle: TextStyle.caption,
         size: pixels(14),
         weight: Weight.light

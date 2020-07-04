@@ -265,33 +265,164 @@ export class DOMRenderer extends Renderer {
                 height: 100%;
             }
 
-            button, input, textarea {
+            bon-ui-application button, 
+            bon-ui-application input, 
+            bon-ui-application textarea {
                 background: transparent;
                 border: none;
                 outline: none;
             }
 
-            input::placeholder, textarea::placeholder,
-            button, input, textarea {
+            bon-ui-application input::placeholder, 
+            bon-ui-application textarea::placeholder,
+            bon-ui-application button, 
+            bon-ui-application input, 
+            bon-ui-application textarea {
                 font-size: 1rem;
                 font-family: inherit;
             }
 
-            .bon-ui-row,
-            .bon-ui-column {
+            bon-ui-application {
+                height: 100%;
+                transition: color 0.25s, background 0.25s;
+            }
+
+            bon-ui-scene {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            bon-ui-spacer {
+                flex-shrink: 0;
+            }
+
+            bon-ui-row,
+            bon-ui-column {
                 display: flex;
                 justify-content: center;
             }
 
-            .bon-ui-row {
+            bon-ui-row {
                 flex-direction: row;
             }
 
-            .bon-ui-column {
+            bon-ui-column {
                 flex-direction: column;
             }
         `)
         document.head.prepend(styles)
+
+        class BonUIApplicationElement extends HTMLElement {}
+
+        class BonUISceneElement extends HTMLElement {}
+
+        class BonUIColumnElement extends HTMLElement {
+            checkIfHasSpacer () {
+                const spacers = this.querySelectorAll(":scope > bon-ui-spacer, :scope > textarea, :scope > input")
+                if (spacers.length === 0) {
+                    return false
+                }
+
+                let hasSpacersWithoutHeightSet = false
+                for (let spacer of spacers) {
+                    if (!spacer.style.height) {
+                        hasSpacersWithoutHeightSet = true
+                        break
+                    }
+                }
+
+                return hasSpacersWithoutHeightSet
+            }
+
+            connectedCallback () {
+                if (!this.style.height) {
+                    const hasSpacer = this.checkIfHasSpacer()
+                    if (hasSpacer && !this.style.height) {
+                        this.style.height = "100%"
+                        this.style.boxSizing = "border-box"
+                    }
+                }
+
+                if (!this.style.width) {
+                    const childRowSpacers = this.querySelectorAll("bon-ui-row > bon-ui-spacer, bon-ui-row > textarea, bon-ui-row > input")
+                    if (childRowSpacers.length > 0) {
+                        if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.width) {
+                            this.style.width = "100%"
+                            this.style.boxSizing = "border-box"
+                        }
+                    }
+                }
+
+                if (!this.style.width) {
+                    const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
+                    for (let child of childRowsOrColumns) {
+                        if (child.style.width === "100%") {
+                            this.style.width = "100%"
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
+        class BonUIRowElement extends BonUIColumnElement {
+            checkIfHasSpacer () {
+                const spacers = this.querySelectorAll(":scope > bon-ui-spacer, :scope > textarea, :scope > input")
+                if (spacers.length === 0) {
+                    return false
+                }
+
+                let hasSpacersWithoutWidthSet = false
+                for (let spacer of spacers) {
+                    if (!spacer.style.width) {
+                        hasSpacersWithoutWidthSet = true
+                        break
+                    }
+                }
+
+                return hasSpacersWithoutWidthSet
+            }
+
+            connectedCallback () {
+                if (!this.style.width) {
+                    const hasSpacer = this.checkIfHasSpacer()
+                    if (hasSpacer) {
+                        this.style.width = "100%"
+                        this.style.boxSizing = "border-box"
+                    }
+                }
+
+                if (!this.style.height) {
+                    const childColumnSpacers = this.querySelectorAll("bon-ui-column > bon-ui-spacer, bon-ui-column > textarea, bon-ui-column > input")
+                    if (childColumnSpacers.length > 0) {
+                        if (childColumnSpacers[0].parentNode.checkIfHasSpacer() === true) {
+                            this.style.height = "100%"
+                            this.style.boxSizing = "border-box"
+                        }
+                    }
+                }
+
+                if (!this.style.height) {
+                    const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
+                    for (let child of childRowsOrColumns) {
+                        if (child.style.height === "100%") {
+                            this.style.height = "100%"
+                            break
+                        }
+                    }
+                }
+            }
+        }
+
+        class BonUISpacerElement extends HTMLElement {}
+
+        customElements.define("bon-ui-application", BonUIApplicationElement)
+        customElements.define("bon-ui-scene", BonUISceneElement)
+        customElements.define("bon-ui-column", BonUIColumnElement)
+        customElements.define("bon-ui-row", BonUIRowElement)
+        customElements.define("bon-ui-spacer", BonUISpacerElement)
     }
 }
 

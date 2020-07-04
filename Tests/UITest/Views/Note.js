@@ -27,10 +27,10 @@ export class Note extends View {
             new Row([
                 new Column([
                     new Text(this.info.title)
-                        .font(Font.default.with({
+                        .font(Font.text.with({
                             weight: Weight.medium
                         }))
-                        .foregroundColor(Color.title),
+                        .foregroundColor(Color.primary),
 
                     new Text(dateString)
                         .font(Font.caption)

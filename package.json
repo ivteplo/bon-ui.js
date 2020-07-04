@@ -24,17 +24,20 @@
   "scripts": {
     "test": "mocha 'Tests/BonUITests/*.js'",
     "lint": "eslint 'Sources/**/*.js' 'Tests/**/*.js'",
+    "bundle": "rollup Sources/main.js --file Build/BonUI.js --format esm",
+    "watch": "rollup Sources/main.js --file Build/BonUI.js --format esm --watch",
     "docs": "jsdoc Sources/BonUI/**/*.js --configure jsdoc.json --tutorials Docs/Tutorials --readme Docs/README.md",
     "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/BonUITests/*.js' --inspect-brk --require esm"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "better-docs": "^2.0.1",
     "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "eslint": "^7.1.0",
     "jsdoc": "^3.6.4",
     "mocha": "^7.1.1",
-    "better-docs": "^2.0.1"
+    "rollup": "^2.18.2"
   },
   "repository": {
     "type": "git",

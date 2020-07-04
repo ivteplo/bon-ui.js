@@ -9,14 +9,12 @@ import { View } from "../View.js"
 
 export class Spacer extends View {
     body () {
-        const styles = {
-            flexShrink: "0"
-        }
+        const styles = {}
 
         if (!this.hasVNodeModifier(SizeModifier)) {
             styles.flexGrow = "1"
         }
 
-        return new VNode("div", { styles })
+        return new VNode("bon-ui-spacer", { styles })
     }
 }

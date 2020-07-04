@@ -16,16 +16,9 @@ export class SceneBuilder {
         const { view } = scene
         ViewBuilder.build(view, { save: true })
         
-        const sceneNode = new VNode("div", {
+        const sceneNode = new VNode("bon-ui-scene", {
             attributes: {
-                id: `${scene.name}-scene`,
-                class: "application-scene"
-            },
-            styles: {
-                height: "100%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center"
+                id: `${scene.name}-scene`
             },
             body: [
                 view.controller.vNode

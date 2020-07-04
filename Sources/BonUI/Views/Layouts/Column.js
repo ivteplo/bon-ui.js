@@ -53,13 +53,10 @@ export class Column extends View {
             )
         }
 
-        return new VNode("div", {
+        return new VNode("bon-ui-column", {
             body: items,
             styles: {
                 alignItems: horizontalAlignmentToAlignItems(this.alignment)
-            },
-            attributes: {
-                class: "bon-ui-column"
             }
         })
     }

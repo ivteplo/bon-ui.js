@@ -37,15 +37,10 @@ export class Application {
     loadScene (scene) {
         const { vNode: oldNode } = this
 
-        this.vNode = new VNode("div", {
-            attributes: {
-                id: "application"
-            },
+        this.vNode = new VNode("bon-ui-application", {
             styles: {
-                height: "100%",
                 backgroundColor: Color.background,
                 color: Color.primary,
-                transition: "color 0.25s, background 0.25s"
             },
             body: [
                 SceneBuilder.build(scene)

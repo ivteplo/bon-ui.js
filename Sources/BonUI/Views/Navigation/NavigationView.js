@@ -6,6 +6,7 @@
 import { HorizontalAlignment } from "../../Values/Enums/Alignment.js"
 import { FontModifier } from "../../Modifiers/FontModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
+import { percents } from "../../Values/Length.js"
 import { Spacer } from "../Generic/Spacer.js"
 import { Column } from "../Layouts/Column.js"
 import { Font } from "../../Values/Font.js"
@@ -66,6 +67,7 @@ export class NavigationView extends View {
                 new Spacer()
             ], { alignment: HorizontalAlignment.leading })
                 .padding(20)
+                .size({ width: percents(100) })
         )
     }
 }
