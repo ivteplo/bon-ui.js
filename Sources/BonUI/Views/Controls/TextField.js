@@ -71,7 +71,7 @@ export class TextField extends FocusableControl {
             },
             styles: {
                 padding: Length.defaultPadding,
-                color: Color.title
+                color: Color.primary
             },
             handlers: {
                 input: [

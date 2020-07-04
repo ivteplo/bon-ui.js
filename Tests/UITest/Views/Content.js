@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment, pixels, NavigationLink, VerticalAlignment } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment, pixels, NavigationLink, VerticalAlignment, Spacer } from "../../../Sources/BonUI/BonUI.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
 
@@ -66,8 +66,12 @@ export class Content extends View {
                         new Text("Notes"),
 
                         new Column(
-                            mainState.current.notes
-                                .map(note => new Note(note))
+                            mainState.current.notes.length > 0
+                                ? mainState.current.notes.map(note => new Note(note))
+                                // have to put this to make the spacer work
+                                // (find the way to update the dom of bon-ui-row and bon-ui-column
+                                // when added new item or removed one of the items)
+                                : new Row(new Spacer())
                         , { alignment: HorizontalAlignment.leading })
                     )
                 ])

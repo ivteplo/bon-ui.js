@@ -42,7 +42,7 @@ export class Section extends View {
 
                 new Divider(),
 
-                new Column(this.items, { alignment: HorizontalAlignment.topLeading })
+                new Column(this.items || new Spacer(), { alignment: HorizontalAlignment.topLeading })
                     .padding()
             ], { alignment: HorizontalAlignment.leading, spacing: 0 })
                 .size({ width: percents(100) })

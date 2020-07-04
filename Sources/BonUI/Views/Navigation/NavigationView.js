@@ -68,6 +68,7 @@ export class NavigationView extends View {
             ], { alignment: HorizontalAlignment.leading })
                 .padding(20)
                 .size({ width: percents(100) })
+                .minSize({ height: percents(100) })
         )
     }
 }

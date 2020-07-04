@@ -273,6 +273,11 @@ export class DOMRenderer extends Renderer {
                 outline: none;
             }
 
+            bon-ui-application input, 
+            bon-ui-application textarea {
+                width: 100%;
+            }
+
             bon-ui-application input::placeholder, 
             bon-ui-application textarea::placeholder,
             bon-ui-application button, 
@@ -292,6 +297,9 @@ export class DOMRenderer extends Renderer {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                background: inherit;
+                color: inherit;
+                overflow-y: auto;
             }
 
             bon-ui-spacer {
@@ -316,7 +324,13 @@ export class DOMRenderer extends Renderer {
 
         class BonUIApplicationElement extends HTMLElement {}
 
-        class BonUISceneElement extends HTMLElement {}
+        class BonUISceneElement extends HTMLElement {
+            connectedCallback () {
+                if (this.childNodes[0].clientHeight > window.screen.height) {
+                    this.style.alignItems = "flex-start"
+                }
+            }
+        }
 
         class BonUIColumnElement extends HTMLElement {
             checkIfHasSpacer () {
@@ -336,34 +350,38 @@ export class DOMRenderer extends Renderer {
                 return hasSpacersWithoutHeightSet
             }
 
-            connectedCallback () {
-                if (!this.style.height) {
+            updateSizes () {                
+                if (!this.style.minHeight) {
                     const hasSpacer = this.checkIfHasSpacer()
-                    if (hasSpacer && !this.style.height) {
-                        this.style.height = "100%"
+                    if (hasSpacer && !this.style.minHeight) {
+                        this.style.minHeight = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.width) {
+                if (!this.style.minWidth) {
                     const childRowSpacers = this.querySelectorAll("bon-ui-row > bon-ui-spacer, bon-ui-row > textarea, bon-ui-row > input")
                     if (childRowSpacers.length > 0) {
-                        if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.width) {
-                            this.style.width = "100%"
+                        if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.minWidth) {
+                            this.style.minWidth = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.width) {
+                if (!this.style.minWidth) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
-                        if (child.style.width === "100%") {
-                            this.style.width = "100%"
+                        if (child.style.minWidth === "100%") {
+                            this.style.minWidth = "100%"
                             break
                         }
                     }
                 }
+            }
+
+            connectedCallback () {
+                this.updateSizes()
             }
         }
 
@@ -385,34 +403,38 @@ export class DOMRenderer extends Renderer {
                 return hasSpacersWithoutWidthSet
             }
 
-            connectedCallback () {
-                if (!this.style.width) {
+            updateSizes () {
+                if (!this.style.minWidth) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
-                        this.style.width = "100%"
+                        this.style.minWidth = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.height) {
+                if (!this.style.minHeight) {
                     const childColumnSpacers = this.querySelectorAll("bon-ui-column > bon-ui-spacer, bon-ui-column > textarea, bon-ui-column > input")
                     if (childColumnSpacers.length > 0) {
                         if (childColumnSpacers[0].parentNode.checkIfHasSpacer() === true) {
-                            this.style.height = "100%"
+                            this.style.minHeight = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.height) {
+                if (!this.style.minHeight) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
-                        if (child.style.height === "100%") {
-                            this.style.height = "100%"
+                        if (child.style.minHeight === "100%") {
+                            this.style.minHeight = "100%"
                             break
                         }
                     }
                 }
+            }
+
+            connectedCallback () {
+                this.updateSizes()
             }
         }
 
