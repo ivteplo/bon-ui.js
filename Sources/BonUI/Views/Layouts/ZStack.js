@@ -3,7 +3,9 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { PositionModifier } from "../../Modifiers/PositionModifier.js"
 import { convertToViewBody } from "../../Values/Helpers.js"
+import { Position } from "../../Values/Enums/Position.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
@@ -26,8 +28,8 @@ export class ZStack extends View {
                 items[i].styles.position = items[i].styles.position || "relative"
                 items[i].styles.zIndex = i
             } else if (items[i] instanceof View) {
-                // items[i]._vNodeModifiers.unshift(new PositionModifier(Position.relative))
-                // items[i].zIndex(parseInt(i))
+                items[i].prependVNodeModifier(new PositionModifier(Position.relative))
+                items[i].zIndex(parseInt(i))
             }
         }
 

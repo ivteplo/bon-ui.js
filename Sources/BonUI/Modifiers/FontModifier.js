@@ -28,10 +28,20 @@ export class FontModifier extends ViewVNodeModifier {
         }
 
         const optionalStyles = {}
-        const textStyleString = TextStyle.getIdentifier(this.font.textStyle)
 
-        if (textStyleString in Color) {
-            optionalStyles.color = Color[textStyleString]
+        switch (this.font.textStyle) {
+            case TextStyle.text:
+            case TextStyle.monospace:
+                break
+            case TextStyle.largeTitle:
+            case TextStyle.title:
+            case TextStyle.subheading:
+                optionalStyles.color = Color.primary
+                break
+            case TextStyle.sectionTitle:
+            case TextStyle.caption:
+                optionalStyles.color = Color.secondary
+                break
         }
 
         content.styles = Object.assign(optionalStyles, content.styles, styles)

@@ -16,7 +16,7 @@ export class Divider extends View {
     body () {
         const rectangle = (
             new Rectangle()
-                .foregroundColor(Color.divider)
+                .foregroundColor(Color.secondary)
         )
 
         rectangle.prependVNodeModifier(new CSSModifier({

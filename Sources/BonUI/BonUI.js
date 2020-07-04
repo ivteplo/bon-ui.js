@@ -4,7 +4,20 @@
 //
 
 // Views
-export * from "./Views/View.js"
+import { BackgroundModifier } from "./Modifiers/BackgroundModifier.js"
+import { Color } from "./Values/Color.js"
+import { View } from "./Views/View.js"
+
+/**
+ * Method to set background of the view
+ * @param {View|Color} color 
+ */
+View.prototype.background = function (color) {
+    return this.modifier(new BackgroundModifier(color))
+}
+
+export { View }
+
 export * from "./Views/ViewBuilder.js"
 export * from "./Views/ViewController.js"
 // -> Generic

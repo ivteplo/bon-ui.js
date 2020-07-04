@@ -75,13 +75,8 @@ export class Color {
     static green = new Color({ red: 52, green: 199, blue: 89 })
     
     static background = Color.white
-    static largeTitle = Color.black
-    static title = Color.black
-    static subheading = Color.darkGray
-    static sectionTitle = Color.darkGray
-    static caption = this.sectionTitle
-    static text = Color.gray
-    static divider = new Color({ red: 0xBB, green: 0xBB, blue: 0xBB })
+    static primary = Color.black
+    static secondary = Color.gray
 
     static themes = {
         dark: {
@@ -99,13 +94,8 @@ export class Color {
             green: new Color({ red: 48, green: 209, blue: 88 }),
             
             background: Color.black,
-            largeTitle: Color.white,
-            title: Color.white,
-            subheading: Color.lightGray,
-            sectionTitle: Color.lightGray,
-            caption: Color.lightGray,
-            text: Color.gray,
-            divider: new Color({ red: 0x5E, green: 0x5E, blue: 0x5E })
+            primary: Color.white,
+            secondary: Color.gray
         },
         light: {
 

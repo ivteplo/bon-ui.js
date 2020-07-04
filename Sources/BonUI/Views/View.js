@@ -3,7 +3,9 @@
 // Licensed under the Apache License, version 2.0
 //
 
+import { EventHandlerModifier } from "../Modifiers/EventHandlerModifier.js"
 import { ViewVNodeModifier } from "../Modifiers/ViewVNodeModifier.js"
+import { PositionModifier } from "../Modifiers/PositionModifier.js"
 import { PaddingModifier } from "../Modifiers/PaddingModifier.js"
 import { SizeModifier } from "../Modifiers/SizeModifier.js"
 import { FontModifier } from "../Modifiers/FontModifier.js"
@@ -13,14 +15,13 @@ import { CSSModifier } from "../Modifiers/CSSModifier.js"
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { pixels, Length } from "../Values/Length.js"
 import { ViewController } from "./ViewController.js"
+import { ClickInfo } from "../Values/ClickInfo.js"
 import { Protocol } from "../Values/Protocol.js"
 import { getClass } from "../Values/Helpers.js"
 import { State } from "../Values/State.js"
 import { Color } from "../Values/Color.js"
 import { Font } from "../Values/Font.js"
 import { Worker } from "../Worker.js"
-import { EventHandlerModifier } from "../Modifiers/EventHandlerModifier.js"
-import { ClickInfo } from "../Values/ClickInfo.js"
 
 const ViewProtocol = Protocol.createClass({
     requiredMethods: [ "body" ]
@@ -338,18 +339,20 @@ export class View extends ViewProtocol {
 
         return this.modifier(new CSSModifier(styles))
     }
-}
 
-//
-// Some modifiers
-//
-// P.S: have to put them here to avoid circular dependencies
-//
-// The best way would be to add methods to View.prototype
-// in files of view modifiers (e.g if we have BackgroundModifier,
-// it'd be better to add method View#background in the file of modifier.
-// But JavaScript doesn't have `extension`s like in Swift.)
-//
-// (It can be a good idea to test if Kotlin can add methods
-// to class which is in another file)
-//
+    /**
+     * Method to set background 
+     * @param {View|Color} background 
+     */
+    background (background) {
+        return this.modifier(new BackgroundModifier(background))
+    }
+
+    /**
+     * Method to set position 
+     * @param {Symbol} position item of `Position` enum
+     */
+    position (position) {
+        return this.modifier(new PositionModifier(position))
+    }
+}

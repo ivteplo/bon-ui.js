@@ -4,8 +4,9 @@
 // 
 
 import { convertToViewBody, flattenArray, verticalAlignmentToAlignItems } from "../../Values/Helpers.js"
-import { InvalidValueException } from "../../Values/Exceptions.js"
 import { VerticalAlignment } from "../../Values/Enums/Alignment.js"
+import { InvalidValueException } from "../../Values/Exceptions.js"
+import { SizeModifier } from "../../Modifiers/SizeModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Spacer } from "../Generic/Spacer.js"
 import { Column } from "./Column.js"
@@ -32,12 +33,17 @@ export class Row extends Column {
         
         if (this.spacing.value !== 0) {
             items = flattenArray(
-                items.map(item => [
-                    item, 
-                    new Spacer()
-                        .size({ width: this.spacing })
-                ])
-            ).slice(0, -1)
+                items.map((item, index) => {                    
+                    if (item instanceof Spacer || (index < items.length - 1 && items[index + 1] instanceof Spacer) || index === items.length - 1) {
+                        return item
+                    }
+
+                    return [
+                        item,
+                        new Spacer().size({ width: this.spacing })
+                    ]
+                })
+            )
         }
 
         const styles = {

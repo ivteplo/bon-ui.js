@@ -19,7 +19,7 @@ export class PaddingModifier extends CSSModifier {
         }
 
         if (!Edge.contains(edge)) {
-            throw new InvalidValueException(`Expected Edge instance as the edge parameter`)
+            throw new InvalidValueException(`Expected Edge enum item as the edge parameter`)
         }
 
         const _padding = padding instanceof Length ? padding : pixels(padding)

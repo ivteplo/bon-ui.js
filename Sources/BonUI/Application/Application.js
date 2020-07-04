@@ -3,13 +3,13 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { createColorSchemeState, Color } from "../Values/Color.js"
 import { SceneNotFoundException } from "../Values/Exceptions.js"
 import { EmptyView } from "../Views/Generic/EmptyView.js"
 import { Renderer } from "../../Renderers/Renderer.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { SceneBuilder } from "./SceneBuilder.js"
 import { Scene } from "./Scene.js"
-import { createColorSchemeState, Color } from "../Values/Color.js"
 
 export class Application {
     constructor () {
@@ -44,7 +44,7 @@ export class Application {
             styles: {
                 height: "100%",
                 backgroundColor: Color.background,
-                color: Color.text,
+                color: Color.primary,
                 transition: "color 0.25s, background 0.25s"
             },
             body: [

@@ -6,7 +6,7 @@
 import { HorizontalAlignment } from "../../Values/Enums/Alignment.js"
 import { FontModifier } from "../../Modifiers/FontModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
-import { percents } from "../../Values/Length.js"
+import { Spacer } from "../Generic/Spacer.js"
 import { Column } from "../Layouts/Column.js"
 import { Font } from "../../Values/Font.js"
 import { Row } from "../Layouts/Row.js"
@@ -57,11 +57,13 @@ export class NavigationView extends View {
                 new Row([
                     /** @todo */
                 ])
-                .size({ width: percents(100), height: 45 }),
+                .size({ height: 45 }),
 
                 navigationBarTitle,
                 
-                this.item
+                this.item,
+
+                new Spacer()
             ], { alignment: HorizontalAlignment.leading })
                 .padding(20)
         )
