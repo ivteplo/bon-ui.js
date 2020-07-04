@@ -33,6 +33,22 @@ export class Column extends View {
         this.items = items
         this.alignment = alignment
         this.spacing = spacing instanceof Length ? spacing : pixels(spacing)
+        
+        var containsSpacer = false
+        this.containsSpacer = containsSpacer
+
+        Object.defineProperty(this, "containsSpacer", {
+            get () {
+                return containsSpacer
+            },
+            set: (value) => {
+                containsSpacer = value
+
+                if (this.parent && "containsSpacer" in this.parent) {
+                    this.parent.containsSpacer = value
+                }
+            }
+        })
     }
 
     body () {

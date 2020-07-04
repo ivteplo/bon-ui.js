@@ -121,7 +121,7 @@ export class VNode {
                     todo: "remove",
                     key
                 })
-            } else if (newNode.attributes[key] !== newNode.attributes[key]) {
+            } else if (newNode.attributes[key] !== oldNode.attributes[key]) {
                 diff.attributes.push({
                     todo: "update",
                     key,
@@ -146,7 +146,7 @@ export class VNode {
                     todo: "remove",
                     key
                 })
-            } else if (newNode.styles[key] !== newNode.styles[key]) {
+            } else if (newNode.styles[key] !== oldNode.styles[key]) {
                 diff.styles.push({
                     todo: "update",
                     key,

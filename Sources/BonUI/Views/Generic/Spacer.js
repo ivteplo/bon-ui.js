@@ -3,27 +3,21 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { SizeModifier } from "../../Modifiers/SizeModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
 export class Spacer extends View {
     body () {
-        /** @todo improve */
-        var hasSizeModifier = false
-
-        // for (let modifier of this._vNodeModifiers) {
-        //     if (modifier instanceof SizeModifier && (modifier.cssStyles.width || modifier.cssStyles.height)) {
-        //         hasSizeModifier = true
-        //         break
-        //     }
-        // }
-
         const styles = {
             flexShrink: "0"
         }
 
-        if (!hasSizeModifier) {
-            styles.flexGrow = "1"
+        if (!this.hasVNodeModifier(SizeModifier)) {
+            // then the spacer has to try to fill the space
+            if (this.parent && "containsSpacer" in this.parent) {
+                this.parent.containsSpacer = true
+            }
         }
 
         return new VNode("div", {

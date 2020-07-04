@@ -11,7 +11,7 @@ const RendererProtocol = Protocol.createClass({
 })
 
 export class Renderer extends RendererProtocol {
-    static prepare () {}
+    static prepare (application) {}
 
     /**
      * 

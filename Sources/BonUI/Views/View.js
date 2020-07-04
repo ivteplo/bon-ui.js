@@ -52,6 +52,11 @@ export class View extends ViewProtocol {
         this.id = null
 
         /**
+         * @type {View}
+         */
+        this.parent = null
+
+        /**
          * @type {ViewController}
          */
         this.controller = new ViewController(this)
@@ -224,6 +229,21 @@ export class View extends ViewProtocol {
 
         this._vNodeModifiers.unshift(modifier)
         return this
+    }
+
+    /**
+     * Method to check if view has virtual DOM node modifier of specified type
+     * @param {function} Modifier
+     * @returns {boolean} 
+     */
+    hasVNodeModifier (Modifier) {
+        for (let modifier of this._vNodeModifiers) {
+            if (modifier instanceof Modifier) {
+                return true
+            }
+        }
+
+        return false
     }
 
     /**
