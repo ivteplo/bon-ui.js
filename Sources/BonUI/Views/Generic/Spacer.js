@@ -9,11 +9,14 @@ import { View } from "../View.js"
 
 export class Spacer extends View {
     body () {
-        return new VNode("div", {
-            styles: {
-                flexShrink: "0",
-                flexGrow: this.hasVNodeModifier(SizeModifier) ? "0" : "1"
-            }
-        })
+        const styles = {
+            flexShrink: "0"
+        }
+
+        if (!this.hasVNodeModifier(SizeModifier)) {
+            styles.flexGrow = "1"
+        }
+
+        return new VNode("div", { styles })
     }
 }

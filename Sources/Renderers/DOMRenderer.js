@@ -276,6 +276,20 @@ export class DOMRenderer extends Renderer {
                 font-size: 1rem;
                 font-family: inherit;
             }
+
+            .bon-ui-row,
+            .bon-ui-column {
+                display: flex;
+                justify-content: center;
+            }
+
+            .bon-ui-row {
+                flex-direction: row;
+            }
+
+            .bon-ui-column {
+                flex-direction: column;
+            }
         `)
         document.head.prepend(styles)
     }

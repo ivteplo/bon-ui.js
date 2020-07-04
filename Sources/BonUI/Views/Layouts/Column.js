@@ -53,16 +53,14 @@ export class Column extends View {
             )
         }
 
-        const styles = {
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: horizontalAlignmentToAlignItems(this.alignment)
-        }
-
         return new VNode("div", {
             body: items,
-            styles
+            styles: {
+                alignItems: horizontalAlignmentToAlignItems(this.alignment)
+            },
+            attributes: {
+                class: "bon-ui-column"
+            }
         })
     }
 }
