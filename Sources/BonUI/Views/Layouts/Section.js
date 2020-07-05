@@ -35,7 +35,7 @@ export class Section extends View {
         this.items = body
     }
 
-    body () {
+    get body () {
         return (
             new Column([
                 this.title,

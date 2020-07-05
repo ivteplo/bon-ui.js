@@ -13,7 +13,7 @@ export class Divider extends View {
         super()
     }
 
-    body () {
+    get body () {
         const rectangle = (
             new Rectangle()
                 .foregroundColor(Color.secondary)

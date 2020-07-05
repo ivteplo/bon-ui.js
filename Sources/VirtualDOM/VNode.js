@@ -9,14 +9,16 @@
 export class VNode {
     /**
      * 
-     * @param {string} tag tag of the node
-     * @param {object} options
-     * @param {object} [options.attributes]
-     * @param {object} [options.styles]
-     * @param {object} [options.handlers]
-     * @param {string} [options.xmlNamespace]
+     * @param {string}      tag tag of the node
+     * @param {object}      options
+     * @param {object}      [options.attributes]
+     * @param {object}      [options.styles]
+     * @param {object}      [options.handlers]
+     * @param {VNode[]}     [options.body]
+     * @param {string}      [options.xmlNamespace]
+     * @param {(View[])?}   [options.views]
      */
-    constructor (tag, { attributes = {}, styles = {}, handlers = {}, body = [], xmlNamespace = "" } = {}) {
+    constructor (tag, { attributes = {}, styles = {}, handlers = {}, body = [], xmlNamespace = "", views = [] } = {}) {
         this.tag = String(tag)
         this.attributes = attributes
         this.styles = styles
@@ -26,6 +28,8 @@ export class VNode {
 
         this.built = null
         this.renderer = null
+
+        this.views = views
 
         this.vNodeHandlers = {
             didAppear: [],

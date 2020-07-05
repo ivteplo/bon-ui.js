@@ -92,9 +92,11 @@ export class View extends ViewProtocol {
      * Method to update the view
      */
     update () {
-        Worker.addUnitOfWork(() => {
-            this.controller.updateView()
-        })
+        if (this.controller) {
+            Worker.addUnitOfWork(() => {
+                this.controller.updateView()
+            })
+        }
     }
 
     /**
@@ -172,9 +174,20 @@ export class View extends ViewProtocol {
         return this
     }
 
-    toString () {
-        const vNode = this.controller.buildView({ save: false })
-        return vNode.toString()
+    /**
+     * Method to destruct the view
+     */
+    destruct () {
+        if (this.controller) {
+            this.controller.viewWillDestruct()
+        }
+        
+        this._navigationBarTitle = null
+        this._vNodeModifiers = []
+        this.controller = null
+        this.id = null
+        this.parent = null
+        this.state = null
     }
 
     // Navigation methods

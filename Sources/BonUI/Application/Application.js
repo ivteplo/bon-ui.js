@@ -24,7 +24,7 @@ export class Application {
     /**
      * Method that returns array of application scenes
      */
-    body () {
+    get body () {
         return [
             new Scene("main", new EmptyView())
         ]
@@ -32,28 +32,22 @@ export class Application {
 
     /**
      * Method to load scene
-     * @param {Scene} scene 
+     * @param {Scene|string} scene scene or it's name
      */
     loadScene (scene) {
-        const { vNode: oldNode } = this
+        var _scene = typeof scene === "string" ? this.getScene(scene) : scene
 
-        this.vNode = new VNode("bon-ui-application", {
-            styles: {
-                backgroundColor: Color.background,
-                color: Color.primary,
-            },
-            body: [
-                SceneBuilder.build(scene)
-            ]
-        })
-        
-        if (oldNode instanceof VNode && oldNode.built) {
-            this.renderer.update(this.vNode, oldNode, oldNode.built)
-        } else {
-            this.renderer.mount(this.vNode)
+        const { currentScene: oldScene } = this
+
+        if (oldScene) {
+            this.renderer.unmount(oldScene.vNode)
+            oldScene.view.destruct()
+            oldScene.vNode = null
         }
 
-        this.currentScene = scene
+        SceneBuilder.build(_scene)
+        this.renderer.mount(_scene.vNode, "bon-ui-application")
+        this.currentScene = _scene
     }
 
     /**
@@ -62,16 +56,19 @@ export class Application {
      * @returns {Scene}
      */
     getScene (sceneName) {
-        const scenes = this.body()
-
         var result
 
-        for (let scene of scenes) {
-            if (scene.name === sceneName) {
-                result = scene
-                break
+        ;(() => {
+            const scenes = this.body
+    
+            for (let i = scenes.length - 1; i >= 0; --i) {
+                let scene = scenes[i]
+                if (scene.name === sceneName) {
+                    result = scene
+                    return
+                }
             }
-        }
+        })()
 
         if (!result) {
             throw new SceneNotFoundException(`Scene "${sceneName}" is not found`)
@@ -89,11 +86,25 @@ export class Application {
         
         this.renderer.prepare()
 
+        const getNode = () => (new VNode("bon-ui-application", {
+            styles: {
+                backgroundColor: Color.background,
+                color: Color.primary
+            }
+        }))
+
         const colorState = createColorSchemeState()
         colorState.subscribe(() => {
-            const scene = this.getScene(mainSceneName)
-            this.loadScene(scene)
+            const newNode = getNode()
+            this.renderer.update(newNode, node, node.built)
+            // using controller's updateView method
+            // because it does not schedule update
+            this.currentScene.view.controller.updateView()
         })
+
+        // declaring node here because colorState loads current color scheme
+        const node = getNode()
+        this.renderer.mount(node)
 
         this.loadScene(mainScene)
     }

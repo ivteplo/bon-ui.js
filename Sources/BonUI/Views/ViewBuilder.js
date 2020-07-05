@@ -25,7 +25,7 @@ export class ViewBuilder {
             throw new InvalidValueException(`Expected View instance, got ${getClass(view)}`)
         }
 
-        var result = view.body()
+        var result = view.body
 
         if (result instanceof View) {
             result.parent = view
@@ -34,6 +34,8 @@ export class ViewBuilder {
         if (!(result instanceof VNode)) {
             result = this.build(result, { save })
         }
+
+        result.views.unshift(view)
 
         for (let i in result.body) {
             if (result.body[i] instanceof View) {

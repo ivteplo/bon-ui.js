@@ -6,7 +6,7 @@
 import { TextField } from "./TextField.js"
 
 export class SecureField extends TextField {
-    body () {
+    get body () {
         const result = super.body()
         result.attributes.type = "password"
         return result

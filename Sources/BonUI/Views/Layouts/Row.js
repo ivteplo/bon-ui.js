@@ -28,7 +28,7 @@ export class Row extends Column {
         this.alignment = alignment
     }
 
-    body () {
+    get body () {
         var items = convertToViewBody(this.items)
         
         if (this.spacing.value !== 0) {

@@ -7,7 +7,7 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
 export class EmptyView extends View {
-    body () {
+    get body () {
         return new VNode("div")
     }
 }

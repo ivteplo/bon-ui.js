@@ -8,7 +8,7 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
 export class Spacer extends View {
-    body () {
+    get body () {
         const styles = {}
 
         if (!this.hasVNodeModifier(SizeModifier)) {

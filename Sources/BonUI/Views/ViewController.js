@@ -37,16 +37,29 @@ export class ViewController {
         if (this.view.controller instanceof ViewController) {
             this.viewHandlers = this.view.controller.viewHandlers
             this.vNode = this.view.controller.vNode
+            this.view.controller.view = null
+            this.view.controller = null
         }
 
         this.view.controller = this
     }
 
     /**
+     * Method that is called by View before it will start to destruct
+     */
+    viewWillDestruct () {
+        this.view.controller = null
+        this.view = null
+        this.vNode = null
+    }
+
+    /**
      * Method to update the view
      */
     updateView () {
-        if (!this.vNode.built) {
+        // something calls this method even after the view was unmounted
+        /** @todo fix the error of unmounting */
+        if (!(this.vNode && this.vNode.built)) {
             return
         }
 
@@ -96,6 +109,8 @@ export class ViewController {
     }
 
     viewDidDisappear () {
+        this.vNode = null
+
         for (let handler of this.viewHandlers.didDisappear) {
             handler(this.view)
         }

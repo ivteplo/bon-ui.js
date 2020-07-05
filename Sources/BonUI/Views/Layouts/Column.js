@@ -35,7 +35,7 @@ export class Column extends View {
         this.spacing = spacing instanceof Length ? spacing : pixels(spacing)
     }
 
-    body () {
+    get body () {
         var items = convertToViewBody(this.items)
 
         if (this.spacing.value !== 0) {

@@ -21,5 +21,10 @@ export class Scene {
         
         this.name = String(name)
         this.view = view
+        this.vNode = null
+
+        this.view.onDidUpdate(() => {
+            this.vNode.body = this.view.controller.vNode
+        })
     }
 }

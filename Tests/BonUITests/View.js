@@ -18,7 +18,7 @@ class Content extends View {
         }
     }
 
-    body () {
+    get body () {
         return (
             new Text(this.state.current.counter.toString())
         )
@@ -26,7 +26,7 @@ class Content extends View {
 }
 
 class App extends Application {
-    body () {
+    get body () {
         return [
             new Scene("main", new Content())
         ]

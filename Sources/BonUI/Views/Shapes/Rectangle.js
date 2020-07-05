@@ -43,7 +43,7 @@ export class Rectangle extends View {
         return this
     }
 
-    body () {
+    get body () {
         const size = (
             this._strokeWidth.value !== 0
                 ? `calc(100% - ${this._strokeWidth} * 2)`

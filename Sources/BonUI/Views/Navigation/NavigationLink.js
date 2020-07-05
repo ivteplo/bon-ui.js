@@ -48,7 +48,7 @@ export class NavigationLink extends View {
         })
     }
 
-    body () {
+    get body () {
         const result = typeof this.item === "function" ? this.item() : this.item
 
         if (!(result instanceof View || result instanceof VNode)) {

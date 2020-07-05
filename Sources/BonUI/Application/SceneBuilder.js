@@ -25,6 +25,7 @@ export class SceneBuilder {
             ]
         })
 
+        scene.vNode = sceneNode
         return sceneNode
     }
 }

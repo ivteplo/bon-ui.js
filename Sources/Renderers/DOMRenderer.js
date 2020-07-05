@@ -3,7 +3,6 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { createColorSchemeState } from "../BonUI/Values/Color.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { Renderer } from "./Renderer.js"
 
@@ -149,18 +148,18 @@ export class DOMRenderer extends Renderer {
         if (oldNode.body.length < newNode.body.length) {
             for (let i = newNode.body.length - 1; i >= 0; --i) {
                 if (!(i in oldNode.body)) {
-                    this.render(newNode.body[i], { save: true })
+                    let childDom = this.render(newNode.body[i], { save: true })
                     
-                    if (!newNode.body[i].built) {
+                    if (!childDom) {
                         continue
                     }
                     
                     newNode.body[i].handleWillAppear()
 
                     if (i === newNode.body.length - 1) {
-                        dom.appendChild(newNode.body[i].built)
+                        dom.appendChild(childDom)
                     } else {
-                        dom.insertBefore(newNode.body[i].built, newNode.body[i + 1].built)
+                        dom.insertBefore(childDom, newNode.body[i + 1].built)
                     }
 
                     newNode.body[i].handleDidAppear()
@@ -231,6 +230,13 @@ export class DOMRenderer extends Renderer {
      * @param {Node}  container
      */
     static mount (vNode, container = document.body) {
+        var parent
+        if (typeof container === "string") {
+            parent = document.querySelector(container)
+        } else {
+            parent = container
+        }
+
         const dom = this.render(vNode, { save: true })
 
         if (!dom) {
@@ -241,11 +247,57 @@ export class DOMRenderer extends Renderer {
             vNode.handleWillAppear()
         }
 
-        container.appendChild(dom)
+        parent.appendChild(dom)
 
         if (vNode instanceof VNode) {
             vNode.handleDidAppear()
         }
+    }
+
+    /**
+     * Method to unmount the vNode
+     * @param {VNode} vNode 
+     */
+    static unmount (vNode) {
+        if (!vNode.built) {
+            return
+        }
+
+        const { built: dom } = vNode
+
+        vNode.handleWillDisappear()
+
+        // removing handlers
+        for (let event in vNode.handlers) {
+            if (Array.isArray(vNode.handlers[event])) {
+                for (let i in vNode.handlers[event]) {
+                    dom.removeEventListener(event, vNode.handlers[event][i])
+                }
+            } else {
+                dom.removeEventListener(event, vNode.handlers[event])
+            }
+        }
+
+        // destructuring views
+        for (let view of vNode.views) {
+            view.destruct()
+        }
+
+        if (vNode.body instanceof VNode) {
+            this.unmount(vNode.body)
+        } else {
+            for (let i = vNode.body.length - 1; i >= 0; --i) {
+                if (vNode.body[i] instanceof VNode) {
+                    this.unmount(vNode.body[i])
+                } else if (vNode.body[i]) {
+                    dom.removeChild(dom.childNodes[i])
+                }
+            }
+        }
+
+        dom.parentNode.removeChild(dom)
+
+        vNode.handleDidDisappear()
     }
 
     static prepare () {
@@ -333,12 +385,6 @@ export class DOMRenderer extends Renderer {
         }
 
         class BonUIColumnElement extends HTMLElement {
-            constructor () {
-                super()
-                this._haveSetMinHeight = false
-                this._haveSetMinWidth = false
-            }
-
             checkIfHasSpacer () {
                 const spacers = this.querySelectorAll(":scope > bon-ui-spacer, :scope > textarea, :scope > input")
                 if (spacers.length === 0) {
@@ -357,35 +403,50 @@ export class DOMRenderer extends Renderer {
             }
 
             updateSizes () {
-                if (!this.style.minHeight || this._haveSetMinHeight) {
+                var haveSetMinHeight = this.getAttribute("data-bon-ui-smh")
+                var haveSetMinWidth = this.getAttribute("data-bon-ui-smw")
+
+                if (!this.style.minHeight || haveSetMinHeight) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
-                        this._haveSetMinHeight = true
+                        haveSetMinHeight = true
                         this.style.minHeight = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minWidth || this._haveSetMinWidth) {
+                if (!this.style.minWidth || haveSetMinWidth) {
                     const childRowSpacers = this.querySelectorAll("bon-ui-row > bon-ui-spacer, bon-ui-row > textarea, bon-ui-row > input")
                     if (childRowSpacers.length > 0) {
                         if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.minWidth) {
-                            this._haveSetMinWidth = true
+                            haveSetMinWidth = true
                             this.style.minWidth = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minWidth || this._haveSetMinWidth) {
+                if (!this.style.minWidth || haveSetMinWidth) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
                         if (child.style.minWidth === "100%") {
-                            this._haveSetMinWidth = true
+                            haveSetMinWidth = true
                             this.style.minWidth = "100%"
                             break
                         }
                     }
+                }
+
+                if (!haveSetMinHeight) {
+                    this.removeAttribute("data-bon-ui-smh")
+                } else {
+                    this.setAttribute("data-bon-ui-smh", true)
+                }
+
+                if (!haveSetMinWidth) {
+                    this.removeAttribute("data-bon-ui-smw")
+                } else {
+                    this.setAttribute("data-bon-ui-smw", true)
                 }
             }
 
@@ -430,35 +491,50 @@ export class DOMRenderer extends Renderer {
             }
 
             updateSizes () {
-                if (!this.style.minWidth || this._haveSetMinWidth) {
+                var haveSetMinHeight = this.getAttribute("data-bon-ui-smh")
+                var haveSetMinWidth = this.getAttribute("data-bon-ui-smw")
+
+                if (!this.style.minWidth || haveSetMinWidth) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
-                        this._haveSetMinWidth = true
+                        haveSetMinWidth = true
                         this.style.minWidth = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minHeight || this._haveSetMinHeight) {
+                if (!this.style.minHeight || haveSetMinHeight) {
                     const childColumnSpacers = this.querySelectorAll("bon-ui-column > bon-ui-spacer, bon-ui-column > textarea, bon-ui-column > input")
                     if (childColumnSpacers.length > 0) {
                         if (childColumnSpacers[0].parentNode.checkIfHasSpacer() === true) {
-                            this._haveSetMinHeight = true
+                            haveSetMinHeight = true
                             this.style.minHeight = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minHeight || this._haveSetMinHeight) {
+                if (!this.style.minHeight || haveSetMinHeight) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
                         if (child.style.minHeight === "100%") {
                             this.style.minHeight = "100%"
-                            this._haveSetMinHeight = true
+                            haveSetMinHeight = true
                             break
                         }
                     }
+                }
+                
+                if (!haveSetMinHeight) {
+                    this.removeAttribute("data-bon-ui-smh")
+                } else {
+                    this.setAttribute("data-bon-ui-smh", true)
+                }
+
+                if (!haveSetMinWidth) {
+                    this.removeAttribute("data-bon-ui-smw")
+                } else {
+                    this.setAttribute("data-bon-ui-smw", true)
                 }
             }
 

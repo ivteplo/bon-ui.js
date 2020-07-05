@@ -22,7 +22,7 @@ export class Button extends FocusableControl {
         this.onClick(this.action)
     }
 
-    body () {
+    get body () {
         var label = convertToViewBodyItem(this.label)
 
         var attributes = {

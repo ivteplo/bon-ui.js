@@ -19,7 +19,7 @@ export class Text extends View {
         this.text = text
     }
 
-    body () {
+    get body () {
         var component = "p"
         const styles = {}
 

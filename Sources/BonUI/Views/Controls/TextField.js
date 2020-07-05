@@ -62,7 +62,7 @@ export class TextField extends FocusableControl {
         return this.modifier(new EventHandlerModifier("input", () => handler(this)))
     }
 
-    body () {
+    get body () {
         return new VNode(this.multiline ? "textarea" : "input", {
             attributes: {
                 type: "text",

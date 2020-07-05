@@ -43,7 +43,7 @@ export class NavigationView extends View {
         
     }
 
-    body () {
+    get body () {
         var navigationBarTitle = null
 
         if (this.item instanceof View && this.item._navigationBarTitle instanceof View) {

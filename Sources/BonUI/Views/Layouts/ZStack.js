@@ -20,7 +20,7 @@ export class ZStack extends View {
         this.items = items
     }
 
-    body () {
+    get body () {
         var items = convertToViewBody(this.items)
 
         for (let i in items) {

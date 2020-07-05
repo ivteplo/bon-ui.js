@@ -38,7 +38,7 @@ export class Content extends View {
         this.textField.resetValue()
     }
 
-    body () {
+    get body () {
         return (
             new NavigationView(
                 new Column([

@@ -19,7 +19,7 @@ export class Note extends View {
         })
     }
 
-    body () {
+    get body () {
         const date = new Date(this.info.date)
         const dateString = date.toLocaleDateString() + " at " + date.toLocaleTimeString().slice(0, -3)
 

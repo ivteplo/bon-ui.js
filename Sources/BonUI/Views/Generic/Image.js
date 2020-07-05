@@ -20,7 +20,7 @@ export class Image extends View {
         this.description = description
     }
 
-    body () {
+    get body () {
         return (
             new VNode("img", {
                 attributes: {
