@@ -42,6 +42,7 @@ export * from "./Views/Layouts/Section.js"
 export * from "./Views/Navigation/NavigationView.js"
 export * from "./Views/Navigation/NavigationLink.js"
 // -> Shapes
+export * from "./Views/Shapes/Circle.js"
 export * from "./Views/Shapes/Rectangle.js"
 
 // View Modifiers

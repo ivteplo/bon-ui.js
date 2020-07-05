@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { Application, Scene, DOMRenderer, EmptyView } from "../../mod.js"
+import { Application, Scene, DOMRenderer } from "../../mod.js"
 import { Content } from "./Views/Content.js"
 
 export class App extends Application {
@@ -15,7 +15,6 @@ export class App extends Application {
     get body () {
         return [
             new Scene("main", new Content()),
-            new Scene("hello", new EmptyView())
         ]
     }
 }

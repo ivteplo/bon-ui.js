@@ -3,23 +3,33 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { InvalidValueException } from "../../Values/Exceptions.js"
 import { Length, pixels, percents } from "../../Values/Length.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
+import { getClass } from "../../Values/Helpers.js"
 import { svgXmlNamespace } from "../../Config.js"
-import { Circle } from "./Circle.js"
+import { Color } from "../../Values/Color.js"
+import { View } from "../View.js"
 
-export class Rectangle extends Circle {
+export class Circle extends View {
     constructor () {
         super()
-        this._cornerRadius = pixels(0)
+        this._strokeWidth = pixels(0)
+        this._strokeColor = Color.transparent
     }
 
     /**
-     * Method to set corner radius of the rectangle
-     * @param {Length|number} radius radius of the corners
+     * Method to set the stroke of the rectangle
+     * @param {Length|number}   width width of the stroke
+     * @param {Color}           color stroke color
      */
-    cornerRadius (radius) {
-        this._cornerRadius = radius instanceof Length ? radius : pixels(radius)
+    stroke (width = pixels(2), color = Color.text) {
+        if (!(color instanceof Color)) {
+            throw new InvalidValueException(`Expected Color instance as stroke color, got ${getClass(color)}`)
+        }
+        
+        this._strokeWidth = width instanceof Length ? width : pixels(width)
+        this._strokeColor = color
         return this
     }
 
@@ -30,21 +40,16 @@ export class Rectangle extends Circle {
                 : percents(100)
         )
         
-        const coordinates = this._strokeWidth.toString()
-        
         return new VNode("svg", {
             styles: {
                 overflow: "visible"
             },
             body: [
-                new VNode("rect", {
+                new VNode("circle", {
                     attributes: {
-                        x: coordinates,
-                        y: coordinates,
-                        width: size,
-                        height: size,
-                        rx: this._cornerRadius.toString(),
-                        ry: this._cornerRadius.toString(),
+                        cx: "50%",
+                        cy: "50%",
+                        r: size,
                         fill: "currentColor",
                         "stroke-width": this._strokeWidth.toString(),
                         stroke: this._strokeColor.toString()
