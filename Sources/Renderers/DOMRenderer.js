@@ -333,6 +333,12 @@ export class DOMRenderer extends Renderer {
         }
 
         class BonUIColumnElement extends HTMLElement {
+            constructor () {
+                super()
+                this._haveSetMinHeight = false
+                this._haveSetMinWidth = false
+            }
+
             checkIfHasSpacer () {
                 const spacers = this.querySelectorAll(":scope > bon-ui-spacer, :scope > textarea, :scope > input")
                 if (spacers.length === 0) {
@@ -350,29 +356,32 @@ export class DOMRenderer extends Renderer {
                 return hasSpacersWithoutHeightSet
             }
 
-            updateSizes () {                
-                if (!this.style.minHeight) {
+            updateSizes () {
+                if (!this.style.minHeight || this._haveSetMinHeight) {
                     const hasSpacer = this.checkIfHasSpacer()
-                    if (hasSpacer && !this.style.minHeight) {
+                    if (hasSpacer) {
+                        this._haveSetMinHeight = true
                         this.style.minHeight = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minWidth) {
+                if (!this.style.minWidth || this._haveSetMinWidth) {
                     const childRowSpacers = this.querySelectorAll("bon-ui-row > bon-ui-spacer, bon-ui-row > textarea, bon-ui-row > input")
                     if (childRowSpacers.length > 0) {
                         if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.minWidth) {
+                            this._haveSetMinWidth = true
                             this.style.minWidth = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minWidth) {
+                if (!this.style.minWidth || this._haveSetMinWidth) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
                         if (child.style.minWidth === "100%") {
+                            this._haveSetMinWidth = true
                             this.style.minWidth = "100%"
                             break
                         }
@@ -380,8 +389,25 @@ export class DOMRenderer extends Renderer {
                 }
             }
 
+            updateParents () {
+                var parent = this.parentNode
+                while (parent) {
+                    if (parent instanceof BonUIColumnElement) {
+                        parent.updateSizes()
+                        parent.updateParents()
+                        break
+                    } else {
+                        parent = parent.parentNode
+                    }
+                }
+            }
+
             connectedCallback () {
                 this.updateSizes()
+            }
+
+            disconnectedCallback () {
+                this.updateParents()
             }
         }
 
@@ -404,29 +430,32 @@ export class DOMRenderer extends Renderer {
             }
 
             updateSizes () {
-                if (!this.style.minWidth) {
+                if (!this.style.minWidth || this._haveSetMinWidth) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
+                        this._haveSetMinWidth = true
                         this.style.minWidth = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minHeight) {
+                if (!this.style.minHeight || this._haveSetMinHeight) {
                     const childColumnSpacers = this.querySelectorAll("bon-ui-column > bon-ui-spacer, bon-ui-column > textarea, bon-ui-column > input")
                     if (childColumnSpacers.length > 0) {
                         if (childColumnSpacers[0].parentNode.checkIfHasSpacer() === true) {
+                            this._haveSetMinHeight = true
                             this.style.minHeight = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minHeight) {
+                if (!this.style.minHeight || this._haveSetMinHeight) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
                         if (child.style.minHeight === "100%") {
                             this.style.minHeight = "100%"
+                            this._haveSetMinHeight = true
                             break
                         }
                     }
@@ -438,7 +467,28 @@ export class DOMRenderer extends Renderer {
             }
         }
 
-        class BonUISpacerElement extends HTMLElement {}
+        class BonUISpacerElement extends HTMLElement {
+            updateParents () {
+                var parent = this.parentNode
+                while (parent) {
+                    if (parent instanceof BonUIColumnElement) {
+                        parent.updateSizes()
+                        parent.updateParents()
+                        break
+                    } else {
+                        parent = parent.parentNode
+                    }
+                }
+            }
+
+            connectedCallback () {
+                this.updateParents()
+            }
+
+            disconnectedCallback () {
+                this.updateParents()
+            }
+        }
 
         customElements.define("bon-ui-application", BonUIApplicationElement)
         customElements.define("bon-ui-scene", BonUISceneElement)

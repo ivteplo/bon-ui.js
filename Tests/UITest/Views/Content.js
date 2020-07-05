@@ -66,12 +66,8 @@ export class Content extends View {
                         new Text("Notes"),
 
                         new Column(
-                            mainState.current.notes.length > 0
-                                ? mainState.current.notes.map(note => new Note(note))
-                                // have to put this to make the spacer work
-                                // (find the way to update the dom of bon-ui-row and bon-ui-column
-                                // when added new item or removed one of the items)
-                                : new Row(new Spacer())
+                            mainState.current.notes
+                                .map(note => new Note(note))
                         , { alignment: HorizontalAlignment.leading })
                     )
                 ])
