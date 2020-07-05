@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment, pixels, NavigationLink, VerticalAlignment, Spacer } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment } from "../../../Sources/BonUI/BonUI.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
 
@@ -73,6 +73,7 @@ export class Content extends View {
                 ])
                 .navigationBarTitle(new Text("Bon UI Notes"))
             )
+            .maxSize({ width: 500 })
         )
     }
 }

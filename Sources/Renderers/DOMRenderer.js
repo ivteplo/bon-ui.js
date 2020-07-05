@@ -403,50 +403,50 @@ export class DOMRenderer extends Renderer {
             }
 
             updateSizes () {
-                var haveSetMinHeight = this.getAttribute("data-bon-ui-smh")
-                var haveSetMinWidth = this.getAttribute("data-bon-ui-smw")
+                var haveSetHeight = this.getAttribute("data-bon-ui-sh")
+                var haveSetWidth = this.getAttribute("data-bon-ui-sw")
 
-                if (!this.style.minHeight || haveSetMinHeight) {
+                if ((!this.style.maxHeight && !this.style.minHeight) || haveSetHeight) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
-                        haveSetMinHeight = true
+                        haveSetHeight = true
                         this.style.minHeight = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minWidth || haveSetMinWidth) {
+                if (!this.style.width || haveSetWidth) {
                     const childRowSpacers = this.querySelectorAll("bon-ui-row > bon-ui-spacer, bon-ui-row > textarea, bon-ui-row > input")
                     if (childRowSpacers.length > 0) {
                         if (childRowSpacers[0].parentNode.checkIfHasSpacer() === true && !this.style.minWidth) {
-                            haveSetMinWidth = true
-                            this.style.minWidth = "100%"
+                            haveSetWidth = true
+                            this.style.width = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minWidth || haveSetMinWidth) {
+                if (!this.style.width || haveSetWidth) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
-                        if (child.style.minWidth === "100%") {
-                            haveSetMinWidth = true
-                            this.style.minWidth = "100%"
+                        if (child.style.width === "100%" || child.style.minWidth === "100%") {
+                            haveSetWidth = true
+                            this.style.width = "100%"
                             break
                         }
                     }
                 }
 
-                if (!haveSetMinHeight) {
-                    this.removeAttribute("data-bon-ui-smh")
+                if (!haveSetHeight) {
+                    this.removeAttribute("data-bon-ui-sh")
                 } else {
-                    this.setAttribute("data-bon-ui-smh", true)
+                    this.setAttribute("data-bon-ui-sh", true)
                 }
 
-                if (!haveSetMinWidth) {
-                    this.removeAttribute("data-bon-ui-smw")
+                if (!haveSetWidth) {
+                    this.removeAttribute("data-bon-ui-sw")
                 } else {
-                    this.setAttribute("data-bon-ui-smw", true)
+                    this.setAttribute("data-bon-ui-sw", true)
                 }
             }
 
@@ -491,50 +491,50 @@ export class DOMRenderer extends Renderer {
             }
 
             updateSizes () {
-                var haveSetMinHeight = this.getAttribute("data-bon-ui-smh")
-                var haveSetMinWidth = this.getAttribute("data-bon-ui-smw")
+                var haveSetHeight = this.getAttribute("data-bon-ui-sh")
+                var haveSetWidth = this.getAttribute("data-bon-ui-sw")
 
-                if (!this.style.minWidth || haveSetMinWidth) {
+                if (!this.style.width || haveSetWidth) {
                     const hasSpacer = this.checkIfHasSpacer()
                     if (hasSpacer) {
-                        haveSetMinWidth = true
-                        this.style.minWidth = "100%"
+                        haveSetWidth = true
+                        this.style.width = "100%"
                         this.style.boxSizing = "border-box"
                     }
                 }
 
-                if (!this.style.minHeight || haveSetMinHeight) {
+                if (!this.style.minHeight || haveSetHeight) {
                     const childColumnSpacers = this.querySelectorAll("bon-ui-column > bon-ui-spacer, bon-ui-column > textarea, bon-ui-column > input")
                     if (childColumnSpacers.length > 0) {
                         if (childColumnSpacers[0].parentNode.checkIfHasSpacer() === true) {
-                            haveSetMinHeight = true
+                            haveSetHeight = true
                             this.style.minHeight = "100%"
                             this.style.boxSizing = "border-box"
                         }
                     }
                 }
 
-                if (!this.style.minHeight || haveSetMinHeight) {
+                if (!this.style.minHeight || haveSetHeight) {
                     const childRowsOrColumns = this.querySelectorAll("bon-ui-column")
                     for (let child of childRowsOrColumns) {
                         if (child.style.minHeight === "100%") {
                             this.style.minHeight = "100%"
-                            haveSetMinHeight = true
+                            haveSetHeight = true
                             break
                         }
                     }
                 }
                 
-                if (!haveSetMinHeight) {
-                    this.removeAttribute("data-bon-ui-smh")
+                if (!haveSetHeight) {
+                    this.removeAttribute("data-bon-ui-sh")
                 } else {
-                    this.setAttribute("data-bon-ui-smh", true)
+                    this.setAttribute("data-bon-ui-sh", true)
                 }
 
-                if (!haveSetMinWidth) {
-                    this.removeAttribute("data-bon-ui-smw")
+                if (!haveSetWidth) {
+                    this.removeAttribute("data-bon-ui-sw")
                 } else {
-                    this.setAttribute("data-bon-ui-smw", true)
+                    this.setAttribute("data-bon-ui-sw", true)
                 }
             }
 

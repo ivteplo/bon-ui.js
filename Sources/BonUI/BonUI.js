@@ -34,6 +34,7 @@ export * from "./Views/Controls/SecureField.js"
 export * from "./Views/Controls/FocusableControl.js"
 // -> Layouts
 export * from "./Views/Layouts/Row.js"
+export * from "./Views/Layouts/Media.js"
 export * from "./Views/Layouts/Column.js"
 export * from "./Views/Layouts/ZStack.js"
 export * from "./Views/Layouts/Section.js"

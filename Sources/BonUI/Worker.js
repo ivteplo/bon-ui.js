@@ -17,18 +17,22 @@ function performWork (deadline) {
     }
 }
 
-function requestDoingWork () {
-    if (!("requestIdleCallback" in window && typeof window.requestIdleCallback === "function")) {
+function requestIdleCallback (func, args) {
+    if (typeof window === "object" && "requestIdleCallback" in window) {
+        return window.requestIdleCallback(func, args)
+    } else {
         // eslint-disable-next-line no-unused-vars
-        window.requestIdleCallback = function requestIdleCallback (work, { timeout } = {}) {
+        return (work => {
             work({
                 didTimeout: true,
                 timeRemaining: () => 0
             })
-        }
+        })(func)
     }
+}
 
-    window.requestIdleCallback(performWork, { timeout: 500 })
+function requestDoingWork () {
+    requestIdleCallback(performWork, { timeout: 500 })
 }
 
 /**
