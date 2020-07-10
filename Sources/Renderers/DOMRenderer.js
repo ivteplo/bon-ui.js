@@ -311,6 +311,7 @@ export class DOMRenderer extends Renderer {
             :root {
                 font-family: sans-serif;
                 font-size: 16px;
+                user-select: none;
             }
 
             html, body {
@@ -337,6 +338,10 @@ export class DOMRenderer extends Renderer {
             bon-ui-application textarea {
                 font-size: 1rem;
                 font-family: inherit;
+            }
+
+            bon-ui-application button:not(:disabled) {
+                cursor: pointer;
             }
 
             bon-ui-application {

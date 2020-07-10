@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Color, Column, Font, HorizontalAlignment, NavigationLink } from "../../../Sources/BonUI/BonUI.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
 
@@ -52,15 +52,14 @@ export class Content extends View {
                                 .size({ width: 40 })
                                 .padding()
                                 .font(Font.text.with({ size: 25 }))
-                                .foregroundColor(Color.orange)
                         ])
                     ),
 
-                    // new NavigationLink(
-                    //     new Button(
-                    //         new Text("Go to somewhere")
-                    //     )
-                    // , { destination: new Note({ id: 0, title: "hello", date: Date.now() }) }),
+                    new NavigationLink(
+                        new Button(
+                            new Text("Go to somewhere")
+                        )
+                    , { destination: new Text("Hi!").navigationBarTitle(new Text("Subitem")) }),
 
                     new Section(
                         new Text("Notes"),

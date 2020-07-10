@@ -36,8 +36,8 @@ export class Circle extends View {
     get body () {
         const size = (
             this._strokeWidth.value !== 0
-                ? `calc(100% - ${this._strokeWidth} * 2)`
-                : percents(100)
+                ? `calc(100% / 2 - ${this._strokeWidth} * 2)`
+                : percents(50)
         )
         
         return new VNode("svg", {

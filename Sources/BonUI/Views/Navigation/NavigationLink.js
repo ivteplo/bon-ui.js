@@ -31,20 +31,20 @@ export class NavigationLink extends View {
 
         this.onClick(() => {
             var { parent } = this
-
+            
             while (parent && !(parent instanceof NavigationView)) {
-                if (parent instanceof VNode) {
-                    parent = parent.parentView || parent.parentNode
-                } else {
+                if (parent instanceof View) {
                     parent = parent.parent
+                } else {
+                    break
                 }
             }
-
+            
             if (!(parent instanceof NavigationView)) {
                 return
             }
 
-            parent.navigateToView(this.destination)
+            parent.navigateTo(this.destination)
         })
     }
 

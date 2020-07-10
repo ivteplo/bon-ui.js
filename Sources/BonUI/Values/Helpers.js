@@ -36,7 +36,7 @@ export const flattenArray = array => {
 }
 
 
-export const getClass = variable => (typeof variable === "object" ? variable.constructor.name : typeof variable)
+export const getClass = variable => (typeof variable === "object" ? (variable === null ? "null" : variable.constructor.name) : typeof variable)
 
 
 export function convertToViewBodyItem (body) {

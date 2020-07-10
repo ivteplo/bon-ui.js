@@ -18,13 +18,14 @@ export class ViewBuilder {
      * @param {View}    view                view to build
      * @param {*}       [options]
      * @param {boolean} [options.save]      save view renderer or not
+     * @param {View?}   [options.parentView]
      * @returns {VNode}
      */
-    static build (view, { save = true } = {}) {
+    static build (view, { save = true, parentView = null } = {}) {
         if (view instanceof VNode) {
             for (let i in view.body) {
                 if (view.body[i] instanceof VNode || view.body[i] instanceof View) {
-                    view.body[i] = this.build(view.body[i], { save })
+                    view.body[i] = this.build(view.body[i], { save, parentView })
                 }
             }
 
@@ -35,14 +36,11 @@ export class ViewBuilder {
             throw new InvalidValueException(`Expected View instance, got ${getClass(view)}`)
         }
 
-        var result = view.body
-
-        if (result instanceof View) {
-            result.parent = view
+        if (parentView instanceof View && !(view.parent instanceof View)) {
+            view.parent = parentView
         }
-        
-        result = this.build(result, { save })
 
+        var result = this.build(view.body, { save, parentView: view })
         result.views.unshift(view)
 
         for (let modifier of view._vNodeModifiers) {

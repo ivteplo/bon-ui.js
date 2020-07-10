@@ -19,6 +19,7 @@ export class Application {
         this.renderer = null
         this.currentScene = null
         this.vNode = null
+        this.mainColor = null
     }
 
     /**
@@ -77,6 +78,10 @@ export class Application {
         return result
     }
 
+    onColorSchemeChange () {
+
+    }
+
     /**
      * Method to launch an app
      */
@@ -85,6 +90,8 @@ export class Application {
         const mainScene = this.getScene(mainSceneName)
         
         this.renderer.prepare()
+        
+        this.onColorSchemeChange()
 
         const getNode = () => (new VNode("bon-ui-application", {
             styles: {
@@ -100,6 +107,7 @@ export class Application {
             // using controller's updateView method
             // because it does not schedule update
             this.currentScene.view.controller.updateView()
+            this.onColorSchemeChange()
         })
 
         // declaring node here because colorState loads current color scheme

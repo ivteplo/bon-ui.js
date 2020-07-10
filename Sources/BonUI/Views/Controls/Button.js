@@ -4,6 +4,7 @@
 // 
 
 import { convertToViewBodyItem } from "../../Values/Helpers.js"
+import { Application } from "../../Application/Application.js"
 import { FocusableControl } from "./FocusableControl.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Color } from "../../Values/Color.js"
@@ -36,7 +37,11 @@ export class Button extends FocusableControl {
         return new VNode("button", {
             attributes,
             styles: {
-                color: !attributes.disabled ? Color.blue : Color.gray
+                color: !attributes.disabled ? (
+                    Application.shared && Application.shared.mainColor 
+                        ? Application.shared.mainColor 
+                        : Color.blue
+                    ) : Color.secondary
             },
             body: [
                 label

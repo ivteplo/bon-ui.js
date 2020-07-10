@@ -19,10 +19,11 @@ export class Divider extends View {
                 .foregroundColor(Color.secondary)
         )
 
-        rectangle.prependVNodeModifier(new CSSModifier({
+        rectangle.modifier(new CSSModifier({
             flexBasis: "1px",
             alignSelf: "stretch",
-            flexShrink: "0"
+            flexShrink: "0",
+            overflow: "hidden"
         }))
 
         return rectangle
