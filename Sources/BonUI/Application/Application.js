@@ -103,7 +103,8 @@ export class Application {
         const colorState = createColorSchemeState()
         colorState.subscribe(() => {
             const newNode = getNode()
-            this.renderer.update(newNode, node, node.built)
+            this.renderer.update(newNode, this.vNode, this.vNode.built)
+            this.vNode = newNode
             // using controller's updateView method
             // because it does not schedule update
             this.currentScene.view.controller.updateView()
@@ -111,8 +112,8 @@ export class Application {
         })
 
         // declaring node here because colorState loads current color scheme
-        const node = getNode()
-        this.renderer.mount(node)
+        this.vNode = getNode()
+        this.renderer.mount(this.vNode)
 
         this.loadScene(mainScene)
     }
