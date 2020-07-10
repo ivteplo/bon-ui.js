@@ -93,7 +93,7 @@ export class View extends ViewProtocol {
      */
     update () {
         if (this.controller) {
-            Worker.addUnitOfWork(() => {
+            Worker.schedule(() => {
                 this.controller.updateView()
             })
         }

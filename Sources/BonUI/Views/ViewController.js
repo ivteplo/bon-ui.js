@@ -9,6 +9,9 @@ import { VNode } from "../../VirtualDOM/VNode.js"
 import { getClass } from "../Values/Helpers.js"
 import { View } from "./View.js"
 
+/**
+ * Class that is used to control view 
+ */
 export class ViewController {
     /**
      * 

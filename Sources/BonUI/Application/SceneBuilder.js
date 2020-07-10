@@ -7,6 +7,10 @@ import { ViewBuilder } from "../Views/ViewBuilder.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { Scene } from "./Scene.js"
 
+/**
+ * Class that is used to build scenes
+ * @class
+ */
 export class SceneBuilder {
     /**
      * 

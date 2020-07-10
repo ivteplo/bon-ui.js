@@ -44,7 +44,7 @@ export class Worker {
      * Method to schedule a call of the function
      * @param {Function} func function that will be called when the browser is not busy
      */
-    static addUnitOfWork (func) {
+    static schedule (func) {
         if (typeof func !== "function") {
             throw new InvalidValueException(`Expected function to call, got ${typeof func}`)
         }

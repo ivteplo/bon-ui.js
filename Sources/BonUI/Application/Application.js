@@ -14,11 +14,24 @@ import { Scene } from "./Scene.js"
 export class Application {
     constructor () {
         /**
+         * Application renderer
          * @type {Renderer?}
          */
         this.renderer = null
+        /**
+         * Current scene
+         * @type {Scene?}
+         */
         this.currentScene = null
+        /**
+         * Virtual DOM node of application wrapper
+         * @type {VNode?}
+         */
         this.vNode = null
+        /**
+         * Main color of the app
+         * @type {Color?}
+         */
         this.mainColor = null
     }
 
@@ -78,9 +91,10 @@ export class Application {
         return result
     }
 
-    onColorSchemeChange () {
-
-    }
+    /**
+     * Method that is called when user changes prefered color scheme
+     */
+    onColorSchemeChange () {}
 
     /**
      * Method to launch an app
