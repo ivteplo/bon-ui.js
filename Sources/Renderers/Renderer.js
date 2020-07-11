@@ -7,14 +7,17 @@ import { Protocol } from "../BonUI/Values/Protocol.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 
 const RendererProtocol = Protocol.createClass({
-    requiredStaticMethods: [ "render", "update", "mount" ]
+    requiredStaticMethods: [ "render", "update", "mount", "setWindowTitle" ]
 })
 
 export class Renderer extends RendererProtocol {
-    static prepare (application) {}
+    /**
+     * Method to prepare the app for launching
+     */
+    static prepare () {}
 
     /**
-     * 
+     * Method to render the virtual DOM node
      * @param {VNode} vNode 
      */
     static render (vNode) {
@@ -22,21 +25,29 @@ export class Renderer extends RendererProtocol {
     }
 
     /**
-     * 
+     * Method to update the virtual DOM node
      * @param {VNode} newNode 
      * @param {VNode} oldNode 
-     * @param {Node}  dom 
+     * @param {*}     builtNode 
      */
-    static update (newNode, oldNode, dom) {
+    static update (newNode, oldNode, builtNode) {
         RendererProtocol.update()
     }
 
     /**
-     * 
+     * Method to mount the virtual DOM node to specific container
      * @param {VNode} vNode 
-     * @param {Node}  container 
+     * @param {*}     container 
      */
     static mount (vNode, container) {
         RendererProtocol.mount()
+    }
+
+    /**
+     * Method to set the title of the app window
+     * @param {string} title title to set
+     */
+    static setWindowTitle (title) {
+        RendererProtocol.setWindowTitle()
     }
 }

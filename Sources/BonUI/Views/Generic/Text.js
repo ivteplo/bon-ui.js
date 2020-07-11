@@ -30,24 +30,7 @@ export class Text extends View {
 
         for (let modifier of this._vNodeModifiers) {
             if (modifier instanceof FontModifier) {
-                switch (style) {
-                    case TextStyle.default:
-                        component = "p"
-                    case TextStyle.largeTitle:
-                        component = "h1"
-                    case TextStyle.title:
-                        component = "h2"
-                    case TextStyle.subheading:
-                        component = "h3"
-                    case TextStyle.sectionTitle:
-                        component = "h4"
-                    case TextStyle.caption:
-                        component = "caption"
-                    case TextStyle.monospace:
-                        component = "code"
-                    default:
-                        component = TextStyle.getIdentifier(style)
-                }
+                component = textStyleToTagName(modifier.font.textStyle)
 
                 if (modifier.font.textStyle !== TextStyle.default) {
                     styles.width = "100%"
@@ -70,3 +53,28 @@ export class Text extends View {
     // }
 }
 
+/**
+ * 
+ * @ignore
+ * @param {Symbol} textStyle 
+ */
+function textStyleToTagName (textStyle) {
+    switch (textStyle) {
+        case TextStyle.default:
+            return "p"
+        case TextStyle.largeTitle:
+            return "h1"
+        case TextStyle.title:
+            return "h2"
+        case TextStyle.subheading:
+            return "h3"
+        case TextStyle.sectionTitle:
+            return "h4"
+        case TextStyle.caption:
+            return "caption"
+        case TextStyle.monospace:
+            return "code"
+        default:
+            return TextStyle.getIdentifier(textStyle)
+    }
+}

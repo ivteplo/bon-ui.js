@@ -118,43 +118,11 @@ export class Font {
         var result = ""
 
         if (FontStyle.contains(this.fontStyle)) {
-            switch (this.fontStyle) {
-                case FontStyle.normal:
-                    result += "normal"
-                case FontStyle.italic:
-                    result += "italic"
-                case FontStyle.oblique:
-                    result += "oblique"
-            }
-
-            result += " "
+            result += fontStyleToCSSValue(this.fontStyle) + " "
         }
 
         if (Weight.contains(this.weight)) {
-            switch (this.weight) {
-                case Weight.ultraThin:
-                    result += "100"
-                case Weight.thin:
-                case Weight.ultraLight:
-                case Weight.extraLight:
-                    result += "200"
-                case Weight.light:
-                    result += "300"
-                case Weight.regular:
-                    result += "400"
-                case Weight.medium:
-                    result += "500"
-                case Weight.semibold:
-                    result += "600"
-                case Weight.bold:
-                    result += "700"
-                case Weight.heavy:
-                    result += "800"
-                case Weight.black:
-                    result += "900"
-            }
-            
-            result += " "
+            result += weightToCSSValue(this.weight) + " "
         }
 
         if (this.size instanceof Length || typeof this.size === "number") {
@@ -212,4 +180,44 @@ export class Font {
         size: pixels(14),
         weight: Weight.light
     })
+}
+
+function fontStyleToCSSValue (fontStyle) {
+    switch (fontStyle) {
+        case FontStyle.normal:
+            return "normal"
+        case FontStyle.italic:
+            return "italic"
+        case FontStyle.oblique:
+            return "oblique"
+    }
+}
+
+/**
+ * @ignore
+ * @param {*} weight 
+ */
+function weightToCSSValue (weight) {
+    switch (weight) {
+        case Weight.ultraThin:
+            return "100"
+        case Weight.thin:
+        case Weight.ultraLight:
+        case Weight.extraLight:
+            return "200"
+        case Weight.light:
+            return "300"
+        case Weight.regular:
+            return "400"
+        case Weight.medium:
+            return "500"
+        case Weight.semibold:
+            return "600"
+        case Weight.bold:
+            return "700"
+        case Weight.heavy:
+            return "800"
+        case Weight.black:
+            return "900"
+    }
 }

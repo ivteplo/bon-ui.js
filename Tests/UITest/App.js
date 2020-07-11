@@ -3,13 +3,13 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { Application, Scene, DOMRenderer, Color } from "../../mod.js"
+import { Application, Scene, Color } from "../../mod.js"
 import { Content } from "./Views/Content.js"
 
 export class App extends Application {
     constructor () {
         super()
-        this.renderer = DOMRenderer
+        this.setTitle("Bon UI")
     }
 
     onColorSchemeChange () {

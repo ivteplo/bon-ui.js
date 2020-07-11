@@ -4,6 +4,7 @@
 //
 
 import { Alignment, VerticalAlignment, HorizontalAlignment } from "./Enums/Alignment.js"
+import { ViewController } from "../Views/ViewController.js"
 import { InvalidValueException } from "./Exceptions.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
@@ -145,4 +146,26 @@ function alignmentToVerticalTextAlignment (alignment) {
         case Alignment.bottomTrailing:
             return "bottom"
     }
+}
+
+
+export function cloneObject (object) {
+    if (!object) {
+        return object
+    }
+    
+    if (Array.isArray(object)) {
+        return object.concat([])
+    }
+
+    var clone = Object.assign({}, object)
+    clone.__proto__ = object.__proto__
+    return clone
+}
+
+
+export function cloneView (view) {
+    var clone = cloneObject(view)
+    clone.controller = new ViewController(clone)
+    return clone
 }

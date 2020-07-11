@@ -32,11 +32,12 @@
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,
-
+        
         "better-docs": {
             "name": "Bon UI API docs",
             "title": "Bon UI API Documentation -",
             "hideGenerator": true,
+            "outputSourceFiles": false,
             "navLinks": [
                 {
                     "label": "Github",

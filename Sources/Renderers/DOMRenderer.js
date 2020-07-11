@@ -300,6 +300,14 @@ export class DOMRenderer extends Renderer {
         vNode.handleDidDisappear()
     }
 
+    /**
+     * Method to set the title of the app window
+     * @param {string} title title to set
+     */
+    static setWindowTitle (title) {
+        document.title = String(title)
+    }
+
     static prepare () {
         const styles = document.createElement("style")
         styles.innerHTML = (`

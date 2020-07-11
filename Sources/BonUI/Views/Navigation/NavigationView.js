@@ -3,8 +3,8 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+import { convertToViewBodyItem, cloneView } from "../../Values/Helpers.js"
 import { HorizontalAlignment } from "../../Values/Enums/Alignment.js"
-import { convertToViewBodyItem } from "../../Values/Helpers.js"
 import { CSSModifier } from "../../Modifiers/CSSModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Font, Weight } from "../../Values/Font.js"
@@ -67,7 +67,11 @@ export class NavigationView extends View {
         })
 
         this._navigationState.subscribe(() => {
-            this.update()
+            if (this.controller) {
+                // using controller's `updateView` method
+                // because it doesn't schedule the update
+                this.controller.updateView()
+            }
         })
     }
 
@@ -91,7 +95,8 @@ export class NavigationView extends View {
             let { _navigationBarTitle: title } = item
 
             if (title) {
-                navigationBarTitle = convertToViewBodyItem(title)
+                title = convertToViewBodyItem(title)
+                navigationBarTitle = cloneView(title)
             }
         }
 
@@ -99,7 +104,7 @@ export class NavigationView extends View {
             let { _navigationBarTitle: title } = this._items[this._items.length - 2]
             
             if (title) {
-                prevNavigationBarTitle = convertToViewBodyItem(title)
+                prevNavigationBarTitle = cloneView(convertToViewBodyItem(title))
             }
         }
 
@@ -109,10 +114,12 @@ export class NavigationView extends View {
                     this._items.length <= 1 ? null :
                         new Button(
                             new Row([
-                                /** @todo use icon */
                                 new Text("<"),
 
-                                prevNavigationBarTitle,
+                                prevNavigationBarTitle.modifier(new CSSModifier({
+                                    font: "inherit",
+                                    color: "inherit"
+                                })),
                             ]),
                             
                             () => {
@@ -129,7 +136,8 @@ export class NavigationView extends View {
 
                 new Row([
                     navigationBarTitle
-                ]).font(Font.largeTitle),
+                        .font(Font.largeTitle)
+                ]),
                 
                 item,
 

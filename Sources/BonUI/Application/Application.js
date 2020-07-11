@@ -5,6 +5,7 @@
 
 import { createColorSchemeState, Color } from "../Values/Color.js"
 import { SceneNotFoundException } from "../Values/Exceptions.js"
+import { DOMRenderer } from "../../Renderers/DOMRenderer.js"
 import { EmptyView } from "../Views/Generic/EmptyView.js"
 import { Renderer } from "../../Renderers/Renderer.js"
 import { VNode } from "../../VirtualDOM/VNode.js"
@@ -21,7 +22,7 @@ export class Application {
          * Application renderer
          * @type {Renderer?}
          */
-        this.renderer = null
+        this.renderer = typeof window === "object" ? DOMRenderer : null
         /**
          * Current scene
          * @type {Scene?}
@@ -37,6 +38,26 @@ export class Application {
          * @type {Color?}
          */
         this.mainColor = null
+        /**
+         * Title of the application window. To set the value, use {@link Application#setTitle}
+         * @type {string}
+         */
+        this.title = "App"
+        /**
+         * True if app has loaded
+         */
+        this.loaded = false
+    }
+
+    /**
+     * Method to set the title of the application window
+     * @param {string} title title to set
+     */
+    setTitle (title) {
+        this.title = String(title)
+        if (this.loaded) {
+            this.renderer.setWindowTitle(this.title)
+        }
     }
 
     /**
@@ -96,7 +117,18 @@ export class Application {
     }
 
     /**
-     * Method that is called when user changes prefered color scheme
+     * Method that is called when user changes prefered color scheme.
+     * It's the best place to set the main color of the app.
+     * @example
+     * class App extends Application {
+     *     onColorSchemeChange () {
+     *         // most of default colors are also changing depending on color scheme
+     *         // colors that don't change: white, lightGray (lightGrey), gray (grey), darkGray (darkGrey) and black
+     *         this.mainColor = Color.blue
+     *     }
+     *     
+     *     // ...
+     * }
      */
     onColorSchemeChange () {}
 
@@ -108,6 +140,8 @@ export class Application {
         const mainScene = this.getScene(mainSceneName)
         
         this.renderer.prepare()
+
+        this.renderer.setWindowTitle(this.title)
         
         this.onColorSchemeChange()
 
