@@ -2,7 +2,22 @@
 
 ## 1.0.0-alpha
 - Started refactoring the code
-- Created `Application`, `Scene`, `ViewBuilder` and `ViewController`
+- Created `Application`, `Scene`, `SceneBuilder`, `ViewBuilder` and `ViewController`
+- Created `WebLink` view
+- Created `NavigationView` and `NavigationLink` views
+- Created `DOMRenderer`
+- Changed `VNode` class
+- Updated `Worker` static method names
+- Added `Circle` and `Rectangle` shapes
+- Added `ClickInfo` class
+- Added `Section` view
+- Added `Spacer` view
+- Added `Divider` view
+- Added `EmptyView`
+- Added `TextField` and `SecureField`
+- Added `FocusableControl`
+- Added `Edge` enum
+- Added many view modifiers
 
 ## 0.2.0-alpha
 - Renamed most of the methods of views to make the syntax better

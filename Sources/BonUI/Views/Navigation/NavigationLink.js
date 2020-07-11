@@ -3,9 +3,8 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { InvalidValueException } from "../../Values/Exceptions.js"
+import { convertToViewBodyItem } from "../../Values/Helpers.js"
 import { NavigationView } from "./NavigationView.js"
-import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
@@ -61,12 +60,6 @@ export class NavigationLink extends View {
     }
 
     get body () {
-        const result = typeof this.item === "function" ? this.item() : this.item
-
-        if (!(result instanceof View || result instanceof VNode)) {
-            throw new InvalidValueException(`Expected View or VNode as the child of NavigationLink, got ${getClass(result)}`)
-        }
-
-        return result
+        return convertToViewBodyItem(this.item)
     }
 }

@@ -41,6 +41,7 @@ export * from "./Views/Layouts/Section.js"
 // -> Navigation
 export * from "./Views/Navigation/NavigationView.js"
 export * from "./Views/Navigation/NavigationLink.js"
+export * from "./Views/Navigation/WebLink.js"
 // -> Shapes
 export * from "./Views/Shapes/Circle.js"
 export * from "./Views/Shapes/Rectangle.js"
