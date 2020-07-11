@@ -3,11 +3,15 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Application, Scene, View, Text, DOMRenderer } from "../../mod.js"
+import { Application, Scene, View, Text, DOMRenderer, ViewBuilder } from "../../mod.js"
 import browserEnv from "browser-env"
 import chai from "chai"
 
 const { expect } = chai
+
+global.customElements = {
+    define: () => {}
+}
 
 browserEnv()
 
@@ -26,11 +30,6 @@ class Content extends View {
 }
 
 class App extends Application {
-    constructor () {
-        super()
-        this.renderer = DOMRenderer
-    }
-
     get body () {
         return [
             new Scene("main", new Content())
@@ -43,7 +42,7 @@ describe("Render", () => {
         const app = new App()
         app.launch()
     
-        const sceneDom = app.currentScene.dom
+        const sceneDom = app.currentScene.vNode.built
     
         expect(sceneDom.children.length).to.equal(1)
         expect(sceneDom.children[0].innerHTML).to.equal("0")
@@ -57,7 +56,7 @@ describe("Reconcilation", () => {
 
         app.currentScene.view.state.set({ counter: 1 })
 
-        const sceneDom = app.currentScene.dom
+        const sceneDom = app.currentScene.vNode.built
 
         expect(sceneDom.children[0].innerHTML).to.equal("1")
     })
@@ -66,6 +65,13 @@ describe("Reconcilation", () => {
 describe("Server side rendering", () => {
     it("has to generate valid html code", () => {
         const view = new Content()
-        expect(view.toString()).to.equal("<p>0</p>")
+        const builtView = ViewBuilder.build(view)
+        const string = (
+            DOMRenderer.vNodeToHTMLString(builtView)
+                .replace(/\n/g, "")
+                .replace(/\t/g, "")
+        )
+
+        expect(string).to.equal("<p>0</p>")
     })
 })
