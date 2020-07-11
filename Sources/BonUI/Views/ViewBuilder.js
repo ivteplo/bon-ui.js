@@ -11,6 +11,8 @@ import { View } from "./View.js"
 /**
  * Class that contains methods to build the view
  * @class
+ * @category Views
+ * @subcategory Management
  */
 export class ViewBuilder {
     /**

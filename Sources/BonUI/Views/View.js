@@ -41,6 +41,7 @@ const ViewProtocol = Protocol.createClass({
 /**
  * Class that respresents UI item
  * @interface
+ * @category Views
  */
 export class View extends ViewProtocol {
     constructor () {

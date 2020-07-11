@@ -12,5 +12,6 @@ import { Enum } from "./Enum.js"
  * @property {Symbol} fixed
  * @property {Symbol} static
  * @property {Symbol} sticky
+ * @category Enums
  */
 export const Position = new Enum("relative", "absolute", "fixed", "static", "sticky")

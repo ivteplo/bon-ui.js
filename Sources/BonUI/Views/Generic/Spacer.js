@@ -7,6 +7,17 @@ import { SizeModifier } from "../../Modifiers/SizeModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
+/**
+ * View that tries to insert some space between items or to fill the parent.
+ * @example
+ * new Row([
+ *     new Text("Logo"),
+ *     new Spacer(),
+ *     new Text("Small text about the website or company")
+ * ])
+ * @category Views 
+ * @subcategory Generic
+ */
 export class Spacer extends View {
     get body () {
         const styles = {}

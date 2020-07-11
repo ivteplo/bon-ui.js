@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Application, Scene, View, Text } from "../../Sources/BonUI/BonUI.js"
+import { Application, Scene, View, Text, DOMRenderer } from "../../mod.js"
 import browserEnv from "browser-env"
 import chai from "chai"
 
@@ -26,6 +26,11 @@ class Content extends View {
 }
 
 class App extends Application {
+    constructor () {
+        super()
+        this.renderer = DOMRenderer
+    }
+
     get body () {
         return [
             new Scene("main", new Content())

@@ -6,6 +6,25 @@
 import { EventHandlerModifier } from "../../Modifiers/EventHandlerModifier.js"
 import { Control } from "./Control.js"
 
+/**
+ * View that represents a control that can be focused.
+ * @example
+ * class MyControl extends FocusableControl {
+ *     get body () {
+ *         const { enabled } = this.controlState.current
+ *         return (
+ *             new VNode("button", {
+ *                 styles: {
+ *                     color: enabled ? "green" : "red"
+ *                 },
+ *                 body: [ "Hello world!" ]
+ *             })
+ *         )
+ *     }
+ * }
+ * @category Views 
+ * @subcategory Controls
+ */
 export class FocusableControl extends Control {
     /**
      * Method to set handler for "focus" event

@@ -6,11 +6,22 @@
 import { convertToViewBody, flattenArray, verticalAlignmentToAlignItems } from "../../Values/Helpers.js"
 import { VerticalAlignment } from "../../Values/Enums/Alignment.js"
 import { InvalidValueException } from "../../Values/Exceptions.js"
-import { SizeModifier } from "../../Modifiers/SizeModifier.js"
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Spacer } from "../Generic/Spacer.js"
 import { Column } from "./Column.js"
 
+/**
+ * View that represents the row of items.
+ * @example
+ * new Row([
+ *     new Text("Title")
+ *         .font(Font.largeTitle),
+ *     new Text("Description")
+ *         .foregroundColor(Color.secondary)
+ * ])
+ * @category Views 
+ * @subcategory Layouts
+ */
 export class Row extends Column {
     /**
      * @param {Body}            items               items of column

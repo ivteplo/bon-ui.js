@@ -15,6 +15,7 @@ import { Enum } from "./Enums/Enum.js"
  * @property {Symbol} percents
  * @property {Symbol} viewportWidth
  * @property {Symbol} viewportHeight
+ * @category Enums
  */
 export const Measure = new Enum("pixels", "points", "fontSize", "parentFontSize", "percents", "viewportWidth", "viewportHeight")
 
@@ -41,6 +42,8 @@ function measureToString (measure) {
 
 /**
  * Class to represent the length
+ * @category Values
+ * @subcategory Length
  */
 export class Length {
     /**
@@ -71,6 +74,8 @@ Length.defaultPadding = pixels(10)
  * Method to create new Length instance that uses pixels for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function pixels (value) {
     return new Length(value, Measure.pixels)
@@ -80,6 +85,8 @@ export function pixels (value) {
  * Method to create new Length instance that uses points (pt) for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function points (value) {
     return new Length(value, Measure.points)
@@ -89,6 +96,8 @@ export function points (value) {
  * Method to create new Length instance that uses percents for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function percents (value) {
     return new Length(value, Measure.percents)
@@ -98,6 +107,8 @@ export function percents (value) {
  * Method to create new Length instance that uses viewport width (vw) for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function viewportWidth (value) {
     return new Length(value, Measure.viewportWidth)
@@ -107,6 +118,8 @@ export function viewportWidth (value) {
  * Method to create new Length instance that uses viewport height (vh) for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function viewportHeight (value) {
     return new Length(value, Measure.viewportHeight)
@@ -116,6 +129,8 @@ export function viewportHeight (value) {
  * Method to create new Length instance that uses font size (rem) for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function fontSize (value) {
     return new Length(value, Measure.fontSize)
@@ -125,6 +140,8 @@ export function fontSize (value) {
  * Method to create new Length instance that uses parent font size (em) for measuring 
  * @param {number} value 
  * @returns {Length}
+ * @category Values
+ * @subcategory Length
  */
 export function parentFontSize (value) {
     return new Length(value, Measure.parentFontSize)

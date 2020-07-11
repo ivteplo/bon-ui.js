@@ -8,6 +8,16 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { svgXmlNamespace } from "../../Config.js"
 import { Circle } from "./Circle.js"
 
+/**
+ * View that represents the rectangle shape.
+ * @example
+ * new Rectangle()
+ *     .size({ width: 200, height: 200 })
+ *     .foregroundColor(Color.yellow)
+ *     .corcerRadius(10)
+ * @category Views
+ * @subcategory Shapes
+ */
 export class Rectangle extends Circle {
     constructor () {
         super()

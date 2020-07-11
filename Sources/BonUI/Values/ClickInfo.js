@@ -3,6 +3,10 @@
 // Licensed under the Apache License, version 2.0
 // 
 
+/**
+ * 
+ * @category Event info
+ */
 export class ClickInfo {
     constructor ({ x, y, clientX, clientY, shiftKey, altKey } = {}) {
         this.x = x

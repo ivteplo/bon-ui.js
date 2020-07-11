@@ -16,6 +16,7 @@ import { Enum } from "./Enum.js"
  * @property {Symbol} bottomLeading
  * @property {Symbol} bottom
  * @property {Symbol} bottomTrailing
+ * @category Enums
  */
 export const Alignment = new Enum(
     "topLeading", "top", "topTrailing", 
@@ -28,6 +29,7 @@ export const Alignment = new Enum(
  * @property {Symbol} top
  * @property {Symbol} center
  * @property {Symbol} bottom
+ * @category Enums
  */
 export const VerticalAlignment = new Enum(
     "top",
@@ -40,6 +42,7 @@ export const VerticalAlignment = new Enum(
  * @property {Symbol} leading
  * @property {Symbol} center
  * @property {Symbol} trailing
+ * @category Enums
  */
 export const HorizontalAlignment = new Enum(
     "leading",

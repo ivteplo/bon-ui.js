@@ -16,6 +16,15 @@ import { EventHandlerModifier } from "../../Modifiers/EventHandlerModifier.js"
  * @param {TextField} view text field
  */
 
+/**
+ * View that represents a text field.
+ * @example
+ * new TextField({
+ *     placeholder: "Your name"
+ * }, textField => console.log(textField.value))
+ * @category Views 
+ * @subcategory Controls
+ */
 export class TextField extends FocusableControl {
 
     /**

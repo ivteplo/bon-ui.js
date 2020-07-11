@@ -11,6 +11,10 @@ import { VNode } from "../../VirtualDOM/VNode.js"
 import { SceneBuilder } from "./SceneBuilder.js"
 import { Scene } from "./Scene.js"
 
+/**
+ * Main class for the app.
+ * @category Application lifecycle
+ */
 export class Application {
     constructor () {
         /**

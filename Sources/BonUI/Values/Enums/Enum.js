@@ -5,6 +5,7 @@
 
 /**
  * A class that is used to represent the enum
+ * @category Enums
  */
 export class Enum {
     /**

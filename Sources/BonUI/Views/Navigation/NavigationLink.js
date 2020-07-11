@@ -9,6 +9,18 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
+/**
+ * View that makes {@link NavigationView} navigate to destination view when got clicked.
+ * @example
+ * new NavigationLink(
+ *     new Button(
+ *         new Text("Go to empty view")
+ *     ),
+ *     { destination: new EmptyView() }
+ * )
+ * @category Views
+ * @subcategory Navigation
+ */
 export class NavigationLink extends View {
     /**
      * @param {BodyOneChild} body                   link body

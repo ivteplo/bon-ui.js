@@ -19,6 +19,16 @@ import { Row } from "../Layouts/Row.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
+/**
+ * View that is used for navigation.
+ * @example
+ * new NavigationView(
+ *     new Text("This is home page")
+ *         .navigationBarTitle(new Text("Home"))
+ * )
+ * @category Views
+ * @subcategory Navigation
+ */
 export class NavigationView extends View {
     /**
      * 

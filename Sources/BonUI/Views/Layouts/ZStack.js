@@ -10,6 +10,22 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
+/**
+ * View that represents stack of the items on the Z axis.
+ * ZStack sets the `zIndex` value on each of the child items if it's not set.
+ * @example
+ * new ZStack([
+ *     new Text("Layer 1")
+ *         .padding(20),
+ *     new Text("Layer 2")
+ *         .padding(20)
+ *         .position(Position.absolute)
+ *         .offset({ x: 30, y: 35 })
+ *         .background(Color.yellow)
+ * ])
+ * @category Views
+ * @subcategory Layouts
+ */
 export class ZStack extends View {
     /**
      * 

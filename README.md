@@ -7,7 +7,7 @@
 </div>
 
 <div align="center">
-    <strong>A framework with declarative syntax for developing UI for web apps</strong>
+    <strong>Framework with declarative syntax for developing UI for web apps</strong>
 </div>
 
 ---

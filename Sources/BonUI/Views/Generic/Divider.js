@@ -8,11 +8,19 @@ import { Rectangle } from "../Shapes/Rectangle.js"
 import { Color } from "../../Values/Color.js"
 import { View } from "../View.js"
 
+/**
+ * View that represents the divider of the sections etc.
+ * @example
+ * new Column([
+ *     new Text("Title")
+ *         .font(Font.largeTitle),
+ *     new Divider(),
+ *     new Text("Description")
+ * ])
+ * @category Views 
+ * @subcategory Generic
+ */
 export class Divider extends View {
-    constructor () {
-        super()
-    }
-
     get body () {
         const rectangle = (
             new Rectangle()

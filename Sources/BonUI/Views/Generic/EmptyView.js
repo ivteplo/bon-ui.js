@@ -6,6 +6,11 @@
 import { VNode } from "../../../VirtualDOM/VNode.js"
 import { View } from "../View.js"
 
+/**
+ * Just an empty view.
+ * @category Views 
+ * @subcategory Generic
+ */
 export class EmptyView extends View {
     get body () {
         return new VNode("div")

@@ -14,8 +14,26 @@ import { Divider } from "../Generic/Divider.js"
 import { Font } from "../../Values/Font.js"
 import { Column } from "./Column.js"
 import { View } from "../View.js"
+import "../../jsdoc.js"
 
+/**
+ * View that represents content section.
+ * @example
+ * new Section(
+ *     new Text("My todos"),
+ *     new Column([
+ *         // ...
+ *     ])
+ * )
+ * @category Views 
+ * @subcategory Layouts
+ */
 export class Section extends View {
+    /**
+     * 
+     * @param {View} title title of the section
+     * @param {Body} body  content of the section
+     */
     constructor (title, body) {
         super()
         

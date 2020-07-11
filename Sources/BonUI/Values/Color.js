@@ -6,6 +6,10 @@
 import { InvalidValueException } from "./Exceptions.js"
 import { State } from "./State.js"
 
+/**
+ * Class that is used for representing colors.
+ * @category Values
+ */
 export class Color {
     constructor ({ red = 0, green = 0, blue = 0, alpha = 1 } = {}) {
         [ red, green, blue ].forEach(item => {

@@ -10,6 +10,8 @@ import { Scene } from "./Scene.js"
 /**
  * Class that is used to build scenes
  * @class
+ * @category Application lifecycle
+ * @subcategory Scenes
  */
 export class SceneBuilder {
     /**

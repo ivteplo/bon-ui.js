@@ -12,5 +12,6 @@ import { Enum } from "./Enum.js"
  * @property {Symbol} left
  * @property {Symbol} right
  * @property {Symbol} bottom
+ * @category Enums
  */
 export const Edge = new Enum("all", "top", "left", "right", "bottom")

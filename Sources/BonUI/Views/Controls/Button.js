@@ -10,6 +10,16 @@ import { VNode } from "../../../VirtualDOM/VNode.js"
 import { Color } from "../../Values/Color.js"
 import "../../jsdoc.js"
 
+/**
+ * View that represents the button.
+ * @example
+ * new Button(
+ *     new Text("Click me!"),
+ *     () => console.log("Hello world!")
+ * )
+ * @category Views 
+ * @subcategory Controls
+ */
 export class Button extends FocusableControl {
     /**
      * 

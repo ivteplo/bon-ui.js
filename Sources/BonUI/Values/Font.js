@@ -16,6 +16,8 @@ import { Enum } from "./Enums/Enum.js"
  * @property {Symbol} sectionTitle  fourth-level heading of the page
  * @property {Symbol} caption       text style for captions
  * @property {Symbol} monospace     text style for code
+ * @category Enums
+ * @subcategory Font description
  */
 export const TextStyle = new Enum("default", "largeTitle", "title", "subheading", "sectionTitle", "caption", "monospace")
 
@@ -31,6 +33,8 @@ export const TextStyle = new Enum("default", "largeTitle", "title", "subheading"
  * @property {Symbol} bold          bold text weight
  * @property {Symbol} heavy         heavy text weight
  * @property {Symbol} black         black text weight
+ * @category Enums
+ * @subcategory Font description
  */
 export const Weight = new Enum("regular", "ultraLight", "extraLight", "thin", "light", "medium", "semibold", "bold", "heavy", "black")
 
@@ -39,11 +43,14 @@ export const Weight = new Enum("regular", "ultraLight", "extraLight", "thin", "l
  * @property {Symbol} normal        default font style
  * @property {Symbol} italic        italic font style
  * @property {Symbol} oblique       oblique font style
+ * @category Enums
+ * @subcategory Font description
  */
 export const FontStyle = new Enum("normal", "italic", "oblique")
 
 /**
  * Class that describes font
+ * @category Values
  */
 export class Font {
     /**
@@ -111,11 +118,43 @@ export class Font {
         var result = ""
 
         if (FontStyle.contains(this.fontStyle)) {
-            result += fontStyleToCssValue(this.fontStyle) + " "
+            switch (this.fontStyle) {
+                case FontStyle.normal:
+                    result += "normal"
+                case FontStyle.italic:
+                    result += "italic"
+                case FontStyle.oblique:
+                    result += "oblique"
+            }
+
+            result += " "
         }
 
         if (Weight.contains(this.weight)) {
-            result += weightToCssValue(this.weight) + " "
+            switch (this.weight) {
+                case Weight.ultraThin:
+                    result += "100"
+                case Weight.thin:
+                case Weight.ultraLight:
+                case Weight.extraLight:
+                    result += "200"
+                case Weight.light:
+                    result += "300"
+                case Weight.regular:
+                    result += "400"
+                case Weight.medium:
+                    result += "500"
+                case Weight.semibold:
+                    result += "600"
+                case Weight.bold:
+                    result += "700"
+                case Weight.heavy:
+                    result += "800"
+                case Weight.black:
+                    result += "900"
+            }
+            
+            result += " "
         }
 
         if (this.size instanceof Length || typeof this.size === "number") {
@@ -173,88 +212,4 @@ export class Font {
         size: pixels(14),
         weight: Weight.light
     })
-}
-
-/**
- * Function to convert the TextStyle item to the tag name
- * @param   {Symbol} style 
- * @returns {String} HTML tag name
- */
-export function textStyleToTagName (style) {
-    if (!(TextStyle.contains(style))) {
-        return undefined
-    }
-    
-    switch (style) {
-        case TextStyle.default:
-            return "p"
-        case TextStyle.largeTitle:
-            return "h1"
-        case TextStyle.title:
-            return "h2"
-        case TextStyle.subheading:
-            return "h3"
-        case TextStyle.sectionTitle:
-            return "h4"
-        case TextStyle.caption:
-            return "caption"
-        case TextStyle.monospace:
-            return "code"
-        default:
-            return TextStyle.getIdentifier(style)
-    }
-}
-
-/**
- * Function to convert the Weight item to the css font-weight value
- * @param   {Symbol} weight 
- * @returns {String} CSS `font-weight` value
- */
-export function weightToCssValue (weight) {
-    if (!(Weight.contains(weight))) {
-        return undefined
-    }
-
-    switch (weight) {
-        case Weight.ultraThin:
-            return "100"
-        case Weight.thin:
-        case Weight.ultraLight:
-        case Weight.extraLight:
-            return "200"
-        case Weight.light:
-            return "300"
-        case Weight.regular:
-            return "400"
-        case Weight.medium:
-            return "500"
-        case Weight.semibold:
-            return "600"
-        case Weight.bold:
-            return "700"
-        case Weight.heavy:
-            return "800"
-        case Weight.black:
-            return "900"
-    }
-}
-
-/**
- * Function to convert the FontStyle item to the css font-style value
- * @param   {Symbol} fontStyle 
- * @returns {String} CSS `font-style` value
- */
-export function fontStyleToCssValue(fontStyle) {
-    if (!(FontStyle.contains(fontStyle))) {
-        return undefined
-    }
-
-    switch (fontStyle) {
-        case FontStyle.normal:
-            return "normal"
-        case FontStyle.italic:
-            return "italic"
-        case FontStyle.oblique:
-            return "oblique"
-    }
 }

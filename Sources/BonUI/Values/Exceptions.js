@@ -10,8 +10,23 @@ class CustomError extends Error {
     }
 }
 
+/**
+ * @category Exceptions
+ */
 export class NotImplementedException extends CustomError {}
+/**
+ * @category Exceptions
+ */
 export class InvalidValueException extends CustomError {}
+/**
+ * @category Exceptions
+ */
 export class ViewControllerException extends CustomError {}
+/**
+ * @category Exceptions
+ */
 export class SceneNotFoundException extends CustomError {}
+/**
+ * @category Exceptions
+ */
 export class SceneNotLoadedException extends CustomError {}

@@ -54,7 +54,14 @@ function jsonToMediaQuery (object) {
  */
 
 /**
- * View that will return specific content depending on the media request value
+ * View that returns different content depending on the media request value.
+ * @example
+ * new Media({ media: { minWidth: 400 } }, widthBiggerThan400 => (
+ *     new Text(`Your screen width is ${
+ *         widthBiggerThan400 ? "bigger" : "smaller"} than 400px`)
+ * ))
+ * @category Views 
+ * @subcategory Layouts
  */
 export class Media extends View {
     /**

@@ -11,6 +11,15 @@ import { svgXmlNamespace } from "../../Config.js"
 import { Color } from "../../Values/Color.js"
 import { View } from "../View.js"
 
+/**
+ * View that represents the circle shape.
+ * @example
+ * new Circle()
+ *     .size({ width: 200 })
+ *     .foregroundColor(Color.yellow)
+ * @category Views
+ * @subcategory Shapes
+ */
 export class Circle extends View {
     constructor () {
         super()

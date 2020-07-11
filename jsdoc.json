@@ -1,21 +1,25 @@
 {
-    "plugins": ["plugins/markdown"],
+    "recurseDepth": 20,
+    "plugins": [
+        "plugins/markdown",
+        "node_modules/better-docs/category"
+    ],
     "source": {
         "exclude": [
-            "Sources/BonUI/ViewModifiers/BackgroundModifier.js",
-            "Sources/BonUI/ViewModifiers/ZIndexModifier.js",
-            "Sources/BonUI/ViewModifiers/ViewVNodeModifier.js",
-            "Sources/BonUI/ViewModifiers/TextAlignmentModifier.js",
-            "Sources/BonUI/ViewModifiers/SizeModifier.js",
-            "Sources/BonUI/ViewModifiers/PositionModifier.js",
-            "Sources/BonUI/ViewModifiers/OffsetModifier.js",
-            "Sources/BonUI/ViewModifiers/PaddingModifier.js",
-            "Sources/BonUI/ViewModifiers/ForegroundColorModifier.js",
-            "Sources/BonUI/ViewModifiers/FontModifier.js",
-            "Sources/BonUI/ViewModifiers/EventHandlerModifier.js",
-            "Sources/BonUI/ViewModifiers/CSSModifier.js",
+            "Sources/BonUI/Modifiers/BackgroundModifier.js",
+            "Sources/BonUI/Modifiers/ZIndexModifier.js",
+            "Sources/BonUI/Modifiers/ViewVNodeModifier.js",
+            "Sources/BonUI/Modifiers/SizeModifier.js",
+            "Sources/BonUI/Modifiers/PositionModifier.js",
+            "Sources/BonUI/Modifiers/OffsetModifier.js",
+            "Sources/BonUI/Modifiers/PaddingModifier.js",
+            "Sources/BonUI/Modifiers/ForegroundColorModifier.js",
+            "Sources/BonUI/Modifiers/FontModifier.js",
+            "Sources/BonUI/Modifiers/EventHandlerModifier.js",
+            "Sources/BonUI/Modifiers/CSSModifier.js",
             
-            "Sources/BonUI/Values/Helpers.js"
+            "Sources/BonUI/Values/Helpers.js",
+            "Sources/BonUI/Values/Protocol.js"
         ],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"

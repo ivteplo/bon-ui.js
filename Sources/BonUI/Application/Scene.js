@@ -8,6 +8,11 @@ import { getClass } from "../Values/Helpers.js"
 import { View } from "../Views/View.js"
 import "../jsdoc.js"
 
+/**
+ * Class that represents the scene
+ * @category Application lifecycle
+ * @subcategory Scenes
+ */
 export class Scene {
     /**
      * 

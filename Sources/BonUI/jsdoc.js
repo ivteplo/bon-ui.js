@@ -11,7 +11,7 @@ import { View } from "./Views/View.js"
  */
 
 /**
- * @typedef {BodyItem|(BodyItem)[]} BodyItems
+ * @typedef {BodyItem|BodyItem[]} BodyItems
  */
 
 /**

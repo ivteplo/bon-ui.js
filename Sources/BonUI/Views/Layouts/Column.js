@@ -12,6 +12,18 @@ import { Spacer } from "../Generic/Spacer.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
+/**
+ * View that represents the column of items.
+ * @example
+ * new Column([
+ *     new Text("Title")
+ *         .font(Font.largeTitle),
+ *     new Text("Description")
+ *         .foregroundColor(Color.secondary)
+ * ])
+ * @category Views 
+ * @subcategory Layouts
+ */
 export class Column extends View {
     /**
      * @param {Body}            items               items of column
