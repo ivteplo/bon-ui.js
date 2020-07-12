@@ -3,17 +3,13 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import { Application, Scene, View, Text, DOMRenderer, ViewBuilder } from "../../mod.js"
-import browserEnv from "browser-env"
+import { Application, Scene, View, Text, DOMRenderer, ViewBuilder, EmptyView } from "../../mod.js"
+import { setupBrowserEnvironment } from "./Helpers/Browser.js"
 import chai from "chai"
 
 const { expect } = chai
 
-global.customElements = {
-    define: () => {}
-}
-
-browserEnv()
+setupBrowserEnvironment()
 
 class Content extends View {
     initialState () {
@@ -32,7 +28,8 @@ class Content extends View {
 class App extends Application {
     get body () {
         return [
-            new Scene("main", new Content())
+            new Scene("main", new Content()),
+            new Scene("empty", new EmptyView())
         ]
     }
 }
@@ -44,8 +41,8 @@ describe("Render", () => {
     
         const sceneDom = app.currentScene.vNode.built
     
-        expect(sceneDom.children.length).to.equal(1)
-        expect(sceneDom.children[0].innerHTML).to.equal("0")
+        expect(sceneDom.childNodes.length).to.equal(1)
+        expect(sceneDom.childNodes[0].innerHTML).to.equal("0")
     })
 })
 
@@ -59,6 +56,35 @@ describe("Reconcilation", () => {
         const sceneDom = app.currentScene.vNode.built
 
         expect(sceneDom.children[0].innerHTML).to.equal("1")
+    })
+})
+
+describe("Scene change", () => {
+    it("has to scene the scene correctly", () => {
+        const app = new App()
+        app.launch()
+
+        var sceneDom = app.currentScene.vNode.built
+
+        expect(app.currentScene.name).to.equal("main")
+        expect(sceneDom.childNodes.length).to.equal(1)
+        expect(sceneDom.childNodes[0].innerHTML).to.equal("0")
+        
+        app.loadScene("empty")
+
+        sceneDom = app.currentScene.vNode.built
+
+        expect(app.currentScene.name).to.equal("empty")
+        expect(sceneDom.childNodes.length).to.equal(1)
+        expect(sceneDom.childNodes[0].innerHTML).to.equal("")
+        
+        app.loadScene(app.getScene("main"))
+
+        sceneDom = app.currentScene.vNode.built
+
+        expect(app.currentScene.name).to.equal("main")
+        expect(sceneDom.childNodes.length).to.equal(1)
+        expect(sceneDom.childNodes[0].innerHTML).to.equal("0")
     })
 })
 

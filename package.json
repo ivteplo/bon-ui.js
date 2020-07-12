@@ -33,7 +33,6 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "better-docs": "^2.0.1",
-    "browser-env": "^3.3.0",
     "chai": "^4.2.0",
     "eslint": "^7.1.0",
     "jsdoc": "^3.6.4",
@@ -47,5 +46,11 @@
   "bugs": {
     "url": "https://github.com/teplovs/bon-ui/issues"
   },
-  "homepage": "https://github.com/teplovs/bon-ui#readme"
+  "homepage": "https://github.com/teplovs/bon-ui#readme",
+  "dependencies": {
+    "chak": "^0.0.1-security",
+    "commander": "^5.1.0",
+    "jsdom": "^16.3.0",
+    "prompts": "^2.3.2"
+  }
 }

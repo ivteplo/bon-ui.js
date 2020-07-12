@@ -308,7 +308,16 @@ export class DOMRenderer extends Renderer {
         document.title = String(title)
     }
 
+    /**
+     * True if method {@link DOMRenderer#prepare} was called earlier
+     */
+    static didPreparing = false
+
     static prepare () {
+        if (this.didPreparing) {
+            return
+        }
+
         const styles = document.createElement("style")
         styles.innerHTML = (`
             * {
@@ -584,6 +593,7 @@ export class DOMRenderer extends Renderer {
         customElements.define("bon-ui-column", BonUIColumnElement)
         customElements.define("bon-ui-row", BonUIRowElement)
         customElements.define("bon-ui-spacer", BonUISpacerElement)
+        this.didPreparing = true
     }
 }
 
