@@ -5,6 +5,9 @@
 
 import { ViewVNodeModifier } from "./ViewVNodeModifier.js"
 
+/**
+ * @ignore
+ */
 export class CSSModifier extends ViewVNodeModifier {
     constructor (styles = {}) {
         super()

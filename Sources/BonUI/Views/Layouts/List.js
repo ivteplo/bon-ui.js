@@ -11,6 +11,18 @@ import { Column } from "./Column.js"
 import { View } from "../View.js"
 import "../../jsdoc.js"
 
+/**
+ * View that represents list of items
+ * @category Views
+ * @subcategory Layouts
+ * @example
+ * new List([ 1, 2, 3 ], num => (
+ *     new Row([ 
+ *         new Text("Number" + num),
+ *         new Spacer()
+ *     ])
+ * ))
+ */
 export class List extends View {
     /**
      * 

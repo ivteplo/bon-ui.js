@@ -8,6 +8,9 @@ import { ViewVNodeModifier } from "./ViewVNodeModifier.js"
 import { Font, TextStyle } from "../Values/Font.js"
 import { Color } from "../Values/Color.js"
 
+/**
+ * @ignore
+ */
 export class FontModifier extends ViewVNodeModifier {
     /**
      * @param {Font} font font to use

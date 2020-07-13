@@ -8,6 +8,9 @@ import { Length, pixels } from "../Values/Length.js"
 import { Edge } from "../Values/Enums/Edge.js"
 import { CSSModifier } from "./CSSModifier.js"
 
+/**
+ * @ignore
+ */
 export class PaddingModifier extends CSSModifier {
     /**
      * @param {Length|number}   [padding] padding value

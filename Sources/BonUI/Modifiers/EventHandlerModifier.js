@@ -6,6 +6,9 @@
 import { InvalidValueException } from "../Values/Exceptions.js"
 import { ViewVNodeModifier } from "./ViewVNodeModifier.js"
 
+/**
+ * @ignore
+ */
 export class EventHandlerModifier extends ViewVNodeModifier {
     constructor (event, handler = () => {}) {
         super()

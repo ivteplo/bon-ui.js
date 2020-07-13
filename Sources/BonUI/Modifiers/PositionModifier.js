@@ -7,6 +7,9 @@ import { InvalidValueException } from "../Values/Exceptions.js"
 import { Position } from "../Values/Enums/Position.js"
 import { CSSModifier } from "./CSSModifier.js"
 
+/**
+ * @ignore
+ */
 export class PositionModifier extends CSSModifier {
     /**
      * @param {Length|number} position `Position` enum item

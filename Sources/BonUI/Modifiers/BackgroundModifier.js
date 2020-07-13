@@ -16,6 +16,9 @@ import { Row } from "../Views/Layouts/Row.js"
 import { Color } from "../Values/Color.js"
 import { View } from "../Views/View.js"
 
+/**
+ * @ignore
+ */
 export class BackgroundModifier extends ViewModifier {
     /**
      * @param {View|Color} background background view or color

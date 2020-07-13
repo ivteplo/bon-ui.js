@@ -6,6 +6,11 @@
 import { VNode } from "../../VirtualDOM/VNode.js"
 import { ViewModifier } from "./ViewModifier.js"
 
+/**
+ * Modifier for view's virtual DOM node
+ * @interface
+ * @category Modifiers
+ */
 export class ViewVNodeModifier extends ViewModifier {
     /**
      * 

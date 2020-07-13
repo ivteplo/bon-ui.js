@@ -5,19 +5,7 @@
         "node_modules/better-docs/category"
     ],
     "source": {
-        "exclude": [
-            "Sources/BonUI/Modifiers/BackgroundModifier.js",
-            "Sources/BonUI/Modifiers/ZIndexModifier.js",
-            "Sources/BonUI/Modifiers/ViewVNodeModifier.js",
-            "Sources/BonUI/Modifiers/SizeModifier.js",
-            "Sources/BonUI/Modifiers/PositionModifier.js",
-            "Sources/BonUI/Modifiers/OffsetModifier.js",
-            "Sources/BonUI/Modifiers/PaddingModifier.js",
-            "Sources/BonUI/Modifiers/ForegroundColorModifier.js",
-            "Sources/BonUI/Modifiers/FontModifier.js",
-            "Sources/BonUI/Modifiers/EventHandlerModifier.js",
-            "Sources/BonUI/Modifiers/CSSModifier.js",
-            
+        "exclude": [            
             "Sources/BonUI/Values/Helpers.js",
             "Sources/BonUI/Values/Protocol.js"
         ],

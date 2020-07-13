@@ -7,6 +7,9 @@ import { InvalidValueException } from "../Values/Exceptions.js"
 import { Length, pixels } from "../Values/Length.js"
 import { CSSModifier } from "./CSSModifier.js"
 
+/**
+ * @ignore
+ */
 export class SizeModifier extends CSSModifier {
     /**
      * 
