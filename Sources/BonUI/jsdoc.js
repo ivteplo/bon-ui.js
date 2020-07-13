@@ -15,14 +15,12 @@ import { View } from "./Views/View.js"
  */
 
 /**
- * @name BodyItemGetter
- * @function
+ * @callback BodyItemGetter
  * @returns {BodyItem}
  */
 
 /**
- * @name BodyItemsGetter
- * @function
+ * @callback BodyItemsGetter
  * @returns {BodyItems}
  */
 

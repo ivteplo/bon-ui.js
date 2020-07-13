@@ -8,9 +8,10 @@ import { PaddingModifier } from "../../Modifiers/PaddingModifier.js"
 import { InvalidValueException } from "../../Values/Exceptions.js"
 import { FontModifier } from "../../Modifiers/FontModifier.js"
 import { CSSModifier } from "../../Modifiers/CSSModifier.js"
+import { percents, Length } from "../../Values/Length.js"
 import { getClass } from "../../Values/Helpers.js"
-import { percents } from "../../Values/Length.js"
 import { Divider } from "../Generic/Divider.js"
+import { Spacer } from "../Generic/Spacer.js"
 import { Font } from "../../Values/Font.js"
 import { Column } from "./Column.js"
 import { View } from "../View.js"
@@ -60,8 +61,9 @@ export class Section extends View {
 
                 new Divider(),
 
+                new Spacer().size({ height: Length.defaultPadding }),
+
                 new Column(this.items || new Spacer(), { alignment: HorizontalAlignment.topLeading })
-                    .padding()
             ], { alignment: HorizontalAlignment.leading, spacing: 0 })
                 .size({ width: percents(100) })
         )

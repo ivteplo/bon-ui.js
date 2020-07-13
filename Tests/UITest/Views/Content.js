@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Column, Font, HorizontalAlignment, NavigationLink } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Column, Font, HorizontalAlignment, NavigationLink, List } from "../../../Sources/BonUI/BonUI.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
 
@@ -58,10 +58,8 @@ export class Content extends View {
                     new Section(
                         new Text("Notes"),
 
-                        new Column(
-                            mainState.current.notes
-                                .map(note => new Note(note))
-                        , { alignment: HorizontalAlignment.leading })
+                        new List(mainState.current.notes, note => 
+                            new Note(note))
                     )
                 ])
                 .navigationBarTitle(new Text("Bon UI Notes"))

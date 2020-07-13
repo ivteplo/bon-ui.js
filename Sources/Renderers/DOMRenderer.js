@@ -313,6 +313,9 @@ export class DOMRenderer extends Renderer {
      */
     static didPreparing = false
 
+    /**
+     * Method to setup the window
+     */
     static prepare () {
         if (this.didPreparing) {
             return
@@ -346,6 +349,10 @@ export class DOMRenderer extends Renderer {
             bon-ui-application input, 
             bon-ui-application textarea {
                 width: 100%;
+            }
+
+            bon-ui-application caption {
+                text-align: left;
             }
 
             bon-ui-application input::placeholder, 
