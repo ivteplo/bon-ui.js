@@ -10,6 +10,11 @@ const RendererProtocol = Protocol.createClass({
     requiredStaticMethods: [ "render", "update", "mount", "setWindowTitle" ]
 })
 
+/**
+ * Renderer interface
+ * @interface
+ * @category Renderers
+ */
 export class Renderer extends RendererProtocol {
     /**
      * Method to prepare the app for launching

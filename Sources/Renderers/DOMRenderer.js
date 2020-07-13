@@ -9,6 +9,7 @@ import { Renderer } from "./Renderer.js"
 /**
  * Class that has methods for rendering virtual DOM to real DOM
  * @class
+ * @category Renderers
  */
 export class DOMRenderer extends Renderer {
     /**

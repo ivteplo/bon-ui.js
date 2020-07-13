@@ -5,6 +5,7 @@
 
 /**
  * Class that represents DOM item
+ * @category Virtual DOM
  */
 export class VNode {
     /**
