@@ -6,8 +6,9 @@
 import { NotImplementedException } from "./Exceptions.js"
 
 /**
- * @class
  * Class that is used to work with protocols (interfaces)
+ * @class
+ * @ignore
  */
 export class Protocol {
     /**

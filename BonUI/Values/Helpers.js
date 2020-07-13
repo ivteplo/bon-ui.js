@@ -9,7 +9,7 @@ import { InvalidValueException } from "./Exceptions.js"
 import { VNode } from "../VirtualDOM/VNode.js"
 import { View } from "../Views/View.js"
 
-
+/** @ignore */
 export const camelCaseToHyphen = v => {
     var result = v.replace(/[A-Z]/g, letter => "-" + letter.toLowerCase())
     while (result.length > 0 && result[0] === "-") {
@@ -23,9 +23,11 @@ export const camelCaseToHyphen = v => {
     return result
 }
 
+/** @ignore */
 export const addSlashBeforeDoubleQuotes = v => String(v).replace(/"/g, "\\\"")
 
 
+/** @ignore */
 export const flattenArray = array => {
     var result = array.map(i => Array.isArray(i) ? flattenArray(i) : [i])
     
@@ -37,9 +39,11 @@ export const flattenArray = array => {
 }
 
 
+/** @ignore */
 export const getClass = variable => (typeof variable === "object" ? (variable === null ? "null" : variable.constructor.name) : typeof variable)
 
 
+/** @ignore */
 export function convertToViewBodyItem (body) {
     var result = body
 
@@ -63,6 +67,7 @@ export function convertToViewBodyItem (body) {
 }
 
 
+/** @ignore */
 export function convertToViewBody (items) {
     var result = items
 
@@ -86,6 +91,7 @@ export function convertToViewBody (items) {
 }
 
 
+/** @ignore */
 export function horizontalAlignmentToAlignItems (alignment) {
     switch (alignment) {
         case HorizontalAlignment.leading:
@@ -97,6 +103,7 @@ export function horizontalAlignmentToAlignItems (alignment) {
     }
 }
 
+/** @ignore */
 export function verticalAlignmentToAlignItems (alignment) {
     switch (alignment) {
         case VerticalAlignment.top:
@@ -109,11 +116,13 @@ export function verticalAlignmentToAlignItems (alignment) {
 }
 
 
+/** @ignore */
 export const alignmentToTextAlignmentProperties = (alignment) => ({
     textAlign: alignmentToHorizontalTextAlignment(alignment),
     verticalAlign: alignmentToVerticalTextAlignment(alignment)  
 })
 
+/** @ignore */
 function alignmentToHorizontalTextAlignment (alignment) {
     switch (alignment) {
         case Alignment.topLeading:
@@ -131,6 +140,7 @@ function alignmentToHorizontalTextAlignment (alignment) {
     }
 }
 
+/** @ignore */
 function alignmentToVerticalTextAlignment (alignment) {
     switch (alignment) {
         case Alignment.topLeading:
@@ -149,6 +159,7 @@ function alignmentToVerticalTextAlignment (alignment) {
 }
 
 
+/** @ignore */
 export function cloneObject (object) {
     if (!object) {
         return object
@@ -164,6 +175,7 @@ export function cloneObject (object) {
 }
 
 
+/** @ignore */
 export function cloneView (view) {
     var clone = cloneObject(view)
     clone.controller = new ViewController(clone)

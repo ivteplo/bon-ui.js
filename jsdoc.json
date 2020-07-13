@@ -5,10 +5,6 @@
         "node_modules/better-docs/category"
     ],
     "source": {
-        "exclude": [            
-            "Sources/BonUI/Values/Helpers.js",
-            "Sources/BonUI/Values/Protocol.js"
-        ],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },

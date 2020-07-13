@@ -29,7 +29,7 @@
     "build:umd": "NODE_ENV=all FORMAT=umd node build.js",
     "watch:esm": "NODE_ENV=development WATCH=1 FORMAT=esm node build.js",
     "watch:umd": "NODE_ENV=development WATCH=1 FORMAT=umd node build.js",
-    "docs": "jsdoc Sources/** --configure jsdoc.json --tutorials Docs/Tutorials --readme Docs/README.md",
+    "docs": "jsdoc BonUI/** --configure jsdoc.json --tutorials Docs/Tutorials --readme Docs/README.md",
     "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/*.js' --inspect-brk"
   },
   "devDependencies": {
