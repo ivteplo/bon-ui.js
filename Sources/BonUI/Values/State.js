@@ -4,7 +4,7 @@
 //
 
 /**
- * State that contains variables. When you change them through the method "set", the component will be invalidated.
+ * State that contains variables. When the value changed, listeners will be called.
  * 
  * @example
  * const initialState = {
