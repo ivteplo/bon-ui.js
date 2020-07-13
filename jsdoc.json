@@ -34,8 +34,8 @@
         "monospaceLinks": false,
         
         "better-docs": {
-            "name": "Bon UI API docs",
-            "title": "Bon UI API Documentation -",
+            "name": "Bon UI docs",
+            "title": "Bon UI Documentation -",
             "hideGenerator": true,
             "outputSourceFiles": false,
             "navLinks": [
