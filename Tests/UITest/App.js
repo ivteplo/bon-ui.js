@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { Application, Scene, Color } from "../../mod.js"
+import { Application, Scene, Color } from "../../Sources/main.js"
 import { Content } from "./Views/Content.js"
 
 export class App extends Application {

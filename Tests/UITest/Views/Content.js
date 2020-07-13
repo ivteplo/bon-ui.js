@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, NavigationView, Section, TextField, Row, Button, Column, Font, HorizontalAlignment, NavigationLink, List } from "../../../Sources/BonUI/BonUI.js"
+import { View, Text, NavigationView, Section, TextField, Row, Button, Column, Font, HorizontalAlignment, NavigationLink, List } from "../../../Sources/main.js"
 import { mainState } from "../MainState.js"
 import { Note } from "./Note.js"
 

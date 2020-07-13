@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 // 
 
-import { View, Text, Row, Button, Color, Column, Font, Weight, Spacer, HorizontalAlignment } from "../../../mod.js"
+import { View, Text, Row, Button, Color, Column, Font, Weight, Spacer, HorizontalAlignment } from "../../../Sources/main.js"
 import { mainState } from "../MainState.js"
 
 export class Note extends View {

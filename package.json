@@ -5,10 +5,9 @@
   "description": "JavaScript framework for developing powerful web applications",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "mod.js",
+  "module": "esm/BonUI.production.js",
   "files": [
-    "Sources/**/*",
-    "mod.js"
+    "Build/**"
   ],
   "engine": ">=12",
   "keywords": [
@@ -25,13 +24,19 @@
   "scripts": {
     "test": "mocha 'Tests/BonUITests/*.js'",
     "lint": "eslint 'Sources/**/*.js' 'Tests/**/*.js'",
-    "bundle": "rollup Sources/main.js --file Build/BonUI.js --format esm",
-    "bundle:watch": "rollup Sources/main.js --file Build/BonUI.js --format esm --watch",
+    "bundle": "rollup --config rollup.config.js",
+    "bundle:watch": "NODE_ENV=\"development\" rollup --config rollup.config.js --watch",
     "docs": "jsdoc Sources/** --configure jsdoc.json --tutorials Docs/Tutorials --readme Docs/README.md",
     "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/BonUITests/*.js' --inspect-brk --require esm"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
+    "@rollup/plugin-babel": "^5.1.0",
     "babel-eslint": "^10.1.0",
+    "babel-minify": "^0.5.1",
+    "babel-preset-minify": "^0.5.1",
     "better-docs": "^2.0.1",
     "chai": "^4.2.0",
     "eslint": "^7.1.0",

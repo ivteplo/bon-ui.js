@@ -1,5 +1,7 @@
 Docs/Build
 Build
+umd
+esm
 node_modules
 *.swp
 
