@@ -3,7 +3,7 @@
 // Licensed under the Apache License, version 2.0
 //
 
-import babel, { getBabelOutputPlugin } from '@rollup/plugin-babel'
+import babel from '@rollup/plugin-babel'
 
 var env = "development"
 
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
 console.log(`Building ${env} bundle`)
 
 export default {
-    input: "./Sources/main.js",
+    input: "./BonUI/BonUI.js",
     plugins: [
         babel({
             babelHelpers: "bundled",

@@ -22,12 +22,15 @@
   ],
   "private": false,
   "scripts": {
-    "test": "mocha 'Tests/BonUITests/*.js'",
+    "test": "mocha 'Tests/*.js'",
     "lint": "eslint 'Sources/**/*.js' 'Tests/**/*.js'",
-    "bundle": "rollup --config rollup.config.js",
-    "bundle:watch": "NODE_ENV=\"development\" rollup --config rollup.config.js --watch",
+    "build": "NODE_ENV=all FORMAT=all node build.js",
+    "build:esm": "NODE_ENV=all FORMAT=esm node build.js",
+    "build:umd": "NODE_ENV=all FORMAT=umd node build.js",
+    "watch:esm": "NODE_ENV=development WATCH=1 FORMAT=esm node build.js",
+    "watch:umd": "NODE_ENV=development WATCH=1 FORMAT=umd node build.js",
     "docs": "jsdoc Sources/** --configure jsdoc.json --tutorials Docs/Tutorials --readme Docs/README.md",
-    "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/BonUITests/*.js' --inspect-brk --require esm"
+    "debug:tests": "echo 'When mocha says that debugger is attached, open chrome://inspect in Google Chrome' && mocha 'Tests/*.js' --inspect-brk"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
