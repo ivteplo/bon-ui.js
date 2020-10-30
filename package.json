@@ -4,12 +4,18 @@
   "description": "Framework with declarative syntax for developing web apps",
   "main": "BonUI/BonUI.js",
   "type": "module",
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/teplovs/bon-ui.git"
-  },
+  "files": [
+    "BonUI/**/*"
+  ],
   "keywords": [
+    "Teplovs",
+    "UI",
+    "Bon UI",
+    "UX",
+    "User Interface",
+    "Web application",
+    "Framework",
+    "Declarative syntax",
     "ui",
     "ux",
     "javascript",
@@ -18,6 +24,12 @@
     "interface",
     "app"
   ],
+  "private": false,
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teplovs/bon-ui.git"
+  },
   "author": "Teplovs",
   "license": "Apache-2.0",
   "bugs": {
