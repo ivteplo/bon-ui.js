@@ -4,4 +4,5 @@
 //
 
 export * from "./App/index.js"
+export * from "./Views/index.js"
 export * from "./WebPlatform/index.js"
