@@ -5,7 +5,7 @@
 
 import { Platform } from "./Platform.js"
 import { assert } from "../Helpers.js"
-import { Scene } from "./Scene.js"
+import { WindowGroup } from "./WindowGroup.js"
 
 let app
 
@@ -43,8 +43,6 @@ export class Application {
     this.platform = null
   }
 
-  get body() {}
-
   /**
    * Function used to start the app
    */
@@ -58,7 +56,7 @@ export class Application {
       "Sorry, your platform is not supported"
     )
 
-    const body = this.body || new Scene()
-    body.build(this.platform.sceneBuilder)
+    const body = this.body || new WindowGroup()
+    body.build(this.platform)
   }
 }

@@ -3,38 +3,40 @@
 // Licensed under the Apache license 2.0
 //
 
+import { assert } from "../Helpers.js"
 import { View } from "../Views/index.js"
+import { Platform } from "./Platform.js"
 import { Scene } from "./Scene.js"
-import { SceneBuilder } from "./SceneBuilder.js"
 
-// TODO: jsdoc
+/**
+ * Scene that represents a group of windows that have the same structure.
+ */
 export class WindowGroup extends Scene {
-  // TODO: add description
   /**
-   * @param {function(): View[]} windowItems
+   * @param {function(): View} body getter for a view
    */
-  constructor(windowItems) {
+  constructor(body) {
     super()
 
     Object.defineProperty(this, "body", {
-      get: () => windowItems()
+      get: () => body(),
     })
 
     this._window = null
   }
 
   /**
-   * @param {SceneBuilder} builder
+   * @param {Platform} platform platform to build the scene for
    */
-  build(builder) {
-    let window = builder.createWindow()
+  build(platform) {
+    let window = platform.sceneBuilder.createWindow()
     this._window = window
 
     let body = this.body
-    // TODO: think more about how window group works
-    body.forEach(item => {
-      // TODO: remove log
-      console.log(item)
-    })
+
+    assert(body instanceof View, "WindowGroup body has to be a View instance")
+
+    let builtView = platform.viewBuilder.build({ view: body, scene: this })
+    window.addBuiltView(builtView)
   }
 }

@@ -3,16 +3,20 @@
 // Licensed under the Apache license 2.0
 //
 
-import { warning } from "../Helpers.js"
-import { SceneBuilder } from "./SceneBuilder.js"
+import { assert, warning } from "../Helpers.js"
+import { Platform } from "./Platform.js"
 
 export class Scene {
   /**
    * Function used to build the scene
-   * @param {SceneBuilder} sceneBuilder
+   * @param {Platform} platform platform to build the scene for
    */
-  // eslint-disable-next-line no-unused-vars
-  build(sceneBuilder) {
+  build(platform) {
+    assert(
+      platform instanceof Platform,
+      `Expected a Platform instance to be passed to ${this.constructor.name}#build`
+    )
+
     warning(`${this.constructor.name}#build is not implemented`)
   }
 }

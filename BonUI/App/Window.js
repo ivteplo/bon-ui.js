@@ -3,4 +3,10 @@
 // Licensed under the Apache license 2.0
 //
 
-export class Window {}
+import { warning } from "../Helpers.js"
+
+export class Window {
+  addBuiltView(native) {
+    warning(`${this.constructor.name}#addBuiltView is not implemented`)
+  }
+}

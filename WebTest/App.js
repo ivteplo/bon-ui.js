@@ -13,7 +13,7 @@ class App extends Application {
   }
 
   get body() {
-    return new WindowGroup(() => [new Content()])
+    return new WindowGroup(() => new Content())
   }
 }
 

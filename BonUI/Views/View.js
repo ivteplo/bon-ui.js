@@ -3,6 +3,4 @@
 // Licensed under the Apache license 2.0
 //
 
-export class View {
-  build() {}
-}
+export class View {}

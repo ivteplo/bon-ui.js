@@ -3,14 +3,20 @@
 // Licensed under the Apache license 2.0
 //
 
+import { ViewBuilder } from "../App/ViewBuilder.js"
 import { View } from "./View.js"
 
 export class Text extends View {
   constructor(text = "") {
     super()
 
-    this.body = text
+    this._text = text
   }
-
-  // build() {}
 }
+
+ViewBuilder.addExtension({
+  class: Text,
+  builder: (view) => {
+    return { type: "text", text: view._text }
+  },
+})
