@@ -3,4 +3,10 @@
 // Licensed under the Apache license 2.0
 //
 
-export class Platform {}
+import { SceneBuilder } from "./SceneBuilder.js"
+
+export class Platform {
+  constructor() {
+    this.sceneBuilder = new SceneBuilder()
+  }
+}

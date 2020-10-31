@@ -8,3 +8,7 @@ export function assert(condition, ...data) {
     throw new Error(...data)
   }
 }
+
+export function warning(...data) {
+  console.warn(...data)
+}

@@ -5,4 +5,7 @@
 
 export * from "./Application.js"
 export * from "./Platform.js"
+export * from "./Scene.js"
+export * from "./SceneBuilder.js"
 export * from "./Window.js"
+export * from "./WindowGroup.js"

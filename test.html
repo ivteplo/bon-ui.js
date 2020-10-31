@@ -12,9 +12,15 @@ Licensed under the Apache license 2.0
   </head>
   <body>
     <script type="module">
-      import { Application, main } from "./BonUI/BonUI.js"
+      import { Application, main, WindowGroup, Text } from "./BonUI/BonUI.js"
 
-      main(class App extends Application {})()
+      main(
+        class App extends Application {
+          get body() {
+            return new WindowGroup(() => [new Text("Hello world!")])
+          }
+        }
+      )()
     </script>
   </body>
 </html>

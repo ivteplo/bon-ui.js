@@ -4,12 +4,12 @@
 //
 
 import { Platform } from "../App/index.js"
-import { WebWindow } from "./WebWindow.js"
+import { WebSceneBuilder } from "./WebSceneBuilder.js"
 
 export class WebPlatform extends Platform {
-  createWindow() {
-    // TODO: add support for other windows
+  constructor() {
+    super()
 
-    return new WebWindow(window)
+    this.sceneBuilder = new WebSceneBuilder()
   }
 }

@@ -4,9 +4,15 @@
 //
 
 export class View {
-  constructor() {}
+  constructor() {
+    const bodyDescriptor = Object.getOwnPropertyDescriptor(this, "name")
 
-  get body() {
-    return null
+    if (!bodyDescriptor) {
+      this.body = null
+    }
+  }
+
+  build() {
+
   }
 }

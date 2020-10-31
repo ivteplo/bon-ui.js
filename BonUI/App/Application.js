@@ -5,6 +5,7 @@
 
 import { Platform } from "./Platform.js"
 import { assert } from "../Helpers.js"
+import { Scene } from "./Scene.js"
 
 let app
 
@@ -57,15 +58,8 @@ export class Application {
       "Sorry, your platform is not supported"
     )
 
-    const body = this.body
-
-    if (!body) {
-      // create empty window
-      let window = this.platform.createWindow()
-      // TODO: decide what to do with window
-    } else {
-      // TODO
-    }
+    const body = this.body || new Scene()
+    body.build(this.platform.sceneBuilder)
   }
 }
 
