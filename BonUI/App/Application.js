@@ -48,7 +48,7 @@ export class Application {
   /**
    * Function used to start the app
    */
-  start() {
+  main() {
     if (!(this.platform instanceof Platform)) {
       this.platform = this.constructor._detectPlatform()
     }
@@ -60,26 +60,5 @@ export class Application {
 
     const body = this.body || new Scene()
     body.build(this.platform.sceneBuilder)
-  }
-}
-
-/**
- * Decorator to mark the class as the application's main
- * @param {function} Class class that extends {@link Application}
- * @returns {function} modified constructor
- */
-export function main(Class) {
-  if (app) {
-    throw new Error('There is already a class with "main" decorator')
-  }
-
-  return (...args) => {
-    app = new Class(...args)
-
-    assert(app instanceof Application, "Expected an Application instance")
-
-    app.start()
-
-    return app
   }
 }
