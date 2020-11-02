@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2020 Teplovs
+// Copyright (c) Ivan Zadvornov 2020
 // Licensed under the Apache license 2.0
 //
 
