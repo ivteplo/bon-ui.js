@@ -28,33 +28,34 @@ export class ViewBuilder {
    * @param {object} options
    * @param {View} options.view view to build
    * @param {Scene} options.scene scene to build
+   * @returns {{
+   *  rendered: object,
+   *  parentViews: View[]
+   * }}
    */
   build({ view, scene } = {}) {
-    assert(view instanceof View)
-    assert(scene instanceof Scene)
+    assert(
+      view instanceof View,
+      "Expected view to be an instance of View class"
+    )
 
-    const recursiveViewRendering = (view) => {
-      let rendered
-      let children = []
+    assert(
+      scene instanceof Scene,
+      "Expected scene to be an instance of Scene class"
+    )
 
-      for (let { class: Class, builder } of extensions) {
-        if (view instanceof Class) {
-          rendered = builder(view)
-        }
-      }
+    assert(false, "View building is not implemented")
 
-      if (!rendered && "body" in view) {
-        let { rendered: _rendered, parents } = recursiveViewRendering(view.body)
-        rendered = _rendered
-        children = parents
-      }
+    // TODO: update the way it works
+  }
 
-      return {
-        rendered,
-        parents: [...children, view],
-      }
-    }
-
-    return recursiveViewRendering(view)
+  /**
+   * Function to update a view
+   * @param {object} options
+   * @param {View} options.view view to update
+   * @param {Scene} options.scene scene the view belongs to
+   */
+  update({ view, scene } = {}) {
+    // TODO: rerender the view and find differences
   }
 }

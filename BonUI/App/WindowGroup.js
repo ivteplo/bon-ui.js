@@ -37,6 +37,6 @@ export class WindowGroup extends Scene {
     assert(body instanceof View, "WindowGroup body has to be a View instance")
 
     let builtView = platform.viewBuilder.build({ view: body, scene: this })
-    window.addBuiltView(builtView)
+    this._window.addBuiltView(builtView)
   }
 }

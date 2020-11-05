@@ -12,8 +12,7 @@ export function State(target) {
     },
     set(newValue) {
       value = newValue
-      // TODO: refresh
-      console.log("Have to refresh the UI", this)
+      this.refresh()
     },
   }
 
